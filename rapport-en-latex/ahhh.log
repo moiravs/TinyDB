@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.10.10)  10 OCT 2022 19:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.10.10)  10 OCT 2022 20:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex
+**/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh
 (/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex
 LaTeX2e <2020-02-02> patch level 2
 L3 programming layer <2020-02-14> (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -238,7 +238,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count269
 \l__pdf_internal_box=\box47
-) (/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.aux)
+) (./ahhh.aux)
 \openout1 = `ahhh.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
@@ -332,70 +332,41 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 19.
 LaTeX Info: Redefining \pageref on input line 19.
 LaTeX Info: Redefining \nameref on input line 19.
+ (./ahhh.out) (./ahhh.out)
 \@outlinefile=\write3
 \openout3 = `ahhh.out'.
 
-
-/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex:21: Extra alignment tab has been changed to \cr.
-<recently read> \endtemplate 
-                             
-l.21 
-     
-You have given more \span or & marks than there were
-in the preamble to the \halign or \valign now in progress.
-So I'll assume that you meant to type \cr instead.
-
-
-LaTeX Warning: Reference `fig:frog' on page 1 undefined on input line 40.
-
-<frog.jpg, id=7, 748.7975pt x 741.77126pt>
+<frog.jpg, id=55, 748.7975pt x 741.77126pt>
 File: frog.jpg Graphic file (type jpg)
 <use frog.jpg>
-Package pdftex.def Info: frog.jpg  used on input line 46.
+Package pdftex.def Info: frog.jpg  used on input line 43.
 (pdftex.def)             Requested size: 133.07489pt x 131.8266pt.
-[1
+ [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2 </home/emily/Documents/Projet-OS-BA2/rapport-en-latex/frog.jpg>]
-
-LaTeX Warning: Citation `greenwade93' on page 3 undefined on input line 108.
-
-No file ahhh.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 119.
-[3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 119.
- (/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 119.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 119.
-
-
-Package rerunfilecheck Warning: File `ahhh.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `ahhh.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  232689D72843F283B3EE1BBB7D69ECDC;910.
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 119.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./frog.jpg>] [2] (./ahhh.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 112.
+ [3]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 112.
+ (./ahhh.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 112.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 112.
+Package rerunfilecheck Info: File `ahhh.out' has not changed.
+(rerunfilecheck)             Checksum: 232689D72843F283B3EE1BBB7D69ECDC;910.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 112.
  ) 
 Here is how much of TeX's memory you used:
- 6905 strings out of 483183
- 103447 string characters out of 5966291
- 382218 words of memory out of 5000000
- 21785 multiletter control sequences out of 15000+600000
- 538831 words of font info for 47 fonts, out of 8000000 for 9000
+ 6931 strings out of 483183
+ 103462 string characters out of 5966291
+ 382397 words of memory out of 5000000
+ 21803 multiletter control sequences out of 15000+600000
+ 538869 words of font info for 47 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 34i,8n,29p,517b,335s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/emily/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on /home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.pdf (3 pages, 244437 bytes).
+ 34i,6n,29p,513b,335s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/emily/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on ahhh.pdf (3 pages, 240644 bytes).
 PDF statistics:
- 110 PDF objects out of 1000 (max. 8388607)
- 89 compressed objects within 1 object stream
- 20 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 151 PDF objects out of 1000 (max. 8388607)
+ 129 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
+ 102 words of extra memory for PDF output out of 10000 (max. 10000000)
 

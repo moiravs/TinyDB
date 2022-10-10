@@ -13,8 +13,8 @@
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 
-\title{Rapport de Système d'exploitation}
-\author{Andrius Ezerskis & Moïra Vanderslagmolen}
+\title{Your Paper}
+\author{You}
 
 \begin{document}
 \maketitle
@@ -36,9 +36,6 @@ Once you're familiar with the editor, you can find various project settings in t
 Simply use the section and subsection commands, as in this example document! With Overleaf, all the formatting and numbering is handled automatically according to the template you've chosen. If you're using Rich Text mode, you can also create new section and subsections via the buttons in the editor toolbar.
 
 \subsection{How to include Figures}
-
-First you have to upload the image file from your computer using the upload link in the file-tree menu. Then use the includegraphics command to include it in your document. Use the figure environment and the caption command to add a number and a caption to your figure. See the code for Figure \ref{fig:frog} in this section for an example.
-
 Note that your figure will automatically be placed in the most appropriate place for it, given the surrounding text and taking into account other figures or tables that may be close by. You can find out more about adding images to your documents in this help article on \href{https://www.overleaf.com/learn/how-to/Including_images_on_Overleaf}{including images on Overleaf}.
 
 \begin{figure}
@@ -49,16 +46,11 @@ Note that your figure will automatically be placed in the most appropriate place
 
 \subsection{How to add Tables}
 
-Use the table and tabular environments for basic tables --- see Table, for example. For more information, please see this help article on \href{https://www.overleaf.com/learn/latex/tables}{tables}. 
+Use the table and tabular environments for basic tables see Table, for example. For more information, please see this help article on \href{https://www.overleaf.com/learn/latex/tables}{tables}. 
 
 \begin{table}
 \centering
-\begin{tabular}{l|r}
-Item & Quantity \\\hline
-Widgets & 42 \\
-Gadgets & 13
-\end{tabular}
-\caption{An example table.}
+\caption{\label{tab:widgets}An example table.}
 \end{table}
 
 \subsection{How to add Comments and Track Changes}
@@ -113,7 +105,8 @@ If you have an \href{https://www.overleaf.com/user/subscription/plans}{upgraded 
 
 We hope you find Overleaf useful, and do take a look at our \href{https://www.overleaf.com/learn}{help library} for more tutorials and user guides! Please also let us know if you have any feedback using the Contact Us link at the bottom of the Overleaf menu --- or use the contact form at \url{https://www.overleaf.com/contact}.
 
-\bibliographystyle{alpha}
+\bibliographystyle{plain}
 \bibliography{sample}
+
 
 \end{document}
