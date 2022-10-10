@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex ahhh"] 1665423799 "ahhh.aux" "ahhh.bbl" "ahhh" 1665423799
-  "/usr/share/texlive/texmf-dist/bibtex/bib/gloss/sample.bib" 1136766823 2721 b88105703bd616b4f9867992219afb8a ""
+["bibtex ahhh"] 0 "ahhh.aux" "ahhh.bbl" "ahhh" 0
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/alpha.bst" 1292289607 23907 a5f93555796fb564b924339521f10a7c ""
-  "ahhh.aux" 1665423799 2566 0ee07fbae6ab8bcfcf4b99ac8a0ba966 "pdflatex"
+  "ahhh.aux" 0 -1 0 "pdflatex"
+  "sample.bib" 1665424436 243 5de7b98512855c31b0297a44bcc61b1c ""
   (generated)
-  "ahhh.blg"
   "ahhh.bbl"
-["pdflatex"] 1665423799 "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex" "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.pdf" "ahhh" 1665423799
+  "ahhh.blg"
+["pdflatex"] 1665424660 "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex" "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.pdf" "ahhh" 1665424660
   "/etc/texmf/web2c/texmf.cnf" 1665423133 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/emily/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk" 1665423705 11524 942abcebe350e7cb69101623b72bb5ff ""
-  "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.aux" 1665423799 2566 0ee07fbae6ab8bcfcf4b99ac8a0ba966 ""
-  "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex" 1665423799 6511 e17662206a0a0628f29c6649cc2ce7bd ""
+  "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.aux" 1665424660 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.tex" 1665424660 7087 2b91497c5a394a70db1dcbe1d4ed04c6 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -100,14 +100,15 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1665423642 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1665423643 4791333 dff172791bd50063302fcc2e1a96de5b ""
-  "ahhh.aux" 1665423799 2566 0ee07fbae6ab8bcfcf4b99ac8a0ba966 "pdflatex"
-  "ahhh.bbl" 1665423799 49 0eba253fc001332e731e8aba3f23127b "bibtex ahhh"
-  "ahhh.out" 1665423799 910 232689d72843f283b3ee1bbb7d69ecdc "pdflatex"
-  "ahhh.tex" 1665423799 6511 e17662206a0a0628f29c6649cc2ce7bd ""
+  "ahhh.aux" 0 -1 0 "pdflatex"
+  "ahhh.bbl" 0 -1 0 "bibtex ahhh"
+  "ahhh.out" 0 -1 0 "pdflatex"
+  "ahhh.tex" 1665424660 7087 2b91497c5a394a70db1dcbe1d4ed04c6 ""
+  "frog.jpg" 1665424398 97080 665777aa6c7c48794db02f5d69ccc24a ""
   (generated)
   "ahhh.log"
-  "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.pdf"
-  "ahhh.pdf"
   "ahhh.out"
   "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.log"
   "ahhh.aux"
+  "/home/emily/Documents/Projet-OS-BA2/rapport-en-latex/ahhh.pdf"
+  "ahhh.pdf"
