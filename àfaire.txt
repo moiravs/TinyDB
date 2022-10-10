@@ -1,0 +1,7 @@
+- RAPPORT
+
+- BASH
+
+- BDD en C
+
+- Installer le todotree extension, pour pouvoir mettre //todo partout dans le code et après avoir le todo dans le truc tree
