@@ -35,8 +35,8 @@ void db_load(database_t *db, const char *path) {
 void db_init(database_t *db) {
   // Your code here
   db->lsize = 0;
-  db->psize = 0;
-  
+  db->psize = 1*sizeof(int);
+  db->data = (int*)malloc(db->psize * sizeof(int));
 }
 
 void db_add(database_t *db, student_t student) {
