@@ -1,0 +1,5 @@
+base_etudiants/db.o
+base_etudiants/parsing.o
+base_etudiants/query.o
+base_etudiants/student.o
+base_etudiants/tinydb
