@@ -44,6 +44,24 @@
         Done.
         3/7
 - MONITORING
+    lancement 
+        - $ ./monitoring run [<chemin_vers_la_db>] [-f <fichier_requetes>]
+    vérif de la bdd
+        - ./monitoring status
+        1 instance running
+        > PID 1990
+    sauvegarde sur le disque
+        envoie un signal à SIGUSR1, si plusieurs instances de tinydb, signal envoyé à chacune d'elles
+        $ ./monitoring sync
+        Found 2 instances of tinydb
+        Sync process 1990...
+        Sync process 2546...
+        Done
+    arrêt de la bdd
+        ./monitoring shutdown [<pid>]
+        . Si ce PID n’est pas le processus principal d’une instance de tinydb, le
+        script aﬀiche un message d’erreur sur stderr. Si aucun PID n’est donné, le script demande confirmation
+        pour chaque instance de tinydb qui tourne
 
 - RAPPORT
 
