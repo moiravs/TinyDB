@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
   db_init(&db);
   db_load(&db, db_path);
 
-  // creation des 4 enfants
+  // creation des 4 enfants (je pense pas il faut le faire ici )
   for (int i = 0; i < 4; i++)
   {
     if (fork() == 0)

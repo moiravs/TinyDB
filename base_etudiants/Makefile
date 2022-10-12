@@ -2,6 +2,9 @@
 FLAGS=-std=c++17 -Wall -Werror -Wpedantic -D_GNU_SOURCE
 COMPILER=g++
 
+monitoring: main.cpp student.o parsing.o db.o query.o
+	${COMPILER} -o monitoring main.cpp parsing.o student.o db.o query.o ${FLAGS}
+
 main: main.cpp student.o parsing.o db.o query.o
 	${COMPILER} -o tinydb main.cpp parsing.o student.o db.o query.o ${FLAGS}
 
