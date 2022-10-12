@@ -15,3 +15,7 @@ void query_result_init(query_result_t *result, const char *query)
   // TODO transaction.Ce mot - clef déclare le début d’une nouvelle transaction.Plus de détails sont donnés dans la Section
   // Votre code ici*/
 }
+
+void query_result_add(query_result_t *result, student_t s){
+  
+}

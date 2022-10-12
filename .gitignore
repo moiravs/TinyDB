@@ -8,3 +8,12 @@ base_etudiants/tinydb.exe
 base_etudiants/tinydb.o
 base_etudiants/students.bin
 mes-notes-perso.txt
+base_etudiants/tests/test_delete_multiple.output
+base_etudiants/tests/test_delete_single.output
+base_etudiants/tests/test_insert_multiple.output
+base_etudiants/tests/test_insert_single.output
+base_etudiants/tests/test_select_multiple.output
+base_etudiants/tests/test_select_single.output
+base_etudiants/tests/test_update_multiple.output
+base_etudiants/tests/test_update_single.output
+base_etudiants/tests/data/test_db.bin
