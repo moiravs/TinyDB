@@ -42,7 +42,7 @@ void db_add(database_t *db, student_t student) {
     // allouer espace supplémentaire pour l'étudiant
     if (db->lsize > 0)
     {
-        realloc(db->data, 256);
+        db->data = (student_t*)realloc(db->data, 256);
     }
     else
     {
@@ -54,5 +54,5 @@ void db_add(database_t *db, student_t student) {
     // il faut ajouter un student à la fin de la liste, donc la fin c'est genre l'adresse mémoire + 1
     // on a la physical size, dcp on fait juste physicalsize*logical size et on a l'endroit où il faut le mettre
     // c'est comme ça qu'on change ? à vérifier
-    *(db->data + (db->psize*db->lsize)) = student;
+
 }
