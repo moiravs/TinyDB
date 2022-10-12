@@ -1,13 +1,30 @@
 #include <stdio.h>
 
 #include "db.h"
+#include <unistd.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <stdlib.h>
+
+static volatile int keepRunning = 1; //jsp ce que c'est volatile ct dans stackoverflow
+
+void gere_signal(int signum){
+  printf("Programme terminé");
+  keepRunning = 0;
+}
+
 
 int main(int argc, char const *argv[]) {
   const char *db_path = argv[1];
   database_t db;
+  signal(SIGINT, gere_signal); // gere le signal genre ctrl c
   db_init(&db);
   db_load(&db, db_path);
-  // Il y a sans doute des choses à faire ici...
+  while (keepRunning){
+    // gérer les queries
+    //#TODO if stdin file, alors lire les queries 
+    //#TODO sinon attendre les requetes 
+  }
   db_save(&db, db_path);
   printf("Bye bye!\n");
   return 0;
