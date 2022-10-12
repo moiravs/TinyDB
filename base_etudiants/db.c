@@ -36,18 +36,17 @@ void db_init(database_t *db) {
   // Your code here
   db->lsize = 0;
   db->psize = 1*sizeof(int);
-  db->data = (int*)malloc(db->psize * sizeof(int));
 }
 
 void db_add(database_t *db, student_t student) {
     // allouer espace supplémentaire pour l'étudiant
-    if (db->lsize == 0)
+    if (db->lsize > 0)
     {
         db->data = realloc(db->data, 256);
     }
     else
     {
-        realloc(db->data, size_of(student));
+        db->data = (student_t*)malloc(size_of(student));
     }
     db->lsize += 1;
     db->psize += 1*(sizeof(student));
