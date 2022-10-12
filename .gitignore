@@ -17,4 +17,3 @@ base_etudiants/tests/test_select_single.output
 base_etudiants/tests/test_update_multiple.output
 base_etudiants/tests/test_update_single.output
 base_etudiants/tests/data/test_db.bin
-
