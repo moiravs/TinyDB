@@ -42,11 +42,11 @@ void db_add(database_t *db, student_t student) {
     // allouer espace supplémentaire pour l'étudiant
     if (db->lsize > 0)
     {
-        db->data = realloc(db->data, 256);
+        realloc(db->data, 256);
     }
     else
     {
-        db->data = (student_t*)malloc(size_of(student));
+        db->data = (student_t*)malloc(sizeof(student));
     }
     db->lsize += 1;
     db->psize += 1*(sizeof(student));
