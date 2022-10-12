@@ -18,3 +18,4 @@ base_etudiants/tests/test_update_multiple.output
 base_etudiants/tests/test_update_single.output
 base_etudiants/tests/data/test_db.bin
 base_etudiants/monitoring
+base_etudiants/tests/data/test_db.bin
