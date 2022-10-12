@@ -3,3 +3,7 @@ base_etudiants/parsing.o
 base_etudiants/query.o
 base_etudiants/student.o
 base_etudiants/tinydb
+base_etudiants/main.o
+base_etudiants/tinydb.exe
+base_etudiants/tinydb.o
+base_etudiants/students.bin
