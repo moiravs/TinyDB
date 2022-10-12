@@ -63,6 +63,15 @@
         script aﬀiche un message d’erreur sur stderr. Si aucun PID n’est donné, le script demande confirmation
         pour chaque instance de tinydb qui tourne
 
+
+
+
+- !!!! gestion d'erreuurs
+
+
+
+
+
 - RAPPORT
 
 
