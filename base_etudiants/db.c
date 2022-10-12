@@ -54,5 +54,5 @@ void db_add(database_t *db, student_t student) {
     // il faut ajouter un student à la fin de la liste, donc la fin c'est genre l'adresse mémoire + 1
     // on a la physical size, dcp on fait juste physicalsize*logical size et on a l'endroit où il faut le mettre
     // c'est comme ça qu'on change ? à vérifier
-    *(db->data + db->lsize*db->psize + 1) = student; // pointeur actuel (qq part en mémoire) + 
+    *(db->data + db->lsize*db->psize + 1) = student; // pointeur actuel (qq part en mémoire) + taille physique de la bdd*taille logique (pas sûr)
 }
