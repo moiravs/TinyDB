@@ -41,13 +41,12 @@ void db_init(database_t *db) {
 
 void db_add(database_t *db, student_t student) {
     // allouer espace supplémentaire pour l'étudiant
-    int *array;
     db->lsize += 1;
     db->psize += 1*(sizeof(student));
     if (db->lsize == 0){
-        array = realloc(array, 256);
+        db->data = realloc(db->data, 256);
     } else {
-        realloc(array, size_of(student));
+        realloc(db->data, size_of(student));
     }
     // db->data + espace supplémentaire (jsp comment on fait)
     // il faut ajouter un student à la fin de la liste, donc la fin c'est genre l'adresse mémoire + 1
