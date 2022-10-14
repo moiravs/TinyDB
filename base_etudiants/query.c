@@ -18,12 +18,13 @@ void query_result_init(query_result_t *result, const char *query)
     student_t *s;
     // TODO ANDRIUS changer en  s->fname au lieu de fname etc
     *s->fname = strtok(NULL, " ");
-    lname = strtok(NULL, " ");
-    section = strtok(NULL, " ");
-    birthdate = strtok(NULL, " ");
-    if (parse_insert(paramètres))
+    *s->lname = strtok(NULL, " ");
+    *s->section = strtok(NULL, " ");
+    *s->birthdate = strtok(NULL, " ");
+    *s->id = strtok(NULL, "");
+    if (parse_insert(resultquery, *s->fname, *s->lname, s->id, *s->section, s->birthdate))
     {
-      query_result_add(result, student_t s);
+      query_result_add(result, *s);
     }
     else
     {
