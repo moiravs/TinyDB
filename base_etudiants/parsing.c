@@ -73,3 +73,6 @@ bool parse_selectors(char* query, char* field, char* value) {
     strcpy(value, token);
     return true;
 }
+
+// TODO bool parse_delete 
+// TODO bool parse_insert

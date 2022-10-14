@@ -28,4 +28,24 @@ void query_result_init(query_result_t* result, const char* query);
  **/
 void query_result_add(query_result_t* result, student_t s);
 
+/**
+ * Add a student to a query result.
+ **/
+void query_result_insert(query_result_t *result, student_t s);
+
+/**
+ * Add a student to a query result.
+ **/
+void query_result_delete(query_result_t *result, student_t s);
+
+/**
+ * Add a student to a query result.
+ **/
+void query_result_transaction(query_result_t *result, student_t s);
+
+/**
+ * Add a student to a query result.
+ **/
+void query_result_update(query_result_t *result, student_t s);
+
 #endif

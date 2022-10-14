@@ -19,10 +19,11 @@ typedef struct {
     student_t next_student;
 } student_t;
 
-/**
- * @brief Convert a student to a human-readlable string.
- **/
-void student_to_str(char* buffer, student_t* s);
+bool operator==(const MyStruct1 &lhs, const MyStruct1 &rhs);
+    /**
+     * @brief Convert a student to a human-readlable string.
+     **/
+void student_to_str(char *buffer, student_t *s);
 
 /**
  * @brief Return whether two students are equal or not.
