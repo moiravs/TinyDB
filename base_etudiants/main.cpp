@@ -36,8 +36,9 @@ int main(int argc, char const *argv[])
   char* query;
   query_result_t *queryresultt;
   while (keepRunning){
-      std::cin >> query;
-      query_result_init(queryresultt, query);
+    /*
+    std::cin >> query;
+    query_result_init(queryresultt, query);*/
   } 
   db_save(&db, db_path);
   printf("Bye bye!\n");
