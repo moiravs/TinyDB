@@ -1,10 +1,11 @@
 #include <stdio.h>
-
+#include <iostream>
 #include "db.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <signal.h>
 #include <stdlib.h>
+#include "query.h"
 
 static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
 
@@ -32,12 +33,12 @@ int main(int argc, char const *argv[])
       exit(0);
     }
   }
-  while (keepRunning)
-  {
-    // gérer les queries
-    //#TODO if stdin file, alors lire les queries
-    //#TODO sinon attendre les requetes
-  }
+  char* query;
+  query_result_t *queryresultt;
+  while (keepRunning){
+      std::cin >> query;
+      query_result_init(queryresultt, query);
+  } 
   db_save(&db, db_path);
   printf("Bye bye!\n");
   return 0;
