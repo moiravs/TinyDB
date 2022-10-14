@@ -15,8 +15,8 @@ typedef struct {
     char lname[64];      /** Lastname **/
     char section[64];    /** Section **/
     struct tm birthdate; /** Birth date **/
-    student_t precedent_student;
-    student_t next_student;
+    student_t *precedent_student;
+    student_t *next_student;
 } student_t;
 
 bool operator==(const MyStruct1 &lhs, const MyStruct1 &rhs);
