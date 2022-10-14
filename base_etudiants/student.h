@@ -9,25 +9,25 @@
 /**
  * Student structure type.
  **/
-typedef struct {
+typedef struct
+{
     unsigned id;         /** Unique ID **/
     char fname[64];      /** Firstname **/
     char lname[64];      /** Lastname **/
     char section[64];    /** Section **/
     struct tm birthdate; /** Birth date **/
-    student_t *precedent_student;
-    student_t *next_student;
+    struct student_t* next_student;
+    struct student_t* precedent_student;
 } student_t;
 
-bool operator==(const MyStruct1 &lhs, const MyStruct1 &rhs);
-    /**
-     * @brief Convert a student to a human-readlable string.
-     **/
+/**
+ * @brief Convert a student to a human-readlable string.
+ **/
 void student_to_str(char *buffer, student_t *s);
 
 /**
  * @brief Return whether two students are equal or not.
  **/
-int student_equals(student_t* s1, student_t* s2);
+int student_equals(student_t *s1, student_t *s2);
 
 #endif
