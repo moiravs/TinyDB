@@ -15,13 +15,9 @@ void query_result_init(query_result_t *result, const char *query)
   //  TODO insert<fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
   if (resultquery == "insert")
   {
-    student_t *s;
-    // TODO ANDRIUS changer en  s->fname au lieu de fname etc
-    *s->fname = strtok(NULL, " ");
-    *s->lname = strtok(NULL, " ");
-    *s->section = strtok(NULL, " ");
-    *s->birthdate = strtok(NULL, " ");
-    *s->id = strtok(NULL, "");
+    student_t *s = {strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "), 
+    strtok(NULL, " "), strtok(NULL, " ")};
+    
     if (parse_insert(resultquery, *s->fname, *s->lname, s->id, *s->section, s->birthdate))
     {
       query_result_add(result, *s);
