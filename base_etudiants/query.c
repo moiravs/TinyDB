@@ -9,26 +9,31 @@ void query_result_init(query_result_t *result, const char *query)
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
   result->status = QUERY_SUCCESS;
   //result->lsize, psize?
-  char *resultquery;
-  resultquery = strtok(result->query, " ");
+  char *queryKey; // premier mot de la query (insert, delete, ...)
+  queryKey = strtok(result->query, " ");
 
   //  TODO insert<fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
-  if (resultquery == "insert")
+  if (queryKey == "insert")
   {
     student_t *s = {strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "), 
-    strtok(NULL, " "), strtok(NULL, " ")};
-    
-    if (parse_insert(resultquery, *s->fname, *s->lname, s->id, *s->section, s->birthdate))
+    strtok(NULL, " "), strtok(NULL, " ")};  // initialisation de s
+
+    if (parse_insert(queryKey, *s->fname, *s->lname, s->id, *s->section, s->birthdate))
     {
       query_result_add(result, *s);
     }
     else
     {
       // indiquer au user que c'est faux/introduit de mauvais paramètres
+      perror("Wrong parameters parsed.");
     }
+  }
     // TODO update < filtre >= <valeur> set < champ_modifie >= <valeur_modifiee>.Cette requête modifie tous les étudiants correspondant au filtre < filtre >= <valeur>, en donnant la valeur<valeur_modifiee> au champ<champ_modifie>.
-    if (resultquery == "update")
+    if (queryKey == "update")
     {
+      for (auto student: result->students){
+
+      }
     for
       student in result->students
       {
@@ -42,7 +47,7 @@ void query_result_init(query_result_t *result, const char *query)
     }
 
     // TODO delete < champ >= <valeur>.Cette requête supprime tous les étudiants qui correspondent au filtre donné.
-    if (resultquery == "delete")
+    if (queryKey == "delete")
     {
     for
       student in result->students // pr chaque étudiant
@@ -60,7 +65,7 @@ void query_result_init(query_result_t *result, const char *query)
     }
 
     // TODO select < champ >= <valeur>.Cette requête renvoie la liste des étudiants qui correspondent à l’unique filtre < champ >= <valeur>.
-    if (resultquery == "select")
+    if (queryKey == "select")
     {
     for
       student in result->students
@@ -77,7 +82,7 @@ void query_result_init(query_result_t *result, const char *query)
       }
     }
     // TODO transaction.Ce mot - clef déclare le début d’une nouvelle transaction.Plus de détails sont donnés dans la Section
-    if (resultquery == "transaction")
+    if (queryKey == "transaction")
     {
       if (parse_transaction(paramètres))
       {
