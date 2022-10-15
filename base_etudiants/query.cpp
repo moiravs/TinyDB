@@ -1,4 +1,5 @@
 #include "query.hpp"
+#include "parsing.hpp"
 
 #include <time.h>
 
@@ -18,7 +19,7 @@ void query_result_init(query_result_t *result, const char *query)
     student_t *s = {strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "), 
     strtok(NULL, " "), strtok(NULL, " ")};  // initialisation de s
 
-    if (parse_insert(queryKey, *s->fname, *s->lname, s->id, *s->section, s->birthdate))
+    if (parse_insert(queryKey, s->fname, s->lname, s->id, s->section, s->birthdate))
     {
       query_result_add(result, *s);
     }

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <iostream>
-#include "db.h"
+#include "db.hpp"
 #include <unistd.h>
 #include <sys/types.h>
 #include <signal.h>
 #include <stdlib.h>
-#include "query.h"
+#include "query.hpp"
 
 static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
 

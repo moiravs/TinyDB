@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 
-#include "student.h"
+#include "student.hpp"
 
 /** 
  * Parse the arguments of an update query.

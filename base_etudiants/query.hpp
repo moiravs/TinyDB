@@ -1,7 +1,7 @@
 #ifndef _QUERY_H
 #define _QUERY_H
 
-#include "db.h"
+#include "db.hpp"
 
 typedef enum { QUERY_SUCCESS, QUERY_FAILURE, UNRECOGNISED_FIELD } QUERY_STATUS;
 

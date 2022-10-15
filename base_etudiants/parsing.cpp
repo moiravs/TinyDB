@@ -1,10 +1,10 @@
-#include "parsing.h"
+#include "parsing.hpp"
 
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#include "student.h"
+#include "student.hpp"
 
 bool parse_update(char* query, char* field_filter, char* value_filter, char* field_to_update, char* update_value) {
     char* key_val_filter = strtok_r(NULL, " ", &query);  // key=val filter
