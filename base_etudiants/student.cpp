@@ -1,4 +1,4 @@
-#include "student.h"
+#include "student.hpp"
 #include <iostream>
 #include <ctype.h>
 #include <stdio.h>
@@ -8,11 +8,17 @@
 
 void student_to_str(char *buffer, student_t *s)
 {
+  size_t len = 0;
+  std::string student = std::string(buffer);
+  std::string id = student.substr(0, 32); // hexa to decimal ->id de l'étudiant
+  std::string fname = student.substr(32, 96);
+  std::string lname = student.substr(96, 160);
+  std::string section = student.substr(160, 224);
+  std::string birthdate = student.substr(224, 264);
+  len = snprintf(NULL, len, "%s,%s,%s,%lf,%lf,%d,%s,%s", ap.gpsId, ap.type, ap.name, ap.latitude,
+                 ap.longitude, ap.elevationFeet, ap.city, ap.countryAbbrv);
   // Copy two characters of s1 (starting
   // from position 3)
-  std::string id = buffer.substr(0, 2);
-  std::string id = buffer.substr(0, 2);
-  std::string id = buffer.substr(0, 2);
 
   // prints the result
   cout << "String is: " << r;
