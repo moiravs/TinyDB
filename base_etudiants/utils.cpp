@@ -2,8 +2,8 @@
 
 #include <unistd.h>
 
-#include "query.h"
-#include "student.h"
+#include "query.hpp"
+#include "student.hpp"
 
 size_t safe_read(int fd, void* buffer, size_t nbytes) {
   ssize_t nbytes_read = read(fd, buffer, nbytes);
