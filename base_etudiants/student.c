@@ -19,7 +19,8 @@ void student_to_str(char *buffer, student_t *s)
 int student_equals(student_t *s1, student_t *s2)
 {
   // Your code here
-  //TODO ANDRIUS compare les étudiants
+
+  // TODO ANDRIUS compare les étudiants override l'opérateur bool operator= 
 
   return 0;
 }
