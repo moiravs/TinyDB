@@ -1,10 +1,10 @@
-#include "db.h"
+#include "db.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#include "student.h"
+#include "student.hpp"
 
 void db_save(database_t *db, const char *path)
 {
