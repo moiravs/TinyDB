@@ -1,5 +1,5 @@
 #include "student.h"
-
+#include <iostream>
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -8,11 +8,14 @@
 
 void student_to_str(char *buffer, student_t *s)
 {
-  // char substring[4];
-  //strncpy(substring, input, 3);
-  //char substring[3] = '\0';
-  //slice into differents sizes
-  //printf les différentes tailles
+  // Copy two characters of s1 (starting
+  // from position 3)
+  std::string id = buffer.substr(0, 2);
+  std::string id = buffer.substr(0, 2);
+  std::string id = buffer.substr(0, 2);
+
+  // prints the result
+  cout << "String is: " << r;
   printf("%02X:%02X:%02X:%02X", buf[0], buf[1], buf[2], buf[3]);
 }
 
