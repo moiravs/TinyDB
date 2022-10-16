@@ -42,9 +42,12 @@ void db_load(database_t *db, const char *path)
 
 void db_init(database_t *db)
 {
-    db->lsize = 0;
+    /*db->lsize = 0;
     db->psize = 0;
-    db->data = NULL;
+    db->data = NULL;*/
+    db->lsize = 0;
+    db->psize = sizeof(student_t);
+    db->data = new student_t;
 }
 /*
 void db_add(database_t *db, student_t student)
