@@ -8,17 +8,17 @@ main: main.cpp student.o parsing.o db.o query.o
 run:
 	make main && ./tinydb
 
-parsing.o: parsing.c parsing.h student.o
-	${COMPILER} -c parsing.c ${FLAGS}
+parsing.o: parsing.cpp parsing.hpp student.o
+	${COMPILER} -c parsing.cpp ${FLAGS}
 
-student.o: student.c student.h
-	${COMPILER} -c student.c ${FLAGS}
+student.o: student.cpp student.hpp
+	${COMPILER} -c student.cpp ${FLAGS}
 
-query.o: query.c query.h
-	${COMPILER} -c query.c ${FLAGS}
+query.o: query.cpp query.hpp
+	${COMPILER} -c query.cpp ${FLAGS}
 
-db.o: db.c db.h
-	${COMPILER} -c db.c ${FLAGS}
+db.o: db.cpp db.hpp
+	${COMPILER} -c db.cpp ${FLAGS}
 
 tests: tests/run_tests.py
 	./tests/run_tests.py

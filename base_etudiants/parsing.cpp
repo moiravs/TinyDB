@@ -74,5 +74,13 @@ bool parse_selectors(char* query, char* field, char* value) {
     return true;
 }
 
-// TODO bool parse_delete 
-// TODO bool parse_insert
+// TODO bool parse_delete
+// delete < champ >= <valeur>.Cette requête supprime tous les étudiants qui correspondent au filtre donné.
+bool parse_delete(){
+    return false;
+}
+// TODO bool parse_transaction
+bool parse_transaction()
+{
+    return false;
+}

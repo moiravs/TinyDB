@@ -33,14 +33,14 @@ int main(int argc, char const *argv[])
       exit(0);
     }
   }
-  char* query;
-  query_result_t *queryresultt;
+  //char* query;
+  //query_result_t *queryresultt;
   while (keepRunning){
     /*
     std::cin >> query;
     query_result_init(queryresultt, query);*/
   } 
-  db_save(&db, db_path);
+  //db_save(&db, db_path);
   printf("Bye bye!\n");
   return 0;
 }

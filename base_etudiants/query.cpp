@@ -3,6 +3,7 @@
 #include <iostream>
 #include <time.h>
 
+/*
 void query_result_init(query_result_t *result, const char *query)
 {
   struct timespec now;
@@ -16,8 +17,8 @@ void query_result_init(query_result_t *result, const char *query)
   //  TODO insert<fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
   if (queryKey == "insert")
   {
-    student_t *s; /*{strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "), 
-    strtok(NULL, " "), strtok(NULL, " ")};*/  // initialisation de s
+    student_t *s; {strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "),
+    strtok(NULL, " "), strtok(NULL, " ")};  // initialisation de s
     s->id = atoi(strtok(NULL, " "));
     *s->fname = *strtok(NULL, " ");
 
@@ -116,3 +117,4 @@ void query_result_init(query_result_t *result, const char *query)
   {
     student->champmodifié = valeurmodifiéé
   }
+*/

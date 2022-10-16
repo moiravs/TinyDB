@@ -31,9 +31,11 @@ void db_load(database_t *db, const char *path)
         exit(1);
     }
     student_t student;
+    char buffer[60];
     while (fread(&student, sizeof(student_t), 1, file))
     {
-        db_add(db, student);
+        student_to_str(buffer, &student);
+        //db_add(db, student);
     }
     fclose(file);
 }
@@ -42,10 +44,12 @@ void db_init(database_t *db)
 {
     db->lsize = 0;
     db->psize = 0;
+    db->data = NULL;
 }
-
+/*
 void db_add(database_t *db, student_t student)
 {
+    db->data = malloc(student);
     if (db->lsize == 0) // si premier student
     {
         db->data->precedent_student = NULL;
@@ -54,7 +58,7 @@ void db_add(database_t *db, student_t student)
     {
         db->data->precedent_student = (db->data - 1);
     }
-    else 
+    else
     {
         db->data->precedent_student = (db->data - 1);
         db->data->next_student = (db->data + 1);
@@ -62,3 +66,4 @@ void db_add(database_t *db, student_t student)
     db->lsize += 1;
     db->psize += 1 * (sizeof(student));
 }
+*/
