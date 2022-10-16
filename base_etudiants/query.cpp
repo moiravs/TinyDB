@@ -12,13 +12,15 @@ void query_result_init(query_result_t *result, const char *query)
   // result->lsize, psize?
   char *queryKey; // premier mot de la query (insert, delete, ...)
   queryKey = strtok(result->query, " ");
+  char insert[64] = "insert";
+  char update[64] = "update";
 
   //  TODO insert<fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
-  if (queryKey == "insert")
+  if (queryKey == insert)
   {
     student_t *s;
     {strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "),
-     strtok(NULL, " "), strtok(NULL, " ")}; // initialisation de s
+     strtok(NULL, " "), strtok(NULL, " ");}; // initialisation de s
     s->id = atoi(strtok(NULL, " "));
     *s->fname = *strtok(NULL, " ");
 
