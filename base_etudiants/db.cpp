@@ -3,10 +3,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <algorithm>
+#include <string>
 
 #include "student.hpp"
 
-void db_save(database_t *db, const char *path)
+    void db_save(database_t *db, const char *path)
 {
     FILE *f = fopen(path, "wb");
     if (!f)
@@ -38,6 +40,21 @@ void db_load(database_t *db, const char *path)
         //db_add(db, student);
     }
     fclose(file);
+}
+
+void db_resize(database_t *db, std::string min_or_max){
+    if (min_or_max == "min"){
+        db->psize += sizeof(student_t);
+        db->lsize += 1;
+    }
+    else {
+        db->psize += sizeof(student_t);
+        db->lsize += 1;
+    }
+    student_t *newbuffer = new database_t[db->psize];
+    std::copy_n(db->data, db->psize, newbuffer);
+    delete[] db->data;
+    db->data = newbuffer;
 }
 
 void db_init(database_t *db)
