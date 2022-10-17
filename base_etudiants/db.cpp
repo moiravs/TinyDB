@@ -42,19 +42,15 @@ void db_load(database_t *db, const char *path)
     fclose(file);
 }
 
-void db_resize(database_t *db, std::string min_or_max){
-    if (min_or_max == "min"){
-        db->psize += sizeof(student_t);
-        db->lsize += 1;
+void db_upsize(database_t *db){
+    if (db->lsize >= db->psize){
+        student_t *old_data = db->data;
+        size_t old_psize = db->psize;
+        db->psize = db->psize * 2;
+        db->data = (student_t *)malloc(db->psize * sizeof(student_t));
+        memcpy(db->data, old_data, old_psize*sizeof(student_t));
+        free(old_data);
     }
-    else {
-        db->psize += sizeof(student_t);
-        db->lsize += 1;
-    }
-    student_t *newbuffer = new database_t[db->psize];
-    std::copy_n(db->data, db->psize, newbuffer);
-    delete[] db->data;
-    db->data = newbuffer;
 }
 
 void db_init(database_t *db)
@@ -69,6 +65,7 @@ void db_init(database_t *db)
 /*
 void db_add(database_t *db, student_t student)
 {
+    TODO upsize la db si taille logique == taille physique, puis ajouter le student à la fin de la db et taille_logique++ 
     db->data = malloc(student);
     if (db->lsize == 0) // si premier student
     {
