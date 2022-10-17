@@ -22,9 +22,9 @@ void query_result_init(query_result_t *result, const char *query)
     {strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "),
      strtok(NULL, " "), strtok(NULL, " ");}; // initialisation de s
     s->id = atoi(strtok(NULL, " "));
-    *s->fname = *strtok(NULL, " ");
+    s->fname = strtok(NULL, " ");
 
-    if (parse_insert(queryKey, s->fname, s->lname, s->id, s->section, s->birthdate))
+    if (parse_insert(queryKey, s->fname, s->lname, (*s).id, s->section, s->birthdate)
     {
       query_result_add(result, *s);
     }
