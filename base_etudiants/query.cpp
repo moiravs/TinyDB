@@ -6,6 +6,8 @@
 
 void query_result_init(query_result_t *result, const char *query)
 {
+  result->students = new student_t;
+  result->psize = sizeof(student_t);
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
   sprintf(querymod, "%-255s", query);
   *result->query = *query;
@@ -119,25 +121,6 @@ void query_result_init(query_result_t *result, const char *query)
 
 
 void query_result_add(query_result_t *result, student_t s){
-  std::cout << "add" << std::endl;
   result->lsize += 1;
-  result->students[result->lsize] = s;
-}
-
-void query_result_select(query_result_t * result, student_t s){
-  std::cout << "select" << std::endl;
-}
-
-void query_result_delete(query_result_t * result, student_t s)
-{
-  std::cout << "delete" << std::endl;
-} 
-
-
-/*void query_result_transaction(query_result_t * result, student_t s)
-{
-}*/
-void query_result_update(query_result_t * result, student_t s)
-{
-  std::cout << "update" << std::endl;
+  result->students[result->lsize+1] = s;
 }
