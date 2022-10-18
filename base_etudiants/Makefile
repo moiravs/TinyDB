@@ -2,14 +2,14 @@
 FLAGS=-std=c++17 -Wall -Werror -Wpedantic -D_GNU_SOURCE
 COMPILER=g++
 
-main: main.cpp student.o parsing.o db.o query.o
+main: main.cpp student.o parsing.o db.o query.o 
 	${COMPILER} -o tinydb main.cpp parsing.o student.o db.o query.o ${FLAGS}
 
 run:
 	make main && ./tinydb
 
-#monitoring : main.cpp db.o student.o parsing.o query.o
-#${COMPILER} -o monitoring ${FLAGS}
+monitoring:
+	bash monitoring.sh 
 
 parsing.o: parsing.cpp parsing.hpp student.o
 	${COMPILER} -c parsing.cpp ${FLAGS}
