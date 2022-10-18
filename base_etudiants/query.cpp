@@ -11,25 +11,24 @@ void query_result_init(query_result_t *result, const char *query)
   result->status = QUERY_SUCCESS;
   char *queryKey; // premier mot de la query (insert, delete, ...)
   queryKey = strtok(result->query, " ");
-
+  student_t *s;
   //  TODO insert <id> <fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
-  if (strcmp(queryKey,"insert"))
+  if (strcmp(queryKey, "insert"))
   {
-    student_t *s;
-    {
-      strtok(NULL, " "), strtok(NULL, " "), strtok(NULL, " "),
-          strtok(NULL, " "), strtok(NULL, " ");
-    }; // initialisation de s
-    //s->id = atoi(strtok(NULL, " "));
-    //s->fname = strtok(NULL, " ");
-
+    
+    s->id = atoi(strtok(NULL, " "));
+    *s->fname = *strtok(NULL, " ");
+    *s->lname = *strtok(NULL, " ");
+    *s->section = *strtok(NULL, " ");
+    strptime(strtok(NULL, " "), "%Y-%m-%d", &s->birthdate);
     if (parse_insert(queryKey, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
       query_result_add(result, *s);
-    }
-    else
-    {
-      perror("Wrong parameters parsed."); // indiquer au user qu'il a introduit de mauvais paramètres
+      }
+      else
+      {
+        perror("Wrong parameters parsed.");
+      } // indiquer au user qu'il a introduit de mauvais paramètres
     }
   }
   /*
@@ -48,8 +47,8 @@ void query_result_init(query_result_t *result, const char *query)
       if (&result->students[i]->filtre == valeur and parse_update(char *query, char *field_filter, char *value_filter, char *field_to_update, char *update_value))){}
     }*/
 
-    // bool parse update
-  }
+  // bool parse update
+
 /*
   // TODO delete < champ >= <valeur>.Cette requête supprime tous les étudiants qui correspondent au filtre donné.
   if (queryKey == "delete")
@@ -86,36 +85,36 @@ void query_result_init(query_result_t *result, const char *query)
             }
         }
   }*/
-  // TODO transaction.Ce mot - clef déclare le début d’une nouvelle transaction.Plus de détails sont donnés dans la Section
-  /*
-  if (queryKey == "transaction")
+// TODO transaction.Ce mot - clef déclare le début d’une nouvelle transaction.Plus de détails sont donnés dans la Section
+/*
+if (queryKey == "transaction")
+{
+  if (parse_transaction(paramètres))
   {
-    if (parse_transaction(paramètres))
-    {
-      query_result_transaction(result, student_t s);
-    }
-    else
-    {
-      // indiquer au user que c'est faux
-    }
+    query_result_transaction(result, student_t s);
   }
+  else
+  {
+    // indiquer au user que c'est faux
+  }
+}
 }*/
-  
-      void query_result_add(query_result_t * result, student_t s)
-      {
-      }
-      /*
-      void query_result_delete(query_result_t * result, student_t s)
-      {
-      }
-      void query_result_select(query_result_t * result, student_t s)
-      {
-      }
-      void query_result_transaction(query_result_t * result, student_t s)
-      {
-      }
-      void query_result_update(query_result_t * result, student_t s)
-      {
-        student->champmodifié = valeurmodifiéé
-      }
-    */
+
+void query_result_add(query_result_t *result, student_t s)
+{
+}
+/*
+void query_result_delete(query_result_t * result, student_t s)
+{
+}
+void query_result_select(query_result_t * result, student_t s)
+{
+}
+void query_result_transaction(query_result_t * result, student_t s)
+{
+}
+void query_result_update(query_result_t * result, student_t s)
+{
+  student->champmodifié = valeurmodifiéé
+}
+*/
