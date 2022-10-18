@@ -39,7 +39,7 @@ int main(int argc, char const *argv[])
   query_result_t *queryresultt = new query_result_t;
   while (keepRunning){
     //std::cin.getline(query, sizeof(query));
-    strcpy(query, "insert Emeline Lecomte 6 chemistry 15 / 04 / 1993");
+    strcpy(query, "insert Emeline Lecomte 6 chemistry 15/04/1993");
     char buffer[60];
     std::cout << query;
     student_to_str(buffer, &(ptrtest->data[1340]));

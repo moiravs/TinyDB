@@ -37,13 +37,11 @@ bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* sec
     if (token == NULL) {
         return false;
     }
-    std::cout << "jpasse par là" << token;
     strcpy(fname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
-    std::cout << "jpasse pas par là";
     strcpy(lname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
