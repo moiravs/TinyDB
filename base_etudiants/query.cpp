@@ -20,17 +20,24 @@ void query_result_init(query_result_t *result, const char *query)
   char *valueFilter;
   char *fieldToUpdate;
   char *updateValue;
+  char *value;
   student_t *s = new student_t;
   if (strcmp(queryKey, "insert") == 0 && parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)) // strcmp renvoie 0 si les strings sont les mêmes
   {
+    std::cout << "insert" << std::endl;
     std::cout << s->fname;
     // si l'id existe déjà, l'insertion échoue
     query_result_add(result, *s);
   }
 
   else if (strcmp(queryKey, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue)){
-    std::cout << fieldFilter << std::endl;
+    std::cout << "update" << std::endl;
     query_result_update(result, *s);
+  }
+
+  else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value)){
+    std::cout << "select" << std::endl;
+    query_result_select(result, *s);
   }
 
   //else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, ))
@@ -110,13 +117,14 @@ void query_result_init(query_result_t *result, const char *query)
 
 
 void query_result_add(query_result_t *result, student_t s);
+
+void query_result_select(query_result_t * result, student_t s);
 /*
 void query_result_delete(query_result_t * result, student_t s)
 {
 }
-void query_result_select(query_result_t * result, student_t s)
-{
-}
+
+
 void query_result_transaction(query_result_t * result, student_t s)
 {
 }
