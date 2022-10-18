@@ -3,11 +3,6 @@
 #include <string.h>
 #include <time.h>
 #include <iostream>
-/*qsfsqfdsfqsfsqf
-qsdfsdqfsq
-fqsdfqsfdqlksfqs
-ANDRI
-jen ai marre*/
 #include "student.hpp"
 
 bool parse_update(char* query, char* field_filter, char* value_filter, char* field_to_update, char* update_value) {
@@ -80,13 +75,3 @@ bool parse_selectors(char* query, char* field, char* value) {
     return true;
 }
 
-// TODO bool parse_delete
-// delete < champ >= <valeur>.Cette requête supprime tous les étudiants qui correspondent au filtre donné.
-bool parse_delete(){
-    return false;
-}
-// TODO bool parse_transaction
-bool parse_transaction()
-{
-    return false;
-}
