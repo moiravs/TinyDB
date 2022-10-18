@@ -24,17 +24,6 @@ int main(int argc, char const *argv[])
   db_init(&db);
   db_load(&db, db_path);
   database_t *ptrtest = &db;
-  // creation des 4 enfants (je pense pas il faut le faire ici )
-  /*
-  for (int i = 0; i < 4; i++)
-  {
-    if (fork() == 0)
-    {
-      printf("[son] pid %d from [parent] pid %d\n", getpid(), getppid());
-      exit(0);
-    }
-  }
-  */
   char query[256] = "0";
   query_result_t *queryresultt = new query_result_t;
   while (keepRunning){
@@ -45,8 +34,45 @@ int main(int argc, char const *argv[])
     student_to_str(buffer, &(ptrtest->data[1340]));
     query_result_init(queryresultt, query);
     delete queryresultt;
-    keepRunning = 0;
-  } 
+    keepRunning = 0;}
+  /*
+  char commande[200] = "";
+  // Lire l'entrée
+  while (fgets(commande, sizeof(commande), stdin) != NULL)
+  {
+    // Supprimer le retour à la ligne
+    size_t len = strlen(commande);
+    commande[len - 1] = '\0';
+
+    pid_t pid = fork();
+    if (pid > 0)
+    { // Père
+      if (waitpid(pid, NULL, 0) < -1)
+      {
+        perror("waitpid()");
+        return 1;
+      }
+    }
+    else if (pid == 0)
+    { // Fils
+      int r = 0;
+      if (strcmp(commande, "ls") == 0){r = execlp("ls", "ls", "-l", "-a", NULL);}
+      else if (strcmp(commande, "date") == 0){r = execlp("date", "date", "+%H:%M:%S", NULL);}
+      else{
+        printf("Vous n'avez pas entré une valeur correcte !\n");
+        exit(0);}
+      if (r < 0)
+      {
+        perror("execlp()");
+        return 1;
+      }
+    }
+    else
+    { // Erreur
+      perror("fork()");
+      return 1;
+    }
+  }*/
   //db_save(&db, db_path);
   printf("Bye bye!\n");
   return 0;
