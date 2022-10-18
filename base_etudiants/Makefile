@@ -8,6 +8,9 @@ main: main.cpp student.o parsing.o db.o query.o
 run:
 	make main && ./tinydb
 
+#monitoring : main.cpp db.o student.o parsing.o query.o
+#${COMPILER} -o monitoring ${FLAGS}
+
 parsing.o: parsing.cpp parsing.hpp student.o
 	${COMPILER} -c parsing.cpp ${FLAGS}
 

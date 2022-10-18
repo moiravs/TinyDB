@@ -5,6 +5,7 @@
 
 void query_result_init(query_result_t *result, const char *query)
 {
+  /*
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
@@ -30,7 +31,7 @@ void query_result_init(query_result_t *result, const char *query)
         perror("Wrong parameters parsed.");
       } // indiquer au user qu'il a introduit de mauvais paramètres
     }
-  }
+  }*/
   /*
   // TODO update < filtre >= <valeur> set < champ_modifie >= <valeur_modifiee>.Cette requête modifie tous les étudiants correspondant au filtre < filtre >= <valeur>, en donnant la valeur<valeur_modifiee> au champ<champ_modifie>.
   if (queryKey == "update")
@@ -86,23 +87,23 @@ void query_result_init(query_result_t *result, const char *query)
         }
   }*/
 // TODO transaction.Ce mot - clef déclare le début d’une nouvelle transaction.Plus de détails sont donnés dans la Section
-/*
-if (queryKey == "transaction")
-{
-  if (parse_transaction(paramètres))
+  /*
+  if (queryKey == "transaction")
   {
-    query_result_transaction(result, student_t s);
-  }
-  else
-  {
-    // indiquer au user que c'est faux
-  }
+    if (parse_transaction(paramètres))
+    {
+      query_result_transaction(result, student_t s);
+    }
+    else
+    {
+      // indiquer au user que c'est faux
+    }
+  }*/
 }
-}*/
-
+/*
 void query_result_add(query_result_t *result, student_t s)
 {
-}
+}*/
 /*
 void query_result_delete(query_result_t * result, student_t s)
 {
