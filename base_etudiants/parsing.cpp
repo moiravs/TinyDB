@@ -1,10 +1,8 @@
 #include "parsing.hpp"
-
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <iostream>
-
 #include "student.hpp"
 
 bool parse_update(char* query, char* field_filter, char* value_filter, char* field_to_update, char* update_value) {
