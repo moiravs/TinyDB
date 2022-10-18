@@ -30,6 +30,7 @@ void query_result_init(query_result_t *result, const char *query)
 
   else if (strcmp(queryKey, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue)){
     std::cout << fieldFilter << std::endl;
+    query_result_update(result, *s);
   }
 
   //else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, ))
