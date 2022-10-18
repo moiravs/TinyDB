@@ -34,18 +34,24 @@ void query_result_init(query_result_t *result, const char *query)
   }
 
   else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value)){
-    
+    query_result_add(result, *s);
   }
 
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value)){
-    
+    query_result_add(result, *s);
   }
 
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   result->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
   result->status = QUERY_SUCCESS;
-
+  delete fieldFilter;
+  delete valueFilter;
+  delete fieldToUpdate;
+  delete updateValue;
+  delete value;
+  delete saveptr;
+    
   delete queryKey;
 }
 

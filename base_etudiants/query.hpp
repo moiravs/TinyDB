@@ -28,4 +28,10 @@ void query_result_init(query_result_t* result, const char* query);
  **/
 void query_result_add(query_result_t* result, student_t s);
 
+/**
+ * Make the list containing the students of a query bigger
+ **/
+void query_list_upsize(query_result_t *result);
+
+
 #endif
