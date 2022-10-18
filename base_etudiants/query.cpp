@@ -2,27 +2,33 @@
 #include "parsing.hpp"
 #include <iostream>
 #include <time.h>
+#include <string.h>
 
 void query_result_init(query_result_t *result, const char *query)
 {
-  
+  char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+  strncpy(querymod, query, 6); // query = querymod, mais comme c'est des tableaux de char il faut faire ça 
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
   result->status = QUERY_SUCCESS;
-  char *queryKey; // premier mot de la query (insert, delete, ...)
-  queryKey = strtok(result->query, " ");
-  student_t *s{NULL};
+  char *saveptr;
+  std::cout << "wshiii" << querymod;
+  const char * queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+  queryKey = strtok_r(querymod," ", &saveptr); 
+  std::cout << "wshiii" << querymod;
+  student_t *s = new student_t;
   //  TODO insert <id> <fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
-  if (strcmp(query, "insert"))
+  if (strcmp(queryKey, "insert") == 0 && parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)) // strcmp renvoie 0 si les strings sont les mêmes
   {
-    std::cout << "wtf ça fonctionne";
-    s->id = atoi(strtok(NULL, " "));
-    *s->fname = *strtok(NULL, " ");
-    *s->lname = *strtok(NULL, " ");
-    *s->section = *strtok(NULL, " ");
-    strptime(strtok(NULL, " "), "%Y-%m-%d", &s->birthdate);
-    if (parse_insert(queryKey, s->fname, s->lname, &s->id, s->section, &s->birthdate))
+    std::cout << "wshhh";
+  }
+  delete queryKey;
+}
+    
+
+    /*
+    if (parse_insert((char *)query, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
       query_result_add(result, *s);
       }
@@ -30,8 +36,8 @@ void query_result_init(query_result_t *result, const char *query)
       {
         perror("Wrong parameters parsed.");
       } // indiquer au user qu'il a introduit de mauvais paramètres
-    }
-  
+    }*/
+    
   /*
   // TODO update < filtre >= <valeur> set < champ_modifie >= <valeur_modifiee>.Cette requête modifie tous les étudiants correspondant au filtre < filtre >= <valeur>, en donnant la valeur<valeur_modifiee> au champ<champ_modifie>.
   if (queryKey == "update")
@@ -99,11 +105,9 @@ void query_result_init(query_result_t *result, const char *query)
       // indiquer au user que c'est faux
     }
   }*/
-}
 
-void query_result_add(query_result_t *result, student_t s)
-{
-}
+
+void query_result_add(query_result_t *result, student_t s);
 /*
 void query_result_delete(query_result_t * result, student_t s)
 {

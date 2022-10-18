@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <iostream>
 
 #include "student.hpp"
 
@@ -30,15 +31,19 @@ bool parse_update(char* query, char* field_filter, char* value_filter, char* fie
 }
 
 bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* section, struct tm* birthdate) {
+    std::cout << "jpasse par là ush" << query;
     char* token = strtok_r(NULL, " ", &query);
+    
     if (token == NULL) {
         return false;
     }
+    std::cout << "jpasse par là" << token;
     strcpy(fname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
+    std::cout << "jpasse pas par là";
     strcpy(lname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {

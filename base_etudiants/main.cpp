@@ -35,15 +35,17 @@ int main(int argc, char const *argv[])
     }
   }
   */
-  char* query = NULL;
-
-  query_result_t *queryresultt;
+  char query[256] = "0";
+  query_result_t *queryresultt = new query_result_t;
   while (keepRunning){
-    std::cin >> query;
+    //std::cin.getline(query, sizeof(query));
+    strcpy(query, "insert Emeline Lecomte 6 chemistry 15 / 04 / 1993");
     char buffer[60];
+    std::cout << query;
     student_to_str(buffer, &(ptrtest->data[1340]));
     query_result_init(queryresultt, query);
-    keepRunning =0;
+    delete queryresultt;
+    keepRunning = 0;
   } 
   //db_save(&db, db_path);
   printf("Bye bye!\n");
