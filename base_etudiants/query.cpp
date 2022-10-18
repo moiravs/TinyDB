@@ -16,6 +16,10 @@ void query_result_init(query_result_t *result, const char *query)
   char *saveptr;
   const char * queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod," ", &saveptr); 
+  char *fieldFilter;
+  char *valueFilter;
+  char *fieldToUpdate;
+  char *updateValue;
   student_t *s = new student_t;
   if (strcmp(queryKey, "insert") == 0 && parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)) // strcmp renvoie 0 si les strings sont les mêmes
   {
@@ -23,6 +27,15 @@ void query_result_init(query_result_t *result, const char *query)
     // si l'id existe déjà, l'insertion échoue
     query_result_add(result, *s);
   }
+
+  else if (strcmp(queryKey, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue)){
+    std::cout << fieldFilter << std::endl;
+  }
+
+  //else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, ))
+
+
+
   delete queryKey;
 }
     
