@@ -39,10 +39,10 @@ void query_result_insert(query_result_t *result, student_t s);
 void query_result_delete(query_result_t *result, student_t s);
 
 void query_result_select(query_result_t *result, student_t s);
-    /**
-     * Add a student to a query result.
-     **/
-    void query_result_transaction(query_result_t *result, student_t s);
+/**
+* Add a student to a query result.
+**/
+void query_result_transaction(query_result_t *result, student_t s);
 
 /**
  * Add a student to a query result.
