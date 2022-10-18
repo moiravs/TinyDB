@@ -5,18 +5,18 @@
 
 void query_result_init(query_result_t *result, const char *query)
 {
-  /*
+  
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
   result->status = QUERY_SUCCESS;
   char *queryKey; // premier mot de la query (insert, delete, ...)
   queryKey = strtok(result->query, " ");
-  student_t *s;
+  student_t *s{NULL};
   //  TODO insert <id> <fname><lname><section><birthdate>.Cette requête insère un nouvel étudiant dans la base de données en vérifiant que l’ID n’existe pas déjà.Si l’id existe déjà,l’insertion échoue.
-  if (strcmp(queryKey, "insert"))
+  if (strcmp(query, "insert"))
   {
-    
+    std::cout << "wtf ça fonctionne";
     s->id = atoi(strtok(NULL, " "));
     *s->fname = *strtok(NULL, " ");
     *s->lname = *strtok(NULL, " ");
@@ -31,7 +31,7 @@ void query_result_init(query_result_t *result, const char *query)
         perror("Wrong parameters parsed.");
       } // indiquer au user qu'il a introduit de mauvais paramètres
     }
-  }*/
+  
   /*
   // TODO update < filtre >= <valeur> set < champ_modifie >= <valeur_modifiee>.Cette requête modifie tous les étudiants correspondant au filtre < filtre >= <valeur>, en donnant la valeur<valeur_modifiee> au champ<champ_modifie>.
   if (queryKey == "update")
@@ -100,10 +100,10 @@ void query_result_init(query_result_t *result, const char *query)
     }
   }*/
 }
-/*
+
 void query_result_add(query_result_t *result, student_t s)
 {
-}*/
+}
 /*
 void query_result_delete(query_result_t * result, student_t s)
 {

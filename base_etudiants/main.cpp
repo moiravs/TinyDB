@@ -35,14 +35,14 @@ int main(int argc, char const *argv[])
     }
   }
   */
-  //char* query;
+  char* query = NULL;
 
-  //query_result_t *queryresultt;
+  query_result_t *queryresultt;
   while (keepRunning){
-    //std::cin >> query;
+    std::cin >> query;
     char buffer[60];
     student_to_str(buffer, &(ptrtest->data[1340]));
-    //query_result_init(queryresultt, query);
+    query_result_init(queryresultt, query);
     keepRunning =0;
   } 
   //db_save(&db, db_path);
