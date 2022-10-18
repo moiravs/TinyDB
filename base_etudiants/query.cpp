@@ -2,7 +2,7 @@
 #include "parsing.hpp"
 #include <iostream>
 #include <time.h>
-
+/*
 void query_result_init(query_result_t *result, const char *query)
 {
   struct timespec now;
@@ -33,7 +33,6 @@ void query_result_init(query_result_t *result, const char *query)
       perror("Wrong parameters parsed."); // indiquer au user qu'il a introduit de mauvais paramètres
     }
   }
-  /*
       // TODO update < filtre >= <valeur> set < champ_modifie >= <valeur_modifiee>.Cette requête modifie tous les étudiants correspondant au filtre < filtre >= <valeur>, en donnant la valeur<valeur_modifiee> au champ<champ_modifie>.
       if (queryKey == "update")
       {

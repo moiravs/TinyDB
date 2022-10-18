@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
   signal(SIGUSR1, gere_signal);
   db_init(&db);
   db_load(&db, db_path);
-
+  database_t *ptrtest = &db;
   // creation des 4 enfants (je pense pas il faut le faire ici )
   /*
   for (int i = 0; i < 4; i++)
@@ -35,11 +35,15 @@ int main(int argc, char const *argv[])
     }
   }
   */
-  char* query;
-  query_result_t *queryresultt;
+  //char* query;
+
+  //query_result_t *queryresultt;
   while (keepRunning){
-    std::cin >> query;
-    query_result_init(queryresultt, query);
+    //std::cin >> query;
+    char buffer[60];
+    student_to_str(buffer, &(ptrtest->data[1340]));
+    //query_result_init(queryresultt, query);
+    keepRunning =0;
   } 
   //db_save(&db, db_path);
   printf("Bye bye!\n");
