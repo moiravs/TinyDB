@@ -33,6 +33,9 @@ int main(int argc, char const *argv[])
     std::cout << query;
     student_to_str(buffer, &(ptrtest->data[1340]));
     query_result_init(queryresultt, query);
+    for (size_t i=0; i < ptrtest->lsize; i++){
+      std::cout << ptrtest->data[i].fname << std::endl;
+    }
     delete queryresultt;
     keepRunning = 0;}
   /*

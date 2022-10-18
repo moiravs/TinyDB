@@ -7,7 +7,7 @@
 void query_result_init(query_result_t *result, const char *query)
 {
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-  sprintf(querymod, "%-256s", query);
+  sprintf(querymod, "%-255s", query);
   *result->query = *query;
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
@@ -16,12 +16,12 @@ void query_result_init(query_result_t *result, const char *query)
   char *saveptr;
   const char * queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod," ", &saveptr); 
-  char *fieldFilter;
-  char *valueFilter;
-  char *fieldToUpdate;
-  char *updateValue;
-  char *value;
   student_t *s = new student_t;
+  char *fieldFilter = new char();
+  char *valueFilter = new char();
+  char *fieldToUpdate = new char();
+  char *updateValue = new char();
+  char *value = new char();
   if (strcmp(queryKey, "insert") == 0 && parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)) // strcmp renvoie 0 si les strings sont les mêmes
   {
     std::cout << "insert" << std::endl;
@@ -40,8 +40,10 @@ void query_result_init(query_result_t *result, const char *query)
     query_result_select(result, *s);
   }
 
-  //else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, ))
-
+  else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value)){
+    std::cout << "delete" << std::endl;
+    query_result_delete(result, *s);
+  }
 
 
   delete queryKey;
@@ -116,22 +118,26 @@ void query_result_init(query_result_t *result, const char *query)
   }*/
 
 
-void query_result_add(query_result_t *result, student_t s);
+void query_result_add(query_result_t *result, student_t s){
+  std::cout << "add" << std::endl;
+  result->lsize += 1;
+  result->students[result->lsize] = s;
+}
 
 void query_result_select(query_result_t * result, student_t s){
-  
+  std::cout << "select" << std::endl;
 }
-/*
+
 void query_result_delete(query_result_t * result, student_t s)
 {
-}
+  std::cout << "delete" << std::endl;
+} 
 
 
-void query_result_transaction(query_result_t * result, student_t s)
+/*void query_result_transaction(query_result_t * result, student_t s)
 {
-}
+}*/
 void query_result_update(query_result_t * result, student_t s)
 {
-  student->champmodifié = valeurmodifiéé
+  std::cout << "update" << std::endl;
 }
-*/
