@@ -12,9 +12,25 @@ if [ "${1}" == "run" ]; then
     if [ "$file" == "-f" ]; then
         file="students.bin"
     fi
+    echo "Fichiers requetes: $fichier_requetes";
+    echo "File : $file";
+    ./tinydb "$file"
 fi
 
-echo "Fichiers requetes: $fichier_requetes";
-echo "File : $file";
 
-./tinydb "$file"
+if [ "${1}" == "sync" ]
+then
+    echo "sync"
+elif [ "${1}" == "status" ]
+then
+    process_id= pidof tinydb
+    echo "status"
+    echo "${process_id}"
+
+elif [ "${1}" == "shutdown" ]
+then
+    echo "shutdown"
+else 
+    echo "Wrong parameters"
+fi
+
