@@ -29,7 +29,14 @@ then
 
 elif [ "${1}" == "shutdown" ]
 then
-    echo "shutdown"
+    if [ $# -eq 1 ]
+    then
+        echo "No arguments provided"
+        exit 1
+    else
+        kill "${2}"
+    fi
+
 else 
     echo "Wrong parameters"
 fi
