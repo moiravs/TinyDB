@@ -28,14 +28,19 @@ void db_save(database_t *db, const char *path);
 void db_load(database_t *db, const char *path);
 
 void db_resize(database_t *db);
-    /**
-     * Initialise a database_t structure.
-     * Typical use:
-     * ```
-     * database_t db;
-     * db_init(&db);
-     * ```
-     **/
-    void db_init(database_t *db);
+/**
+* Initialise a database_t structure.
+* Typical use:
+* ```
+* database_t db;
+* db_init(&db);
+* ```
+**/
+void db_init(database_t *db);
+
+/**
+ * Delete a student from the database
+ **/
+void db_delete(database_t *db, size_t indice);
 
 #endif
