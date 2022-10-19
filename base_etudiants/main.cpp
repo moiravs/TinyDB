@@ -19,8 +19,8 @@ void gere_signal(int signum)
 void gestion_query(database_t *db, char *query)
 {
   std::cout << "jepasse par là";
-  query_result_t *queryresultt = new query_result_t();
-  query_result_init(queryresultt, query);
+  query_result_t *queryResult = new query_result_t();
+  query_result_init(queryResult, query);
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
   sprintf(querymod, "%-255s", query);
   char *saveptr;
@@ -55,7 +55,7 @@ void gestion_query(database_t *db, char *query)
       if (strcmp(fieldFilter, "id") == 0)
       {
         std::cout << "waouuu";
-        query_result_add(queryresultt, *s);
+        query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
@@ -68,18 +68,23 @@ void gestion_query(database_t *db, char *query)
       }
       else if (strcmp(fieldFilter, "lname") == 0)
       {
-        std::cout << "waouuu";
-        query_result_add(queryresultt, *s);
+        if (strcmp(s->lname, value) == 0){
+        	std::cout << "waouuu";
+        	query_result_add(queryResult, *s);
+        }
       }
       else if (strcmp(fieldFilter, "section") == 0)
       {
-        std::cout << "waouuu";
-        query_result_add(queryresultt, *s);
+		if (strcmp(s->section, value) == 0){
+        	std::cout << "waouuu";
+        	query_result_add(queryResult, *s);
+		}
       }
       else if (strcmp(fieldFilter, "birthdate") == 0)
       {
-        std::cout << "waouuu";
-        query_result_add(queryresultt, *s);
+		if (strcmp(s->birthdate, value) == 0)
+			std::cout << "waouuu";
+			query_result_add(queryResult, *s);
       }
       else
       {
@@ -90,6 +95,7 @@ void gestion_query(database_t *db, char *query)
   }
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
+    
   }
   /*
   for (size_t i = 0; i < queryresultt->lsize-2; i++)
