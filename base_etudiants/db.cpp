@@ -46,7 +46,7 @@ void db_upsize(database_t *db)
 {
     if (db->lsize >= (db->psize / sizeof(student_t)))
     {
-        student_t *old_data = db->data;
+        student_t *old_data = db->data;  // need to stock old data to copy it to new allocated memory
         size_t old_psize = db->psize;
         db->psize *= 2;
         db->data = (student_t *)malloc(db->psize);
@@ -66,5 +66,15 @@ void db_add(database_t *db, student_t student)
 {
     db->lsize += 1;
     db_upsize(db);
-    db->data[db->lsize] = student;
+    db->data[db->lsize] = student;  // at end of db
+}
+
+void db_delete(database_t *db, size_t indice){
+    if (indice >= db->lsize){  // indice out of range
+        perror("db_delete()");
+    }
+    db->lsize--;
+    for (size_t i = indice; i < db->lsize; i++){
+        db->data[i] = db->data[i+1];
+    }
 }
