@@ -48,7 +48,7 @@ void gestion_query(database_t *db, char *query)
   else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
     std::cout << "here";
-    std::cout << *(value+46); //ici y a un espace alors que ça devrait être vide !!!
+    std::cout << *(value + 46); // ici y a un espace alors que ça devrait être vide !!!
     for (size_t i = 0; i < db->lsize; i++)
     {
       *s = db->data[i];
@@ -59,8 +59,8 @@ void gestion_query(database_t *db, char *query)
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
-        //std::cout << s->fname << value << std::endl;
-        if (strcmp(s->fname, value)==0)
+        // std::cout << s->fname << value << std::endl;
+        if (strcmp(s->fname, value) == 0)
         {
           std::cout << "waouuu";
           // query_result_add(queryresultt, *s);
@@ -68,23 +68,27 @@ void gestion_query(database_t *db, char *query)
       }
       else if (strcmp(fieldFilter, "lname") == 0)
       {
-        if (strcmp(s->lname, value) == 0){
-        	std::cout << "waouuu";
-        	query_result_add(queryResult, *s);
+        if (strcmp(s->lname, value) == 0)
+        {
+          std::cout << "waouuu";
+          query_result_add(queryResult, *s);
         }
       }
       else if (strcmp(fieldFilter, "section") == 0)
       {
-		if (strcmp(s->section, value) == 0){
-        	std::cout << "waouuu";
-        	query_result_add(queryResult, *s);
-		}
+        if (strcmp(s->section, value) == 0)
+        {
+          std::cout << "waouuu";
+          query_result_add(queryResult, *s);
+        }
       }
       else if (strcmp(fieldFilter, "birthdate") == 0)
       {
-		if (strcmp(s->birthdate, value) == 0)
-			std::cout << "waouuu";
-			query_result_add(queryResult, *s);
+        const char * birthdaystudent;
+        strptime(birthdaystudent, "%s", &s->birthdate);
+        if (strcmp(birthdaystudent, value) == 0)
+                std::cout<< "waouuu";
+        query_result_add(queryResult, *s);
       }
       else
       {
@@ -95,7 +99,6 @@ void gestion_query(database_t *db, char *query)
   }
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
-    
   }
   /*
   for (size_t i = 0; i < queryresultt->lsize-2; i++)
