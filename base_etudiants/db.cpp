@@ -5,10 +5,10 @@
 #include <time.h>
 #include <algorithm>
 #include <string>
-
+#include <iostream>
 #include "student.hpp"
 
-    void db_save(database_t *db, const char *path)
+void db_save(database_t *db, const char *path)
 {
     FILE *f = fopen(path, "wb");
     if (!f)
@@ -21,6 +21,7 @@
         perror("Could not write in the DB file");
         exit(1);
     }
+    std::cout << "i wrote";
     fclose(f);
 }
 
@@ -35,14 +36,16 @@ void db_load(database_t *db, const char *path)
     student_t student;
     while (fread(&student, sizeof(student_t), 1, file))
     {
-        //student_to_str(buffer, &student);
+        // student_to_str(buffer, &student);
         db_add(db, student);
     }
     fclose(file);
 }
 
-void db_upsize(database_t *db){
-    if (db->lsize >= (db->psize/sizeof(student_t))){
+void db_upsize(database_t *db)
+{
+    if (db->lsize >= (db->psize / sizeof(student_t)))
+    {
         student_t *old_data = db->data;
         size_t old_psize = db->psize;
         db->psize *= 2;
