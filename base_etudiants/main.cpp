@@ -26,10 +26,10 @@ void gestion_query(database_t *db, char *query)
   char *saveptr;
   const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod, " ", &saveptr);
-  char *fieldFilter = new char(), *valueFilter = new char(), *fieldToUpdate = new char(), *updateValue = new char(), *value = new char();
+  char *fieldFilter = new char[64], *valueFilter = new char[64], *fieldToUpdate = new char(), *updateValue = new char(), *value = new char[64];
+  student_t *s = new student_t;
   if (strcmp(queryKey, "insert") == 0)
   {
-    student_t *s = new student_t;
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
       // strcmp renvoie 0 si les strings sont les mêmes
@@ -47,8 +47,9 @@ void gestion_query(database_t *db, char *query)
   }
   else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
-    student_t *s = new student_t;
-    for (size_t i = 0; i < db->lsize-2; i++)
+    std::cout << "here";
+    std::cout << *(value+46); //ici y a un espace alors que ça devrait être vide !!!
+    for (size_t i = 0; i < db->lsize; i++)
     {
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
@@ -58,8 +59,12 @@ void gestion_query(database_t *db, char *query)
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
-        std::cout << "waouuu";
-        query_result_add(queryresultt, *s);
+        //std::cout << s->fname << value << std::endl;
+        if (strcmp(s->fname, value)==0)
+        {
+          std::cout << "waouuu";
+          // query_result_add(queryresultt, *s);
+        }
       }
       else if (strcmp(fieldFilter, "lname") == 0)
       {
@@ -81,7 +86,7 @@ void gestion_query(database_t *db, char *query)
         std::cout << "bruh wtf";
       }
     }
-    delete s;
+    // delete s;
   }
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
@@ -109,7 +114,6 @@ int main(int argc, char const *argv[])
     signal(SIGUSR1, gere_signal);
     std::cin.getline(query, sizeof(query));
     gestion_query(&db, query);
-    std::cout << "what ";
     keepRunning = 0;
   }
   /*
