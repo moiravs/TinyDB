@@ -22,7 +22,7 @@ void gestion_query(database_t *db, char *query)
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-  sprintf(querymod, "%-255s", query);
+  sprintf(querymod, "%s", query);
   char *saveptr;
   const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod, " ", &saveptr);
