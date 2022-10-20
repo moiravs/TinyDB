@@ -21,7 +21,7 @@ void query_result_init(query_result_t *result, const char *query)
 void query_result_add(query_result_t *result, student_t s){
   result->lsize += 1;
   query_list_upsize(result);
-  //result->students[result->lsize] = s;
+  result->students[result->lsize] = s;
 }
 
 void query_list_upsize(query_result_t *result){

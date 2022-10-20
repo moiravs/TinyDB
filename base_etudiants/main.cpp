@@ -155,13 +155,13 @@ void gestion_query(database_t *db, char *query)
       }
     }
   }
-  /*
-  for (size_t i = 0; i < queryresultt->lsize-2; i++)
+  
+  for (size_t i = 0; i < queryResult->lsize-2; i++)
   {
     char buffer[256] = "0";
-    student_to_str(buffer, &queryresultt->students[i]);
+    student_to_str(buffer, &queryResult->students[i]);
     std::cout << buffer;
-  }*/
+  }
 }
 
 int main(int argc, char const *argv[])
