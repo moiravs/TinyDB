@@ -18,7 +18,7 @@ void gere_signal(int signum)
 
 void gestion_query(database_t *db, char *query)
 {
-  std::cout << "jepasse par là";
+  std::cout << "jepasse par là" << "\n";
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
@@ -54,9 +54,11 @@ void gestion_query(database_t *db, char *query)
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
       {
-        std::cout << "waouuu";
-        query_result_add(queryResult, *s);
+            std::cout << "waouuu";
+            query_result_add(queryResult, *s);
       }
+    
+      
       else if (strcmp(fieldFilter, "fname") == 0)
       {
         // std::cout << s->fname << value << std::endl;
@@ -73,6 +75,8 @@ void gestion_query(database_t *db, char *query)
           std::cout << "waouuu";
           query_result_add(queryResult, *s);
         }
+
+        
       }
       else if (strcmp(fieldFilter, "section") == 0)
       {
@@ -95,11 +99,12 @@ void gestion_query(database_t *db, char *query)
       }
       else
       {
-        std::cout << "bruh wtf";
+        perror("The filter you have entered is false.");
       }
     }
-    // delete s;
   }
+    // delete s;
+  
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
     for (size_t i = 0; i < db->lsize; i++)
@@ -156,11 +161,13 @@ void gestion_query(database_t *db, char *query)
     }
   }
   
-  for (size_t i = 0; i < queryResult->lsize-2; i++)
-  {
-    char buffer[256] = "0";
-    student_to_str(buffer, &queryResult->students[i]);
-    std::cout << buffer;
+  if (queryResult->lsize > 0){
+    for (size_t i = 0; i < queryResult->lsize-2; i++)
+    {
+      char buffer[256] = "0";
+      student_to_str(buffer, &queryResult->students[i]);
+      std::cout << buffer;
+    }
   }
 }
 
