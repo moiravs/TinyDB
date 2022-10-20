@@ -10,6 +10,7 @@ void query_result_init(query_result_t *result, const char *query)
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
   result->psize = sizeof(student_t)*2;
+  result->lsize = 0;
   result->students = (student_t *)malloc(sizeof(student_t));
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
@@ -22,6 +23,7 @@ void query_result_add(query_result_t *result, student_t s){
   result->lsize += 1;
   query_list_upsize(result);
   result->students[result->lsize] = s;
+  result->status = QUERY_SUCCESS;
 }
 
 void query_list_upsize(query_result_t *result){

@@ -52,12 +52,10 @@ void gestion_query(database_t *db, char *query)
     {
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
-      {
         if (s->id == static_cast<int *>(value))
         {
           query_result_add(queryResult, *s);
         }
-      }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
         if (strcmp(s->fname, value) == 0)
@@ -71,6 +69,8 @@ void gestion_query(database_t *db, char *query)
         {
           query_result_add(queryResult, *s);
         }
+
+        
       }
       else if (strcmp(fieldFilter, "section") == 0)
       {
@@ -92,9 +92,10 @@ void gestion_query(database_t *db, char *query)
       }
       else
       {
-        std::cout << "bruh wtf";
+        perror("The filter you have entered is false.");
       }
     }
+    // delete s;
   }
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
@@ -153,11 +154,13 @@ void gestion_query(database_t *db, char *query)
     log_query(queryResult);
   }
   
-  for (size_t i = 0; i < queryResult->lsize-2; i++)
-  {
-    char buffer[256] = "0";
-    student_to_str(buffer, &queryResult->students[i]);
-    std::cout << buffer;
+  if (queryResult->lsize > 0){
+    for (size_t i = 0; i < queryResult->lsize-2; i++)
+    {
+      char buffer[256] = "0";
+      student_to_str(buffer, &queryResult->students[i]);
+      std::cout << buffer;
+    }
   }
   
   delete s;
