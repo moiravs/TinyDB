@@ -56,10 +56,6 @@ void gestion_query(database_t *db, char *query)
       if (strcmp(fieldFilter, "id") == 0)
       {
       }
-      // if (s->id == static_cast<int *>(value))
-      //{
-      // query_result_add(queryResult, *s);
-      //}
       else if (strcmp(fieldFilter, "fname") == 0)
       {
         if (strcmp(s->fname, value) == 0)
@@ -83,21 +79,17 @@ void gestion_query(database_t *db, char *query)
       }
       else if (strcmp(fieldFilter, "birthdate") == 0)
       {
-        /*
-        const char *birthdaystudent ;
-        strptime(birthdaystudent, "%s", &s->birthdate);
-        if (strcmp(birthdaystudent, value) == 0)
+        strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
+        if (strcmp(date_str, value) == 0)
         {
-          std::cout << "waouuu";
           query_result_add(queryResult, *s);
-        }*/
+        }
       }
       else
       {
         perror("The filter you have entered is false.");
       }
     }
-    // delete s;
   }
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
@@ -111,18 +103,12 @@ void gestion_query(database_t *db, char *query)
         {
           db_delete(db, i);
         }
-        std::cout << "waouuu";
-        // db_delete(db, *s);
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
-        // std::cout << s->fname << value << std::endl;
         if (strcmp(s->fname, value) == 0)
         {
           db_delete(db, i);
-          std::cout << "waouuu";
-          // db_delete(db, *s);
-          //  query_result_add(queryresultt, *s);
         }
       }
       else if (strcmp(fieldFilter, "lname") == 0)
@@ -130,8 +116,6 @@ void gestion_query(database_t *db, char *query)
         if (strcmp(s->lname, value) == 0)
         {
           db_delete(db, i);
-          std::cout << "waouuu";
-          // db_delete(db, *s);
         }
       }
       else if (strcmp(fieldFilter, "section") == 0)
@@ -140,7 +124,6 @@ void gestion_query(database_t *db, char *query)
         {
           db_delete(db, i);
           std::cout << "waouuu";
-          // db_delete(db, *s);
         }
       }
 
@@ -151,15 +134,6 @@ void gestion_query(database_t *db, char *query)
         {
           db_delete(db, i);
         }
-        /*
-        const char *birthdaystudent;
-        strptime(birthdaystudent, "%s", &s->birthdate);
-        if (strcmp(birthdaystudent, value) == 0)
-        {
-          std::cout << "waouuu";
-          //db_delete(db, *s);
-        }
-        */
       }
       else
       {
@@ -168,8 +142,6 @@ void gestion_query(database_t *db, char *query)
     }
   }
   queryResult->status = QUERY_SUCCESS;
-  log_query(queryResult);
-  puts("wtf");
   /*
   if (queryResult->lsize > 0){
     for (size_t i = 0; i < queryResult->lsize; i++)
@@ -189,12 +161,12 @@ int main(int argc, char const *argv[])
   database_t db;
   db_init(&db);
   db_load(&db, db_path);
-  char query[sizeof(student_t)] = "select fname=Yannick";
+  char query[sizeof(student_t)] = "0";
   while (keepRunning)
   {
     signal(SIGINT, gere_signal); // gere le signal genre ctrl c
     signal(SIGUSR1, gere_signal);
-    //std::cin.getline(query, sizeof(query));
+    std::cin.getline(query, sizeof(query));
     if (strcmp(query, "0") != 0)
     {
       gestion_query(&db, query);

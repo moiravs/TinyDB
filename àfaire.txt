@@ -13,9 +13,6 @@ MOIRA
     shutdown
 
 
-- logs/query result log
-
-
 ANDRIUS
 - fichier lancer "< queries.txt"
 - propre 

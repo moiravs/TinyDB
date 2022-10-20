@@ -45,9 +45,7 @@ void log_query(query_result_t* result) {
       }
     }
     fclose(f);
-    puts("bruh");
   } else if (result->status == UNRECOGNISED_FIELD) {
     fprintf(stderr, "Unrecognized field in query %s\n", result->query);
   }
-  puts("bribe");
 }
