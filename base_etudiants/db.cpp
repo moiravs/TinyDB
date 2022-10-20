@@ -36,7 +36,6 @@ void db_load(database_t *db, const char *path)
     student_t student;
     while (fread(&student, sizeof(student_t), 1, file))
     {
-        // student_to_str(buffer, &student);
         db_add(db, student);
     }
     fclose(file);
@@ -51,7 +50,6 @@ void db_upsize(database_t *db)
         db->psize *= 2;
         db->data = (student_t *)malloc(db->psize);
         memcpy(db->data, old_data, old_psize);
-        free(old_data);
     }
 }
 

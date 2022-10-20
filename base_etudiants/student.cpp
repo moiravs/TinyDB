@@ -8,8 +8,9 @@
 
 void student_to_str(char *buffer, student_t *s)
 {
-  strftime(buffer, sizeof(buffer), "%Y-%m-%d", &s->birthdate);
-  printf("%i, %s, %s,%s, %s\n", s->id, s->fname, s->lname, s->section, buffer);
+  char birthdate[40];
+  strftime(birthdate, 40, "%Y-%m-%d", &s->birthdate);
+  snprintf(buffer, 512, "%i, %s, %s,%s, %s\n", s->id, s->fname, s->lname, s->section, birthdate);
 }
 
 

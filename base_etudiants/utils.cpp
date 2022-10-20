@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
 #include <unistd.h>
-
+#include <iostream>
 #include "query.hpp"
 #include "student.hpp"
 
@@ -36,6 +36,7 @@ void log_query(query_result_t* result) {
     float duration = (float)(result->end_ns - result->start_ns) / 1.0e6;
     sprintf(buffer, "Query \"%s\" completed in %fms with %ld results.\n", result->query, duration, result->lsize);
     fwrite(buffer, sizeof(char), strlen(buffer), f);
+    
     if (result->lsize > 0) {
       for (size_t i = 0; i < result->lsize; i++) {
         student_to_str(buffer, &result->students[i]);
@@ -44,7 +45,9 @@ void log_query(query_result_t* result) {
       }
     }
     fclose(f);
+    puts("bruh");
   } else if (result->status == UNRECOGNISED_FIELD) {
     fprintf(stderr, "Unrecognized field in query %s\n", result->query);
   }
+  puts("bribe");
 }

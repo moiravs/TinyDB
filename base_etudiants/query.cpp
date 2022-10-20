@@ -20,9 +20,9 @@ void query_result_init(query_result_t *result, const char *query)
 
 
 void query_result_add(query_result_t *result, student_t s){
-  result->lsize += 1;
   query_list_upsize(result);
   result->students[result->lsize] = s;
+  result->lsize += 1;
   result->status = QUERY_SUCCESS;
 }
 
@@ -34,7 +34,6 @@ void query_list_upsize(query_result_t *result){
     result->psize *= 2;
     result->students = (student_t*)malloc(result->psize);
     memcpy(result->students, old_data, old_psize);
-    free(old_data);
   }
 
 }
