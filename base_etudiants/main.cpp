@@ -29,8 +29,8 @@ void gestion_query(database_t *db, char *query)
   queryKey = strtok_r(querymod, " ", &saveptr);
   memcpy(queryResult->query, queryKey, 6);
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
-  char value_str[64];
-  char date_str[64];
+  char value_str[64] = "0";
+  char date_str[64] = "0";
 
   student_t *s = new student_t;
   if (strcmp(queryKey, "insert") == 0)

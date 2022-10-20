@@ -6,7 +6,6 @@ MOIRA
 - Rapport 
 
 - monitoring
-    Si le fichier donné en paramètre n’existe pas, le script le crée (vide)
     en aﬀichant un message d’avertissement sur stderr   
     status
     sync
@@ -19,5 +18,4 @@ ANDRIUS
     nv file pr le truc du main
 - terminer la fct query
         - id value
-    - annif qui s'affichent
     - beta test select/delete/add

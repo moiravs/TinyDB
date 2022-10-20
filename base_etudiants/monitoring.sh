@@ -15,6 +15,7 @@ if [ "${1}" == "run" ]; then
     fi
     if [[ ! -f "$file" ]]
     then 
+        echo "$1" 1>&2
         touch $file
     fi
     echo "Fichiers requetes: $fichier_requetes";
