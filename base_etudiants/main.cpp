@@ -150,16 +150,16 @@ void gestion_query(database_t *db, char *query)
     }
     log_query(queryResult);
   }
-  
+  /*
   if (queryResult->lsize > 0){
-    for (size_t i = 0; i < queryResult->lsize-2; i++)
+    for (size_t i = 0; i < queryResult->lsize; i++)
     {
       char buffer[256] = "0";
       student_to_str(buffer, &queryResult->students[i]);
       std::cout << buffer;
     }
   }
-  
+  */
   delete s;
   delete queryResult->students;
   delete queryResult;

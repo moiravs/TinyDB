@@ -1,77 +1,14 @@
-- BDD en C
-    - chaque requete doit être gérée par un processus dédié
-        select
-        insert
-        delete
-        update
-        transaction
-        - ignorer les requetes mal formées en affichant message d'erreur
-    - lancement obligatoire de tinydb avec le chemin vers la db
-        le contenu doit être chargé à l'aide de la fct dbload
+- beta test select/delete/add
+    - id value
+    - annif qui s'affichent
+(- nv file avec gestionnaire d'erreurs)
+- threads/processus
 
-    - comportement bdd 
-        - se présente sous forme d'une ligne de commande qui accepte les requetes
+- Rapport 
 
-    - le programme doit se lancer en redirigeant un fichier sur stdin comme ci-dessous / une requete par ligne
-        $./tinydb data/students.bin < queries.txt
-        Welcome to the Tiny Database!
-        Loading the database...
-        Done!
-        Running query 'select fname=Cedric'
-        logs/1600954212483482724-select.txt
-        Running query 'update id=88 set lname=Quevrin'
-        logs/1600954212483482820-select.txt
-        Running query 'select fname=Damien'
-        logs/1600954212483482937-select.tx
-    
-    -query result t doit renvoyer
-        students student_t* Pointeur vers la liste des étudiants concernés par la requête
-            size size_t Le nombre d’étudiants
-            query char[256] La requête à laquelle ce résultat se rapporte
-            start_ns long Le timestamp (en nanosecondes) du début de la requête
-            end_ns long Le timestamp (en nanosecondes) de la fin de la requête
-
-        le resultat doit être noté dans la fct query_result_log
-
-    fin de la bdd
-        stdin arrive à sa fin(ctrl d)
-        le processus principal capture un signal sigint (ctrl c par ex)
-        > select fname=Yannick
-        logs/1600954212483482624-select.txt
-        > ^C
-        Waiting for requests to terminate...
-        Committing database changes to the disk...
-        Done.
-        3/7
-- MONITORING
-    lancement 
-        - $ ./monitoring run [<chemin_vers_la_db>] [-f <fichier_requetes>]
-    vérif de la bdd
-        - ./monitoring status
-        1 instance running
-        > PID 1990
-    sauvegarde sur le disque
-        envoie un signal à SIGUSR1, si plusieurs instances de tinydb, signal envoyé à chacune d'elles
-        $ ./monitoring sync
-        Found 2 instances of tinydb
-        Sync process 1990...
-        Sync process 2546...
-        Done
-    arrêt de la bdd
-        ./monitoring shutdown [<pid>]
-        . Si ce PID n’est pas le processus principal d’une instance de tinydb, le
-        script aﬀiche un message d’erreur sur stderr. Si aucun PID n’est donné, le script demande confirmation
-        pour chaque instance de tinydb qui tourne
-
-
-
-
-- !!!! gestion d'erreuurs
-
-
-
-
-
-- RAPPORT
+- monitoring
+    status
+    sync
+    shutdown
 
 
