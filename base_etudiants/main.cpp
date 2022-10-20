@@ -18,11 +18,11 @@ void gere_signal(int signum)
 
 void gestion_query(database_t *db, char *query)
 {
-  std::cout << "jepasse par là";
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-  sprintf(querymod, "%s", query);
+  memcpy(querymod, query, 256);
+  //sprintf(querymod, "%s", query);
   char *saveptr;
   const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod, " ", &saveptr);
@@ -54,15 +54,16 @@ void gestion_query(database_t *db, char *query)
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
       {
-        std::cout << "waouuu";
-        query_result_add(queryResult, *s);
+        if (s->id == static_cast<int>(value))
+        {
+          query_result_add(queryResult, *s);
+        }
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
         // std::cout << s->fname << value << std::endl;
         if (strcmp(s->fname, value) == 0)
         {
-          std::cout << "waouuu";
           query_result_add(queryResult, *s);
         }
       }
@@ -70,7 +71,6 @@ void gestion_query(database_t *db, char *query)
       {
         if (strcmp(s->lname, value) == 0)
         {
-          std::cout << "waouuu";
           query_result_add(queryResult, *s);
         }
       }
@@ -78,7 +78,6 @@ void gestion_query(database_t *db, char *query)
       {
         if (strcmp(s->section, value) == 0)
         {
-          std::cout << "waouuu";
           query_result_add(queryResult, *s);
         }
       }
@@ -98,7 +97,6 @@ void gestion_query(database_t *db, char *query)
         std::cout << "bruh wtf";
       }
     }
-    // delete s;
   }
   else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
@@ -162,6 +160,9 @@ void gestion_query(database_t *db, char *query)
     student_to_str(buffer, &queryResult->students[i]);
     std::cout << buffer;
   }
+  delete s;
+  delete queryResult->students;
+  delete queryResult;
 }
 
 int main(int argc, char const *argv[])
@@ -171,14 +172,13 @@ int main(int argc, char const *argv[])
   db_init(&db);
   db_load(&db, db_path);
   char query[256] = "0";
-  // query_result_t *queryresultt = new query_result_t;
   while (keepRunning)
   {
     signal(SIGINT, gere_signal); // gere le signal genre ctrl c
     signal(SIGUSR1, gere_signal);
     std::cin.getline(query, sizeof(query));
-    gestion_query(&db, query);
-    keepRunning = 0;
+    if (strcmp(query,"0")!=0){
+    gestion_query(&db, query);}
   }
   /*
   char commande[200] = "";
