@@ -23,7 +23,6 @@ void gestion_query(database_t *db, char *query)
   query_result_init(queryResult, query);
   char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
   memcpy(querymod, query, 256);
-  //sprintf(querymod, "%s", query);
   char *saveptr;
   const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod, " ", &saveptr);
@@ -33,8 +32,6 @@ void gestion_query(database_t *db, char *query)
   {
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
-      // strcmp renvoie 0 si les strings sont les mêmes
-      std::cout << "okidoki";
       db_add(db, *s);
     }
     else
@@ -51,11 +48,11 @@ void gestion_query(database_t *db, char *query)
     for (size_t i = 0; i < db->lsize; i++)
     {
       *s = db->data[i];
-      if (strcmp(fieldFilter, "id") == 0)
-        if (s->id == static_cast<int *>(value))
-        {
-          query_result_add(queryResult, *s);
-        }
+      if (strcmp(fieldFilter, "id") == 0){}
+        //if (s->id == static_cast<int *>(value))
+        //{
+          //query_result_add(queryResult, *s);
+        //}
       else if (strcmp(fieldFilter, "fname") == 0)
       {
         if (strcmp(s->fname, value) == 0)

@@ -37,7 +37,7 @@ void log_query(query_result_t* result) {
     sprintf(buffer, "Query \"%s\" completed in %fms with %ld results.\n", result->query, duration, result->lsize);
     fwrite(buffer, sizeof(char), strlen(buffer), f);
     if (result->lsize > 0) {
-      for (int i = 0; i < result->lsize; i++) {
+      for (size_t i = 0; i < result->lsize; i++) {
         student_to_str(buffer, &result->students[i]);
         fwrite(buffer, sizeof(char), strlen(buffer), f);
         fwrite("\n", sizeof(char), 1, f);
