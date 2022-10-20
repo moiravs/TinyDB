@@ -30,6 +30,7 @@ void gestion_query(database_t *db, char *query)
   queryKey = strtok_r(querymod, " ", &saveptr);
   char *fieldFilter = new char[64], *valueFilter = new char[64], *fieldToUpdate = new char(), *updateValue = new char(), *value = new char[64];
   char value_str[64];
+  char date_str[64];
   
   student_t *s = new student_t;
   if (strcmp(queryKey, "insert") == 0)
@@ -144,6 +145,11 @@ void gestion_query(database_t *db, char *query)
 
       else if (strcmp(fieldFilter, "birthdate") == 0)
       {
+        strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
+        if (strcmp(date_str, value) == 0)
+        {
+          db_delete(db, i);
+        }
         /*
         const char *birthdaystudent;
         strptime(birthdaystudent, "%s", &s->birthdate);
