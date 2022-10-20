@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string>
 #include <iostream>
 #include "db.hpp"
 #include <unistd.h>
@@ -8,6 +9,7 @@
 #include "query.hpp"
 #include "parsing.hpp"
 #include "utils.hpp"
+
 
 static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
 
@@ -27,6 +29,8 @@ void gestion_query(database_t *db, char *query)
   const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
   queryKey = strtok_r(querymod, " ", &saveptr);
   char *fieldFilter = new char[64], *valueFilter = new char[64], *fieldToUpdate = new char(), *updateValue = new char(), *value = new char[64];
+  char value_str[64];
+  
   student_t *s = new student_t;
   if (strcmp(queryKey, "insert") == 0)
   {
@@ -101,6 +105,10 @@ void gestion_query(database_t *db, char *query)
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
       {
+        sprintf(value_str, "%u", s->id);  // convertir le id (unsigned) à un char* pour la comparaison
+        if (strcmp(value_str, value) == 0){
+			    db_delete(db, i);
+        }
         std::cout << "waouuu";
         //db_delete(db, *s);
       }
@@ -109,6 +117,7 @@ void gestion_query(database_t *db, char *query)
         // std::cout << s->fname << value << std::endl;
         if (strcmp(s->fname, value) == 0)
         {
+          db_delete(db, i);
           std::cout << "waouuu";
           //db_delete(db, *s);
           // query_result_add(queryresultt, *s);
@@ -118,6 +127,7 @@ void gestion_query(database_t *db, char *query)
       {
         if (strcmp(s->lname, value) == 0)
         {
+          db_delete(db, i);
           std::cout << "waouuu";
           //db_delete(db, *s);
         }
@@ -126,6 +136,7 @@ void gestion_query(database_t *db, char *query)
       {
         if (strcmp(s->section, value) == 0)
         {
+          db_delete(db, i);
           std::cout << "waouuu";
           //db_delete(db, *s);
         }
