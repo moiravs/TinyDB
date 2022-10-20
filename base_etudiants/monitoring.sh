@@ -9,8 +9,13 @@ if [ "${1}" == "run" ]; then
         esac    
     done
     file="${2:-students.bin}"
-    if [ "$file" == "-f" ]; then
+    if [ "$file" == "-f" ]; 
+    then
         file="students.bin"
+    fi
+    if [[ ! -f "$file" ]]
+    then 
+        touch $file
     fi
     echo "Fichiers requetes: $fichier_requetes";
     echo "File : $file";
