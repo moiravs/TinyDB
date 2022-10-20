@@ -55,6 +55,11 @@ void gestion_query(database_t *db, char *query)
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
       {
+        sprintf(value_str, "%u", s->id); // convertir le id (unsigned) à un char* pour la comparaison
+        if (strcmp(value_str, value) == 0)
+        {
+          query_result_add(queryResult, *s);
+        }
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
@@ -102,6 +107,7 @@ void gestion_query(database_t *db, char *query)
         if (strcmp(value_str, value) == 0)
         {
           db_delete(db, i);
+          query_result_add(queryResult, *s);
         }
       }
       else if (strcmp(fieldFilter, "fname") == 0)
@@ -109,6 +115,7 @@ void gestion_query(database_t *db, char *query)
         if (strcmp(s->fname, value) == 0)
         {
           db_delete(db, i);
+          query_result_add(queryResult, *s);
         }
       }
       else if (strcmp(fieldFilter, "lname") == 0)
@@ -116,6 +123,7 @@ void gestion_query(database_t *db, char *query)
         if (strcmp(s->lname, value) == 0)
         {
           db_delete(db, i);
+          query_result_add(queryResult, *s);
         }
       }
       else if (strcmp(fieldFilter, "section") == 0)
@@ -123,6 +131,7 @@ void gestion_query(database_t *db, char *query)
         if (strcmp(s->section, value) == 0)
         {
           db_delete(db, i);
+          query_result_add(queryResult, *s);
           std::cout << "waouuu";
         }
       }
@@ -133,6 +142,7 @@ void gestion_query(database_t *db, char *query)
         if (strcmp(date_str, value) == 0)
         {
           db_delete(db, i);
+          query_result_add(queryResult, *s);
         }
       }
       else
