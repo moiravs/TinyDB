@@ -19,5 +19,4 @@ ANDRIUS
     nv file pr le truc du main
 - terminer la fct query
         - id value
-    - annif qui s'affichent
     - beta test select/delete/add
