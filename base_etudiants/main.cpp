@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "query.hpp"
 #include "parsing.hpp"
+#include "utils.hpp"
 
 static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
 
@@ -47,21 +48,18 @@ void gestion_query(database_t *db, char *query)
   }
   else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
-    std::cout << "here";
-    std::cout << *(value + 46); // ici y a un espace alors que ça devrait être vide !!!
     for (size_t i = 0; i < db->lsize; i++)
     {
       *s = db->data[i];
       if (strcmp(fieldFilter, "id") == 0)
       {
-        if (s->id == static_cast<int>(value))
+        if (s->id == static_cast<int *>(value))
         {
           query_result_add(queryResult, *s);
         }
       }
       else if (strcmp(fieldFilter, "fname") == 0)
       {
-        // std::cout << s->fname << value << std::endl;
         if (strcmp(s->fname, value) == 0)
         {
           query_result_add(queryResult, *s);
@@ -152,6 +150,7 @@ void gestion_query(database_t *db, char *query)
         std::cout << "bruh wtf";
       }
     }
+    log_query(queryResult);
   }
   
   for (size_t i = 0; i < queryResult->lsize-2; i++)
@@ -160,6 +159,7 @@ void gestion_query(database_t *db, char *query)
     student_to_str(buffer, &queryResult->students[i]);
     std::cout << buffer;
   }
+  
   delete s;
   delete queryResult->students;
   delete queryResult;
