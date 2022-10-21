@@ -1,5 +1,6 @@
 #include "query.hpp"
 #include "parsing.hpp"
+#include "utils.hpp"
 #include <iostream>
 #include <time.h>
 #include <string.h>
@@ -15,89 +16,98 @@ void query_result_init(query_result_t *result, const char *query)
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   result->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
-
 }
 
-
-void query_result_add(query_result_t *result, student_t s){
+void query_result_add(query_result_t *result, student_t s)
+{
   query_list_upsize(result);
   result->students[result->lsize] = s;
   result->lsize += 1;
   result->status = QUERY_SUCCESS;
 }
 
-void query_list_upsize(query_result_t *result){
+void query_list_upsize(query_result_t *result)
+{
 
-  if (result->lsize >= ((result->psize)/sizeof(student_t))){
+  if (result->lsize >= ((result->psize) / sizeof(student_t)))
+  {
     student_t *old_data = result->students;
     size_t old_psize = result->psize;
     result->psize *= 2;
-    result->students = (student_t*)malloc(result->psize);
+    result->students = (student_t *)malloc(result->psize);
     memcpy(result->students, old_data, old_psize);
   }
 }
 
-void query_select_and_delete(database_t *db, query_result_t *queryResult, char *fieldFilter, char *value_str, char *value, student_t *s, char *date_str, const char *queryKey){
+void query_select_and_delete(database_t *db, query_result_t *queryResult, char *fieldFilter, char *value_str, char *value, student_t *s, char *date_str, const char *queryKey)
+{
   for (size_t i = 0; i < db->lsize; i++)
+  {
+
+    *s = db->data[i];
+    if (strcmp(fieldFilter, "id") == 0)
     {
-      *s = db->data[i];
-      if (strcmp(fieldFilter, "id") == 0)
+      sprintf(value_str, "%u", s->id); // convertir le id (unsigned) à un char* pour la comparaison
+      if (strcmp(value_str, value) == 0)
       {
-        sprintf(value_str, "%u", s->id); // convertir le id (unsigned) à un char* pour la comparaison
-        if (strcmp(value_str, value) == 0)
+        query_result_add(queryResult, *s);
+        if (strcmp(queryKey, "delete"))
         {
-          query_result_add(queryResult, *s);
-          if (strcmp(queryKey, "delete")){
-            db_delete(db, i);
-          }
+          db_delete(db, i);
         }
-      }
-      else if (strcmp(fieldFilter, "fname") == 0)
-      {
-        if (strcmp(s->fname, value) == 0)
-        {
-          query_result_add(queryResult, *s);
-          if (strcmp(queryKey, "delete")){
-            db_delete(db, i);
-          }
-        }
-      }
-      else if (strcmp(fieldFilter, "lname") == 0)
-      {
-        if (strcmp(s->lname, value) == 0)
-        {
-          query_result_add(queryResult, *s);
-          if (strcmp(queryKey, "delete")){
-            db_delete(db, i);
-          }
-        }
-      }
-      else if (strcmp(fieldFilter, "section") == 0)
-      {
-        if (strcmp(s->section, value) == 0)
-        {
-          query_result_add(queryResult, *s);
-          if (strcmp(queryKey, "delete")){
-            db_delete(db, i);
-          }
-        }
-      }
-      else if (strcmp(fieldFilter, "birthdate") == 0)
-      {
-        strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
-        if (strcmp(date_str, value) == 0)
-        {
-          query_result_add(queryResult, *s);
-          if (strcmp(queryKey, "delete")){
-            db_delete(db, i);
-          }
-        }
-      }
-      else {
-        std::cout << "An error has occurred during the select query : bad filter." << std::endl;
-        //break;
       }
     }
+    else if (strcmp(fieldFilter, "fname") == 0)
+    {
+      if (strcmp(s->fname, value) == 0)
+      {
+        query_result_add(queryResult, *s);
+        if (strcmp(queryKey, "delete"))
+        {
+          db_delete(db, i);
+        }
+      }
+    }
+    else if (strcmp(fieldFilter, "lname") == 0)
+    {
+      if (strcmp(s->lname, value) == 0)
+      {
+        query_result_add(queryResult, *s);
+        if (strcmp(queryKey, "delete"))
+        {
+          db_delete(db, i);
+        }
+      }
+    }
+    else if (strcmp(fieldFilter, "section") == 0)
+    {
+      if (strcmp(s->section, value) == 0)
+      {
+        query_result_add(queryResult, *s);
+        if (strcmp(queryKey, "delete"))
+        {
+          db_delete(db, i);
+        }
+      }
+    }
+    else if (strcmp(fieldFilter, "birthdate") == 0)
+    {
+      strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
+      if (strcmp(date_str, value) == 0)
+      {
+        query_result_add(queryResult, *s);
+        if (strcmp(queryKey, "delete"))
+        {
+          db_delete(db, i);
+        }
+      }
+    }
+    else
+    {
+      std::cout << "An error has occurred during the select query : bad filter." << std::endl;
+      // break;
+    }
+  }
 }
 
 void gestion_query(database_t *db, char *query)
@@ -115,6 +125,8 @@ void gestion_query(database_t *db, char *query)
   char date_str[64] = "0";
 
   student_t *s = new student_t;
+  queryResult->status = QUERY_SUCCESS;
+  printf("%s", query);
   if (strcmp(queryKey, "insert") == 0)
   {
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
@@ -138,8 +150,8 @@ void gestion_query(database_t *db, char *query)
   {
     query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
   }
-  queryResult->status = QUERY_SUCCESS;
-
+  log_query(queryResult);
+  /*
   if (queryResult->lsize > 0)
   {
     for (size_t i = 0; i < queryResult->lsize; i++)
@@ -148,7 +160,7 @@ void gestion_query(database_t *db, char *query)
       student_to_str(buffer, &queryResult->students[i]);
       std::cout << buffer;
     }
-  }
+  }*/
   delete s;
   delete queryResult;
 }

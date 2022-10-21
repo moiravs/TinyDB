@@ -25,8 +25,28 @@
 #define PROCESS_INSERT 2
 #define PROCESS_MAIN 0
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+
+void *create_shared_memory(size_t size)
+{
+    // Our memory buffer will be readable and writable:
+    int protection = PROT_READ | PROT_WRITE;
+
+    // The buffer will be shared (meaning other processes can access it), but
+    // anonymous (meaning third-party processes cannot obtain an address for it),
+    // so only this process and its children will be able to use it:
+    int visibility = MAP_SHARED | MAP_ANONYMOUS;
+
+    // The remaining parameters to `mmap()` are not important for this use case,
+    // but the manpage for `mmap` explains their purpose.
+    return mmap(NULL, size, protection, visibility, -1, 0);
+}
+//mremap
 int main(int argc, char const *argv[])
 {
+    void *shmem = create_shared_memory(256);
     int mode = PROCESS_MAIN;
     int toto = 1;
     printf("toto: %d\n", toto);
@@ -58,15 +78,27 @@ int main(int argc, char const *argv[])
         while (true)
         {
             close(fd2[1]);
-            puts(jsp);
             read(fd2[0], jsp, 256);
             close(fd2[0]);
-            if (strcmp(jsp, "select") == 0)
+            if (strcmp(jsp, "01") != 0){
+                char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+                memcpy(querymod, jsp, 256);
+                char *saveptr;
+                const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+                queryKey = strtok_r(querymod, " ", &saveptr);
+            
+            if (strcmp(queryKey, "select") == 0)
             {
                 puts("ahhh ça fonctionne1");
-                write(fd2[1], okidok, 256);
+                //code à faire
+                memcpy(&queryKey, "0", 6);
+                write(fd2[1], "0", 256);
                 close(fd2[1]);
+                memcpy(shmem, "ahhh", 5);
             }
+            memcpy(jsp, "01", 256);
+            }
+
         }
         exit(0);
     }
@@ -83,6 +115,8 @@ int main(int argc, char const *argv[])
         toto = 4;
         while (true)
         {
+            sleep(2);
+            printf("%s\n", (char *)shmem);
         }
     }
     printf("main process:%d\n", getpid());
@@ -92,9 +126,11 @@ int main(int argc, char const *argv[])
     int status;
     pid_t pid;
     int n = 2;
+    
     while (n > 0)
     {
         std::cin.getline(query, sizeof(query));
+        
         write(fd2[1], query, 256);
         close(fd2[1]);
         //pid = wait(&status);
