@@ -99,3 +99,56 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
       }
     }
 }
+
+void gestion_query(database_t *db, char *query)
+{
+  query_result_t *queryResult = new query_result_t();
+  query_result_init(queryResult, query);
+  char *querymod = new char[sizeof(student_t)]; // créer un nv string modifiable car strtok modifie les strings
+  memcpy(querymod, query, sizeof(student_t));
+  char *saveptr;
+  const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+  queryKey = strtok_r(querymod, " ", &saveptr);
+  memcpy(queryResult->query, queryKey, 6);
+  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
+  char value_str[64] = "0";
+  char date_str[64] = "0";
+
+  student_t *s = new student_t;
+  if (strcmp(queryKey, "insert") == 0)
+  {
+    if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
+    {
+      db_add(db, *s);
+    }
+    else
+    {
+      std::cout << "An error has occurred during the insert query." << std::endl;
+    }
+  }
+  else if (strcmp(queryKey, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))
+  {
+  }
+  else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
+  {
+    query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
+  }
+
+  else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
+  {
+    query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
+  }
+  queryResult->status = QUERY_SUCCESS;
+
+  if (queryResult->lsize > 0)
+  {
+    for (size_t i = 0; i < queryResult->lsize; i++)
+    {
+      char buffer[sizeof(student_t)] = "0";
+      student_to_str(buffer, &queryResult->students[i]);
+      std::cout << buffer;
+    }
+  }
+  delete s;
+  delete queryResult;
+}

@@ -44,4 +44,6 @@ void query_list_upsize(query_result_t *result);
  **/
 void query_select_and_delete(database_t *db, query_result_t *queryResult, char *fieldFilter, char *value_str, char *value, student_t *s, char *date_str, const char *queryKey);
 
+void gestion_query(database_t *db, char *query);
+
 #endif
