@@ -18,17 +18,18 @@ void *fonction_1(void *arguments)
     struct pipes *args = (struct pipes *)arguments;
     puts("function1 started");
     char query[256] = "0";
-    char okidok[256] = "okido";
+    //char okidok[256] = "okido";
     while (true)
     {
         puts("problem here");
-        read(args->filed1[0], query, 256);
-        // close(args->filed1[0]);
+        //close(args->filed1[1]);
+        //read(args->filed1[0], query, 256);
+        //close(args->filed1[0]);
         if (strcmp(query, "selec") == 0)
         {
             gestion_query(args->db, query);
-            write(args->filed1[1], okidok, 256);
-            close(args->filed1[1]);
+            //write(args->filed1[1], okidok, 256);
+            //close(args->filed1[1]);
         }
     }
 }
@@ -39,18 +40,20 @@ void *fonction_2(void *arguments)
     struct pipes *args1 = (struct pipes *)arguments;
     puts("function2 started");
     char query[256] = "0";
-    char okidok[256] = "okido";
+    //char okidok[256] = "okido";
     while (true)
     {
         puts("problem here here?");
-        read(args1->filed2[0], query, 256);
-        // close(args1->filed2[0]);
+        //close(args1->filed1[1]);
+        puts("ahhhb");
+        //read(args1->filed2[0], query, 256);
+        //close(args1->filed2[0]);
         if (strcmp(query, "selec") == 0)
         {
             puts("ahhh ça fonctionne1");
             gestion_query(args1->db, query);
-            write(args1->filed2[1], okidok, 256);
-            close(args1->filed2[1]);
+            //write(args1->filed2[1], okidok, 256);
+            //close(args1->filed2[1]);
         }
     }
 }
@@ -61,17 +64,18 @@ void *fonction_3(void *arguments)
     struct pipes *args2 = (struct pipes *)arguments;
     puts("function3 started");
     char query[256] = "0";
-    char okidok[256] = "okido";
+    //char okidok[256] = "okido";
     while (true)
     {
-        read(args2->filed3[0], query, 256);
-        // close(args2->filed3[0]);
+        ///close(args2->filed1[1]);
+        //read(args2->filed3[0], query, 256);
+        //close(args2->filed3[0]);
         if (strcmp(query, "selec") == 0)
         {
             puts("ahhh ça fonctionne1");
             gestion_query(args2->db, query);
-            write(args2->filed3[1], okidok, 256);
-            close(args2->filed3[1]);
+            //write(args2->filed3[1], okidok, 256);
+            //close(args2->filed3[1]);
         }
     }
 }
@@ -82,17 +86,18 @@ void *fonction_4(void *arguments)
     struct pipes *args3 = (struct pipes *)arguments;
     puts("function4 started");
     char query[256] = "0";
-    char okidok[256] = "okido";
+    //char okidok[256] = "okido";
     while (true)
     {
-        read(args3->filed4[0], query, 256);
-        // close(args3->filed4[0]);
+        //close(args3->filed1[1]);
+        //read(args3->filed4[0], query, 256);
+        //close(args3->filed4[0]);
         if (strcmp(query, "selec") == 0)
         {
             puts("ahhh ça fonctionne1");
             gestion_query(args3->db, query);
-            write(args3->filed4[1], okidok, 256);
-            close(args3->filed4[1]);
+            //write(args3->filed4[1], okidok, 256);
+            //close(args3->filed4[1]);
         }
     }
 }

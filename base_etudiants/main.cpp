@@ -23,21 +23,30 @@ void gere_signal(int signum)
 
 int main(int argc, char const *argv[])
 {
-  const char *db_path = argv[1];
-  database_t db;
-  db_init(&db);
-  db_load(&db, db_path);
-  char query[sizeof(student_t)] = "0";
-  struct pipes args;
-  creation_thread_and_pipes(&args);
-  args.db = &db;
-  puts("bribriaaa");
-  // création threads
-  while (keepRunning)
+  pid_t parent = getpid();
+  pid_t child = fork();
+
+  if (child != 0)
   {
+    const char *db_path = argv[1];
+    database_t db;
+    db_init(&db);
+    db_load(&db, db_path);
+    struct pipes args;
+    creation_thread_and_pipes(&args);
+    args.db = &db;
+    puts("bribriaaa");
+        char query[sizeof(student_t)] = "0";
     signal(SIGINT, gere_signal); // gere le signal genre ctrl c
     signal(SIGUSR1, gere_signal);
     std::cin.getline(query, sizeof(query));
+  }
+  else
+  {
+  // création threads
+  while (keepRunning)
+  {
+
     if (strcmp(query,"0") == 0){
       char *querymod = new char[sizeof(student_t)]; // créer un nv string modifiable car strtok modifie les strings
       memcpy(querymod, query, sizeof(student_t));
@@ -79,7 +88,7 @@ int main(int argc, char const *argv[])
     else
     {
       puts("wtf");
-    }}
+    }}}
   }
 
   // db_save(&db, "test.txt");
