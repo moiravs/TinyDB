@@ -110,7 +110,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
   }
 }
 
-void gestion_query(database_t *db, char *query)
+void gestion_query(database_t *db, char *query, const char *keyWord)
 {
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
@@ -127,7 +127,7 @@ void gestion_query(database_t *db, char *query)
   student_t *s = new student_t;
   queryResult->status = QUERY_SUCCESS;
   printf("%s", query);
-  if (strcmp(queryKey, "insert") == 0)
+  if (strcmp(keyWord, "insert") == 0)
   {
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
@@ -138,15 +138,15 @@ void gestion_query(database_t *db, char *query)
       std::cout << "An error has occurred during the insert query." << std::endl;
     }
   }
-  else if (strcmp(queryKey, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))
+  else if (strcmp(keyWord, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))
   {
   }
-  else if (strcmp(queryKey, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
+  else if (strcmp(keyWord, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
     query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
   }
 
-  else if (strcmp(queryKey, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
+  else if (strcmp(keyWord, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
     query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
   }

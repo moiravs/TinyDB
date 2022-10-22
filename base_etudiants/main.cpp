@@ -6,7 +6,6 @@
 #include "query.hpp"
 #include "parsing.hpp"
 #include "utils.hpp"
-#include "threads.hpp"
 #include <cstdio>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -88,20 +87,18 @@ int main(int argc, char const *argv[])
 
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
         memcpy(querymod, jsp, 256);
-        char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
-        queryKey = strtok_r(querymod, " ", &saveptr);
+        queryKey = strtok(querymod, " ");
 
         if (strcmp(queryKey, "select") == 0)
         {
 
-          gestion_query(db, jsp);
+          gestion_query(db, jsp, queryKey);
           puts("ahhh ça fonctionne2");
         }
         memcpy(jsp, "01", 256);
       }
       sleep(1);
-      printf("t\n");
     }
     exit(0);
   }
@@ -133,7 +130,7 @@ int main(int argc, char const *argv[])
         if (strcmp(queryKey, "insert") == 0)
         {
 
-          gestion_query(db, jsp);
+          gestion_query(db, jsp, queryKey);
           puts("ahhh ça fonctionne2");
         }
         memcpy(jsp, "01", 256);
