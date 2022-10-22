@@ -59,12 +59,10 @@ int main(int argc, char const *argv[])
   pipe(fd1);
   int fd2[2];
   pipe(fd2);
-  /*
   int fd3[2];
   pipe(fd3);
   int fd4[2];
   pipe(fd4);
-  */
   char query[256] = "0";
   pid_t child_select = fork();
   if (child_select < 0)
@@ -98,7 +96,7 @@ int main(int argc, char const *argv[])
         }
         memcpy(jsp, "01", 256);
       }
-      sleep(1);
+      sleep(2);
     }
     exit(0);
   }
@@ -135,7 +133,81 @@ int main(int argc, char const *argv[])
         }
         memcpy(jsp, "01", 256);
       }
-      sleep(1);
+      sleep(2);
+      printf("t\n");
+    }
+    exit(0);
+  }
+  pid_t child_update = fork();
+  if (child_update < 0)
+  {
+    perror("fork error");
+  }
+  if (child_update == 0)
+  {
+    printf("update process:%d\n", getpid());
+    char jsp[256] = "01";
+    puts("here");
+
+    while (true)
+    {
+      close(fd3[1]);
+      read(fd3[0], jsp, 256);
+      if (strcmp(jsp, "01") != 0)
+      {
+
+        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        memcpy(querymod, jsp, 256);
+        char *saveptr;
+        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        queryKey = strtok_r(querymod, " ", &saveptr);
+
+        if (strcmp(queryKey, "update") == 0)
+        {
+
+          gestion_query(db, jsp, queryKey);
+          puts("ahhh ça fonctionne2");
+        }
+        memcpy(jsp, "01", 256);
+      }
+      sleep(2);
+      printf("t\n");
+    }
+    exit(0);
+  }
+  pid_t child_delete = fork();
+  if (child_delete < 0)
+  {
+    perror("fork error");
+  }
+  if (child_delete == 0)
+  {
+    printf("delete process:%d\n", getpid());
+    char jsp[256] = "01";
+    puts("here");
+
+    while (true)
+    {
+      close(fd4[1]);
+      read(fd4[0], jsp, 256);
+      if (strcmp(jsp, "01") != 0)
+      {
+
+        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        memcpy(querymod, jsp, 256);
+        char *saveptr;
+        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        queryKey = strtok_r(querymod, " ", &saveptr);
+
+        if (strcmp(queryKey, "delete") == 0)
+        {
+
+          gestion_query(db, jsp, queryKey);
+          puts("ahhh ça fonctionne2");
+        }
+        memcpy(jsp, "01", 256);
+      }
+      sleep(2);
       printf("t\n");
     }
     exit(0);
@@ -147,6 +219,12 @@ int main(int argc, char const *argv[])
     std::cin.getline(query, sizeof(query));
     close(fd2[0]);
     write(fd2[1], query, 256);
+    close(fd1[0]);
+    write(fd1[1], query, 256);
+    close(fd3[0]);
+    write(fd3[1], query, 256);
+    close(fd4[0]);
+    write(fd4[1], query, 256);
 
     /*
     while (n > 0)

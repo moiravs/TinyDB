@@ -124,9 +124,11 @@ void gestion_query(database_t *db, char *query, const char *keyWord)
   char value_str[64] = "0";
   char date_str[64] = "0";
 
-  student_t *s = new student_t;
+  
   queryResult->status = QUERY_SUCCESS;
+  puts("enft c la le souci");
   printf("%s", query);
+  student_t *s = new student_t;
   if (strcmp(keyWord, "insert") == 0)
   {
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
