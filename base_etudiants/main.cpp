@@ -1,8 +1,5 @@
 #include <stdio.h>
-#include <string>
-#include <iostream>
 #include "db.hpp"
-#include <unistd.h>
 #include <sys/types.h>
 #include <signal.h>
 #include <stdlib.h>
@@ -10,6 +7,16 @@
 #include "parsing.hpp"
 #include "utils.hpp"
 #include "threads.hpp"
+#include <cstdio>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <iostream>           // std::cout
+#include <thread>             // std::thread
+#include <mutex>              // std::mutex, std::unique_lock
+#include <condition_variable> // std::condition_variable
+#include <string>
+#include <string.h>
+#include <sys/mman.h>
 
 static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
 
@@ -19,32 +26,7 @@ void gere_signal(int signum)
   keepRunning = 0;
 }
 
-#include <cstdio>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include <string>
-#include <iostream>
-#include <unistd.h>
-#include <sys/types.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <iostream>           // std::cout
-#include <thread>             // std::thread
-#include <mutex>              // std::mutex, std::unique_lock
-#include <condition_variable> // std::condition_variable
-#include <string>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <pthread.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
 
 void *create_shared_memory(size_t size)
 {
@@ -132,9 +114,34 @@ int main(int argc, char const *argv[])
   if (child_insert == 0)
   {
     printf("insert process:%d\n", getpid());
+    char jsp[256] = "01";
+    puts("here");
+
     while (true)
     {
+      close(fd1[1]);
+      read(fd1[0], jsp, 256);
+      if (strcmp(jsp, "01") != 0)
+      {
+
+        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        memcpy(querymod, jsp, 256);
+        char *saveptr;
+        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        queryKey = strtok_r(querymod, " ", &saveptr);
+
+        if (strcmp(queryKey, "insert") == 0)
+        {
+
+          gestion_query(db, jsp);
+          puts("ahhh ça fonctionne2");
+        }
+        memcpy(jsp, "01", 256);
+      }
+      sleep(1);
+      printf("t\n");
     }
+    exit(0);
   }
   printf("main process:%d\n", getpid());
   while (true)
