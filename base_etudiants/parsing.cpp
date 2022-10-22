@@ -35,21 +35,25 @@ bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* sec
     if (token == NULL) {
         return false;
     }
+    puts("herhehri");
     strcpy(fname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
+    puts("griffe");
     strcpy(lname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
+    puts("ahhe");
     *id = (unsigned)atol(token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
+    puts("ahahzhahah");
     strcpy(section, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {

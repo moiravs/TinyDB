@@ -18,11 +18,6 @@ typedef struct
     struct tm birthdate; /** Birth date **/
 } student_t;
 
-typedef struct
-{
-    student_t *next_student;
-    student_t *precedent_student;
-} student_list_t;
 
 /**
  * @brief Convert a student to a human-readlable string.
