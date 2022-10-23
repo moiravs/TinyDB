@@ -77,13 +77,5 @@ void db_delete(database_t *db, size_t indice)
     {
         db->data[i] = db->data[i + 1];
     }
-    for (size_t i = 0; i< db->lsize; i++){
-        puts("bri");
-        student_t s = db->data[i];
-        char *buffer = new char[521];
-        char birthdate[44];
-        strftime(birthdate, 44, "%d/%m/%Y", &s.birthdate);
-        snprintf(buffer, 512, "%i, %s, %s,%s, %s\n", s.id, s.fname, s.lname, s.section, birthdate);
-        printf("%s", buffer);
-    }
+
 }

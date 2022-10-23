@@ -139,6 +139,7 @@ void query_update(database_t *db, char *saveptr, char *query)
   {
 
     *s = db->data[i];
+    /*
     if (strcmp(fieldFilter, "id") == 0 && strcmp(s->id, valueFilter))
     {
       if (strcmp(fieldToUpdate, "id") == 0)
@@ -151,8 +152,8 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->section = *updateValue;
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
         *s->birthdate = *updateValue;
-    }
-    else if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter))
+    }*/
+    if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter))
     {
       if (strcmp(fieldToUpdate, "id") == 0)
         s->id = *updateValue;
@@ -162,8 +163,8 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->lname = *updateValue;
       else if (strcmp(fieldToUpdate, "section") == 0)
         *s->section = *updateValue;
-      else if (strcmp(fieldToUpdate, "birthdate") == 0)
-        *s->birthdate = *updateValue;
+      else if (strcmp(fieldToUpdate, "birthdate") == 0);
+       // *s->birthdate = *updateValue;
     }
     else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter))
     {

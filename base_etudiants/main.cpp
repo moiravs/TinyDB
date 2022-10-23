@@ -33,8 +33,6 @@ void gere_signal(int signum)
   kill(child_update, SIGKILL);
 }
 
-
-
 void *create_shared_memory(size_t size)
 {
   // Our memory buffer will be readable and writable:
@@ -58,10 +56,6 @@ int main(int argc, char const *argv[])
   db_init(db);
 
   db_load(db, db_path);
-  /*
-  database_t *shmem = (database_t *)create_shared_memory(db.psize);
-  memcpy(shmem, db.data, db.psize);
-  */
   // int err;
   int fd1[2];
   pipe(fd1);
@@ -95,14 +89,17 @@ int main(int argc, char const *argv[])
 
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
         memcpy(querymod, query, 256);
-        char * saveptr;
+        char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "select") == 0)
-          query_select_and_delete(db, query, saveptr, "select");
+        {
+          query_result_t *queryResult = new query_result_t();
+          query_result_init(queryResult, query);
+          query_select_and_delete(db, query, saveptr, "select");}
         memcpy(query, "01", 256);
-      }
+        }
       sleep(2);
     }
     exit(0);
@@ -135,9 +132,11 @@ int main(int argc, char const *argv[])
 
         if (strcmp(queryKey, "insert") == 0)
         {
-        }
+          query_result_t *queryResult = new query_result_t();
+          query_result_init(queryResult, query);
+          query_insert(db, query, saveptr);}
         memcpy(query, "01", 256);
-      }
+        }
       sleep(2);
       printf("t\n");
     }
@@ -160,16 +159,20 @@ int main(int argc, char const *argv[])
       read(fd3[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
-        query_result_t *queryResult = new query_result_t();
-        query_result_init(queryResult, query);
+
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
         memcpy(querymod, query, 256);
         char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
         queryKey = strtok_r(querymod, " ", &saveptr);
 
-        if (strcmp(queryKey, "update") == 0) query_update(db, saveptr, query);
-          
+        if (strcmp(queryKey, "update") == 0)
+        {
+          query_result_t *queryResult = new query_result_t();
+          query_result_init(queryResult, query);
+          query_update(db, saveptr, query);
+        }
+
         memcpy(query, "01", 256);
       }
       sleep(2);
@@ -202,9 +205,12 @@ int main(int argc, char const *argv[])
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "delete") == 0)
-          query_select_and_delete(db, query, saveptr, "delete");
-              memcpy(query, "01", 256);
-      }
+        {
+          query_result_t *queryResult = new query_result_t();
+          query_result_init(queryResult, query);
+          query_select_and_delete(db, query, saveptr, "delete");}
+        memcpy(query, "01", 256);
+        }
       sleep(2);
       printf("t\n");
     }
