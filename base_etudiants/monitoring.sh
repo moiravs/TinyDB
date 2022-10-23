@@ -57,6 +57,7 @@ then
             echo $pid
             read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || kill -SIGKILL $pid   
         done
+
     else
         kill "${2}"
     fi
