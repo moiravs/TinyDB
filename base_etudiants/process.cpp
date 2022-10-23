@@ -73,7 +73,7 @@ int main(int argc, char const *argv[])
         toto = 2;
         printf("select process:%d\n", getpid());
         char jsp[256] = "01";
-        puts("here");
+        //puts("here");
         char okidok[256] = "okido";
         while (true)
         {
