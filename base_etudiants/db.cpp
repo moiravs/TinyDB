@@ -91,5 +91,6 @@ void db_delete(database_t *db, size_t indice)
     db->lsize--;
     student_t *ptr = &db->data[indice+1];
     size_t size_to_copy = db->lsize-indice;
+    //stdcopy
     memcpy(&db->data[indice], &ptr, size_to_copy);
 }
