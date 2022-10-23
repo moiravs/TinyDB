@@ -10,7 +10,7 @@ void query_result_init(query_result_t *result, const char *query)
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
-  *result->query = *query;
+  memcpy(result->query,query,256);
   result->psize = sizeof(student_t);
   result->lsize = 0;
   result->students = (student_t *)malloc(sizeof(student_t));
@@ -45,8 +45,9 @@ void query_insert(database_t *db, char *query, char *saveptr)
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
   student_t *s = new student_t;
-  if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
+  if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)){
     db_add(db, *s);
+    query_result_add(queryResult, *s);}
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
   log_query(queryResult);

@@ -61,9 +61,6 @@ then
         kill "${2}"
     fi
 
-    
-
-
 
 else 
     echo "Wrong parameters"

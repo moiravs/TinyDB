@@ -46,16 +46,12 @@ int main(int argc, char const *argv[])
 
   database_t *db = (database_t *)create_shared_memory(sizeof(database_t));
   db_init(db);
-
   db_load(db, db_path);
   // int err;
-  int fd1[2];
+  int fd1[2], fd2[2], fd3[2], fd4[2];
   pipe(fd1);
-  int fd2[2];
   pipe(fd2);
-  int fd3[2];
   pipe(fd3);
-  int fd4[2];
   pipe(fd4);
   char query[256] = "0";
   child_select = fork();
