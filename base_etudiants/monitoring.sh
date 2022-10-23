@@ -59,6 +59,7 @@ then
         done
 
     else
+        echo An error message > /dev/stderr
         kill "${2}"
     fi
 

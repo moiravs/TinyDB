@@ -68,9 +68,7 @@ void db_add(database_t *db, student_t student)
 {
     db->lsize += 1;
     db_upsize(db);
-    std::cout << "tata" << std::endl;
     db->data[db->lsize] = student; // at end of db
-    std::cout << "bjr" << std::endl;
     char * buffer = new char[256];
     student_to_str(buffer, &db->data[db->lsize]);
     printf(buffer);
