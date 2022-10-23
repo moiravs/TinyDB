@@ -10,6 +10,7 @@ void query_result_init(query_result_t *result, const char *query)
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
+  *result->query = *query;
   result->psize = sizeof(student_t);
   result->lsize = 0;
   result->students = (student_t *)malloc(sizeof(student_t));
@@ -118,6 +119,7 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
       // break;
     }
   }
+  queryResult->status = QUERY_SUCCESS;
   log_query(queryResult);
   delete s;
   delete queryResult;
