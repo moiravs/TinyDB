@@ -145,10 +145,6 @@ void query_update(database_t *db, char *saveptr, char *query)
     /*
     if (strcmp(fieldFilter, "id") == 0 && strcmp(s->id, valueFilter))
     {
-<<<<<<< HEAD
-      db_add(db, *s);
-      query_result_add(queryResult, *s);
-=======
       if (strcmp(fieldToUpdate, "id") == 0)
         s->id = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
@@ -211,7 +207,6 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->section = *updateValue;
       else if (strcmp(fieldToUpdate, "birthdate") == 0);
        // *s->birthdate = *updateValue;
->>>>>>> 10684f5e3402422527faf1e634fce28eb7289d14
     }
     else
       std::cout << "An error has occurred during the select query : bad filter." << std::endl;
