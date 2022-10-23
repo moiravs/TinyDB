@@ -39,8 +39,9 @@ void query_list_upsize(query_result_t *result)
   }
 }
 
-void query_select_and_delete(database_t *db, query_result_t *queryResult, char *fieldFilter, char *value_str, char *value, student_t *s, char *date_str, const char *queryKey)
+void query_select_and_delete(database_t *db, query_result_t *queryResult, char *fieldFilter, char *value_str, char *value,char *date_str, const char *queryKey)
 {
+  student_t *s = new student_t;
   for (size_t i = 0; i < db->lsize; i++)
   {
 
@@ -108,7 +109,9 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
       // break;
     }
   }
+  delete s;
 }
+void query_update();
 
 void gestion_query(database_t *db, char *query, const char *keyWord)
 {
@@ -121,16 +124,14 @@ void gestion_query(database_t *db, char *query, const char *keyWord)
   queryKey = strtok_r(querymod, " ", &saveptr);
   memcpy(queryResult->query, queryKey, 6);
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
-  char value_str[64] = "0";
-  char date_str[64] = "0";
+  char value_str[64] = "0", date_str[64] = "0";
 
   
   queryResult->status = QUERY_SUCCESS;
-  puts("enft c la le souci");
-  printf("%s", query);
-  student_t *s = new student_t;
+  
   if (strcmp(keyWord, "insert") == 0)
   {
+    student_t *s = new student_t;
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
       db_add(db, *s);
@@ -145,12 +146,12 @@ void gestion_query(database_t *db, char *query, const char *keyWord)
   }
   else if (strcmp(keyWord, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
-    query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
+    query_select_and_delete(db, queryResult, fieldFilter, value_str, value, date_str, queryKey);
   }
 
   else if (strcmp(keyWord, "delete") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
-    query_select_and_delete(db, queryResult, fieldFilter, value_str, value, s, date_str, queryKey);
+    query_select_and_delete(db, queryResult, fieldFilter, value_str, value, date_str, queryKey);
   }
   log_query(queryResult);
   /*
@@ -163,6 +164,6 @@ void gestion_query(database_t *db, char *query, const char *keyWord)
       std::cout << buffer;
     }
   }*/
-  delete s;
+  
   delete queryResult;
 }

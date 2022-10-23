@@ -29,31 +29,26 @@ bool parse_update(char* query, char* field_filter, char* value_filter, char* fie
 }
 
 bool parse_insert(char* query, char* fname, char* lname, unsigned* id, char* section, struct tm* birthdate) {
-    std::cout << "jpasse par là ush" << query;
     char* token = strtok_r(NULL, " ", &query);
     
     if (token == NULL) {
         return false;
     }
-    puts("herhehri");
     strcpy(fname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
-    puts("griffe");
     strcpy(lname, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
-    puts("ahhe");
     *id = (unsigned)atol(token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {
         return false;
     }
-    puts("ahahzhahah");
     strcpy(section, token);
     token = strtok_r(NULL, " ", &query);
     if (token == NULL) {

@@ -18,11 +18,19 @@
 #include <sys/mman.h>
 
 static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
+pid_t child_select = -1;
+pid_t child_insert = -1;
+pid_t child_delete = -1;
+pid_t child_update = -1;
 
 void gere_signal(int signum)
 {
   printf("Programme terminé");
   keepRunning = 0;
+  kill(child_insert, SIGKILL);
+  kill(child_insert, SIGKILL);
+  kill(child_delete, SIGKILL);
+  kill(child_update, SIGKILL);
 }
 
 
@@ -64,7 +72,7 @@ int main(int argc, char const *argv[])
   int fd4[2];
   pipe(fd4);
   char query[256] = "0";
-  pid_t child_select = fork();
+  child_select = fork();
   if (child_select < 0)
   {
     perror("fork error");
@@ -101,7 +109,7 @@ int main(int argc, char const *argv[])
     exit(0);
   }
 
-  pid_t child_insert = fork();
+  child_insert = fork();
   if (child_insert < 0)
   {
     perror("fork error");
@@ -138,7 +146,7 @@ int main(int argc, char const *argv[])
     }
     exit(0);
   }
-  pid_t child_update = fork();
+  child_update = fork();
   if (child_update < 0)
   {
     perror("fork error");
@@ -175,7 +183,7 @@ int main(int argc, char const *argv[])
     }
     exit(0);
   }
-  pid_t child_delete = fork();
+  child_delete = fork();
   if (child_delete < 0)
   {
     perror("fork error");
@@ -215,6 +223,8 @@ int main(int argc, char const *argv[])
   printf("main process:%d\n", getpid());
   while (true)
   {
+    signal(SIGINT, gere_signal); // gere le signal genre ctrl c
+    signal(SIGUSR1, gere_signal);
     printf("command:");
     std::cin.getline(query, sizeof(query));
     close(fd2[0]);
@@ -238,79 +248,3 @@ int main(int argc, char const *argv[])
     */
   }
 }
-
-/*
-int main(int argc, char const *argv[])
-{
-  pid_t parent = getpid();
-  pid_t child = fork();
-
-  if (child != 0)
-  {
-    const char *db_path = argv[1];
-    database_t db;
-    db_init(&db);
-    db_load(&db, db_path);
-    struct pipes args;
-    creation_thread_and_pipes(&args);
-    args.db = &db;
-    puts("bribriaaa");
-        char query[sizeof(student_t)] = "0";
-    signal(SIGINT, gere_signal); // gere le signal genre ctrl c
-    signal(SIGUSR1, gere_signal);
-    std::cin.getline(query, sizeof(query));
-  }
-  else
-  {
-  // création threads
-  while (keepRunning)
-  {
-
-    if (strcmp(query,"0") == 0){
-      char *querymod = new char[sizeof(student_t)]; // créer un nv string modifiable car strtok modifie les strings
-      memcpy(querymod, query, sizeof(student_t));
-      const char *queryKey = new char[6]();
-      queryKey = strtok(querymod, " ");
-
-    if (strcmp(queryKey, "insert") == 0)
-    {
-      puts("bruh");
-      char * afairepasser = new char[256]();
-      memcpy(afairepasser, query, sizeof(student_t));
-      write(args.filed1[1], afairepasser, 256);
-      close(args.filed1[1]);
-    }
-    else if (strcmp(queryKey, "update") == 0)
-    {
-      puts("bruh");
-      char *afairepasser = new char[256]();
-      memcpy(afairepasser, query, sizeof(student_t));
-      write(args.filed2[1], afairepasser, 256);
-      close(args.filed2[1]);
-    }
-    else if (strcmp(queryKey, "select") == 0)
-    {
-      puts("bruh");
-      char *afairepasser = new char[256]();
-      memcpy(afairepasser, query, sizeof(student_t));
-      write(args.filed3[1], afairepasser, 256);
-      close(args.filed3[1]);
-    }
-    else if (strcmp(queryKey, "delete") == 0)
-    {
-      puts("bruh");
-      char *afairepasser = new char[256]();
-      memcpy(afairepasser, query, sizeof(student_t));
-      write(args.filed4[1], afairepasser, 256);
-      close(args.filed4[1]);
-    }
-    else
-    {
-      puts("wtf");
-    }}}
-  }
-
-  // db_save(&db, "test.txt");
-  printf("Bye bye!\n");
-  return 0;
-}*/
