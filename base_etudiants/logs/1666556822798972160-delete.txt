@@ -1,0 +1,663 @@
+Query "delete fname=Yannick" completed in 0.001792ms with 331 results.
+3611, Yannick, Jacob,info, 28/01/1998
+
+4341, Yannick, Simons ,physics, 18/11/1996
+
+5825, Yannick, Sanchez,pharma, 17/08/2002
+
+16316, Yannick, Nijs ,chemistry, 20/10/2001
+
+19063, Yannick, Vandenberghe ,chemistry, 22/02/1995
+
+20140, Yannick, Aerts ,pharma, 09/04/1999
+
+20743, Yannick, Cornet ,physics, 06/05/1998
+
+23832, Yannick, Goossens ,chemistry, 17/08/1999
+
+24229, Yannick, Maes ,info, 10/02/1995
+
+26295, Yannick, Hubert ,chemistry, 10/03/1998
+
+28196, Yannick, Barbier,pharma, 28/11/2002
+
+32924, Yannick, Reynaud,pharma, 16/05/2002
+
+38109, Yannick, Geerts ,math, 28/06/2000
+
+38759, Yannick, Pieters ,physics, 27/03/2002
+
+42628, Yannick, Claes,pharma, 15/09/1999
+
+51194, Yannick, Collignon ,info, 13/02/1998
+
+52027, Yannick, Dumas,chemistry, 05/10/2002
+
+54556, Yannick, Humbert,chemistry, 12/10/1997
+
+54699, Yannick, Delaunay,info, 08/02/1998
+
+58220, Yannick, Martin ,info, 16/04/2001
+
+58763, Yannick, Bertrand ,pharma, 15/03/1995
+
+73674, Yannick, Collignon ,info, 01/11/1994
+
+75662, Yannick, Desmet ,info, 08/04/1996
+
+75825, Yannick, Mertens ,math, 13/01/2002
+
+77092, Yannick, Leroy ,info, 23/04/2001
+
+78210, Yannick, Laurent ,info, 16/06/1994
+
+84387, Yannick, Verheyen ,chemistry, 25/03/2001
+
+84390, Yannick, Pichon,info, 02/12/1995
+
+86159, Yannick, Lemaire ,chemistry, 18/12/2001
+
+87565, Yannick, Olivier,physics, 19/08/1993
+
+88306, Yannick, Michaux ,math, 12/10/1997
+
+88311, Yannick, Roy,chemistry, 28/10/1995
+
+88931, Yannick, Vandenberghe ,info, 28/09/1999
+
+89148, Yannick, Lemaire ,physics, 11/11/1997
+
+89972, Yannick, De Backer ,physics, 03/10/1997
+
+94534, Yannick, Van Dyck ,info, 03/06/2000
+
+94770, Yannick, Vincent,info, 07/01/2002
+
+95844, Yannick, Lemoine,pharma, 23/12/2000
+
+107991, Yannick, Goossens ,math, 04/10/2000
+
+110574, Yannick, Maes ,info, 27/03/2000
+
+114267, Yannick, Boulanger,info, 21/12/2002
+
+120280, Yannick, Schmitz ,math, 12/04/1993
+
+121837, Yannick, Blanchard,math, 23/04/1998
+
+123076, Yannick, Charlier ,chemistry, 13/09/1997
+
+125941, Yannick, Delaunay,pharma, 13/02/1999
+
+128208, Yannick, Vandenberghe ,physics, 12/04/1995
+
+131052, Yannick, Benoit,info, 24/08/1998
+
+136023, Yannick, Verbeeck ,pharma, 27/05/1995
+
+136452, Yannick, Payet,math, 27/12/1999
+
+142272, Yannick, Guillaume,chemistry, 10/07/2002
+
+144867, Yannick, Renaud,math, 21/03/2002
+
+145413, Yannick, Willems ,math, 28/09/1995
+
+148443, Yannick, Bodart ,info, 14/05/1998
+
+150616, Yannick, Maes,info, 19/11/2000
+
+153322, Yannick, Cornelis ,chemistry, 20/01/1996
+
+154713, Yannick, Lemaire,chemistry, 15/06/1998
+
+157069, Yannick, Verstraeten ,physics, 20/02/1997
+
+157311, Yannick, Picard,chemistry, 02/09/2002
+
+163926, Yannick, Verstraeten ,info, 10/07/1995
+
+166408, Yannick, Garcia,info, 19/04/1999
+
+169012, Yannick, De Bruyn ,pharma, 28/11/2002
+
+172932, Yannick, Daems ,math, 01/12/2000
+
+174265, Yannick, Huet,pharma, 24/11/2001
+
+181171, Yannick, Grondin,pharma, 18/07/1997
+
+181602, Yannick, Simon ,pharma, 04/06/1999
+
+184299, Yannick, Brunet,info, 06/06/1993
+
+202103, Yannick, Fernandez,pharma, 17/05/1995
+
+202169, Yannick, Mertens ,info, 04/07/2002
+
+206724, Yannick, Collard ,info, 13/06/1998
+
+207430, Yannick, Brun,chemistry, 26/05/1993
+
+208267, Yannick, Leclercq ,physics, 09/05/1998
+
+209466, Yannick, De Smet,info, 02/07/1998
+
+210601, Yannick, Goossens ,info, 12/01/2002
+
+213451, Yannick, Dupuy,math, 12/08/2002
+
+218091, Yannick, Lambert,pharma, 02/04/1998
+
+223734, Yannick, Klein,chemistry, 18/11/1999
+
+227184, Yannick, Thomas ,pharma, 09/12/1999
+
+229070, Yannick, Vandenberghe ,chemistry, 25/06/2000
+
+229537, Yannick, Fournier,pharma, 24/11/1995
+
+244745, Yannick, De Pauw ,info, 14/01/1995
+
+246292, Yannick, Deschamps,physics, 17/07/1997
+
+248584, Yannick, Lopez,info, 20/06/2002
+
+257288, Yannick, Dierckx ,chemistry, 24/12/1997
+
+258674, Yannick, Hardy ,pharma, 21/04/1998
+
+262264, Yannick, Leroy ,chemistry, 11/05/1993
+
+268184, Yannick, Janssen ,chemistry, 19/11/1993
+
+271467, Yannick, Verbruggen ,pharma, 21/04/1999
+
+277352, Yannick, Guillaume ,math, 19/10/1999
+
+280966, Yannick, Duval,pharma, 02/07/1999
+
+281829, Yannick, Verhaeghe ,pharma, 02/12/2001
+
+283343, Yannick, Julien,math, 25/10/2001
+
+288835, Yannick, Roche,physics, 05/03/1999
+
+291324, Yannick, Perrier,chemistry, 15/08/2001
+
+293665, Yannick, Maes ,chemistry, 20/08/2001
+
+294319, Yannick, Duval,chemistry, 07/06/1993
+
+296897, Yannick, Da,physics, 06/09/1998
+
+297483, Yannick, Vermeiren ,chemistry, 22/08/2002
+
+298499, Yannick, Bouchet,pharma, 18/01/2000
+
+299272, Yannick, Bertrand ,pharma, 23/01/2001
+
+301122, Yannick, Gauthier,physics, 20/12/1999
+
+305973, Yannick, Denis ,physics, 22/11/1996
+
+308580, Yannick, Aerts ,chemistry, 09/10/1993
+
+319080, Yannick, Klein,info, 05/05/1995
+
+326407, Yannick, Adam ,info, 07/12/2002
+
+327104, Yannick, Timmermans ,pharma, 12/06/1996
+
+327852, Yannick, Payet,pharma, 13/07/2001
+
+336230, Yannick, Martens ,info, 18/01/1995
+
+340837, Yannick, Pichon,chemistry, 17/08/2001
+
+344168, Yannick, Vercammen ,pharma, 07/01/2001
+
+345887, Yannick, Marchand,info, 06/11/2002
+
+347765, Yannick, Benard,math, 24/08/2001
+
+355660, Yannick, Jacquet ,math, 05/09/2002
+
+359476, Yannick, Verhoeven ,info, 27/10/2000
+
+360605, Yannick, Michiels ,physics, 20/07/1998
+
+370118, Yannick, Heylen ,chemistry, 22/07/2002
+
+370605, Yannick, Maes ,pharma, 25/03/2000
+
+371708, Yannick, Willems,chemistry, 17/03/1999
+
+373805, Yannick, Hoarau,pharma, 24/01/2001
+
+375431, Yannick, Guillaume ,math, 07/04/1993
+
+382983, Yannick, Lemaire ,physics, 26/07/2000
+
+383091, Yannick, Rey,chemistry, 01/10/1995
+
+390170, Yannick, Mertens ,math, 05/07/2002
+
+392294, Yannick, De Meyer ,info, 15/04/1995
+
+395689, Yannick, Fontaine ,physics, 09/10/1999
+
+396925, Yannick, Geerts ,pharma, 09/01/1994
+
+403399, Yannick, Rolland,info, 04/10/2001
+
+413212, Yannick, Pierre ,pharma, 08/07/1999
+
+420560, Yannick, Fontaine ,info, 12/05/1994
+
+421507, Yannick, Bertrand ,info, 27/02/1996
+
+423316, Yannick, De Smet ,physics, 26/10/1999
+
+423583, Yannick, Piette ,pharma, 11/06/1997
+
+428117, Yannick, Carre,math, 24/03/1995
+
+429346, Yannick, Lecomte ,physics, 12/09/2000
+
+432045, Yannick, De Ridder ,physics, 20/02/1996
+
+434756, Yannick, Jacquet ,info, 15/01/1994
+
+437068, Yannick, Louis ,info, 22/04/1995
+
+438820, Yannick, De Smedt ,chemistry, 07/10/1995
+
+441112, Yannick, De Winter ,pharma, 26/05/1998
+
+441924, Yannick, Vermeersch ,chemistry, 01/01/1993
+
+446243, Yannick, Masson ,chemistry, 22/06/2002
+
+458095, Yannick, Verlinden ,math, 02/07/1996
+
+467170, Yannick, Vandenberghe ,physics, 01/05/1995
+
+470157, Yannick, Adam,chemistry, 19/08/1998
+
+474433, Yannick, Cools ,pharma, 27/05/1999
+
+475243, Yannick, Benoit,math, 04/12/1993
+
+477523, Yannick, Carre,chemistry, 20/12/1995
+
+478097, Yannick, Cousin,info, 20/09/1997
+
+481768, Yannick, Henry,physics, 18/11/1998
+
+483052, Yannick, Weber,physics, 23/02/1999
+
+486739, Yannick, Hoarau,chemistry, 08/04/1995
+
+487276, Yannick, Berger,physics, 01/06/2002
+
+490086, Yannick, Mathieu ,pharma, 13/04/2000
+
+502213, Yannick, Verstraete ,physics, 14/08/2001
+
+503494, Yannick, Van Acker ,pharma, 25/11/1997
+
+505241, Yannick, Besson,info, 19/12/1993
+
+506376, Yannick, David,physics, 02/09/1996
+
+507130, Yannick, Perrot,math, 11/01/2000
+
+507830, Yannick, Fleury,chemistry, 06/03/1995
+
+514004, Yannick, Dubois,info, 10/10/1999
+
+514306, Yannick, Lambrechts ,math, 10/08/1994
+
+514588, Yannick, Jacobs,physics, 25/02/1999
+
+520260, Yannick, Collignon ,info, 14/01/1999
+
+522795, Yannick, Fontaine,math, 10/06/1994
+
+525617, Yannick, Verlinden ,math, 12/02/2002
+
+525985, Yannick, Royer,info, 28/03/1995
+
+526622, Yannick, Leger,pharma, 19/01/1997
+
+529035, Yannick, Roger,pharma, 26/04/2001
+
+529334, Yannick, Simon,info, 06/10/2001
+
+529692, Yannick, Pierre,pharma, 05/10/1998
+
+539393, Yannick, Cornelis ,chemistry, 08/01/1994
+
+542741, Yannick, Fournier,info, 24/04/1999
+
+544574, Yannick, Da,physics, 21/08/1993
+
+544800, Yannick, Claes ,physics, 09/12/1996
+
+553152, Yannick, Henry,math, 03/04/2000
+
+561237, Yannick, Charles,physics, 07/05/1996
+
+562160, Yannick, Guillaume,physics, 19/10/1998
+
+562632, Yannick, Cools ,info, 03/02/1993
+
+565228, Yannick, Millet,math, 11/08/2002
+
+569482, Yannick, Verheyen ,physics, 26/03/2000
+
+573360, Yannick, Lemmens ,chemistry, 04/10/2002
+
+574611, Yannick, Pauwels ,info, 18/06/1995
+
+576316, Yannick, Wuyts ,chemistry, 04/11/1993
+
+576844, Yannick, Clement,chemistry, 01/05/1994
+
+584618, Yannick, Maes ,math, 25/05/1996
+
+586047, Yannick, Renard ,math, 25/03/1994
+
+586109, Yannick, Maes ,pharma, 14/06/2001
+
+592668, Yannick, Reynaud,math, 02/08/1993
+
+598268, Yannick, Menard,chemistry, 12/11/1993
+
+599123, Yannick, Mertens ,math, 27/09/1994
+
+599171, Yannick, Lemaire,chemistry, 23/11/2001
+
+601460, Yannick, Aubry,chemistry, 17/09/1999
+
+603894, Yannick, Peeters,math, 23/03/1998
+
+605402, Yannick, Lebrun,chemistry, 28/02/1994
+
+609573, Yannick, Laurent ,math, 20/04/1998
+
+609868, Yannick, Louis,math, 02/12/1995
+
+611314, Yannick, Olivier,physics, 27/06/1995
+
+617771, Yannick, Lejeune,pharma, 03/06/1997
+
+620309, Yannick, Van Hoof ,chemistry, 25/04/1994
+
+628736, Yannick, Leclerc,physics, 21/01/1998
+
+630470, Yannick, Masson,pharma, 24/03/1997
+
+635324, Yannick, Le,pharma, 04/09/1999
+
+636460, Yannick, Verstraete ,pharma, 06/08/1998
+
+637795, Yannick, Verhoeven ,math, 01/04/1996
+
+644185, Yannick, Urbain ,physics, 16/08/1998
+
+647107, Yannick, Vermeersch ,physics, 23/01/1998
+
+657654, Yannick, Verbeke ,pharma, 28/11/1998
+
+661651, Yannick, Vandenberghe ,pharma, 21/11/2000
+
+661711, Yannick, Bauwens ,physics, 04/04/1994
+
+662318, Yannick, Denis ,chemistry, 04/12/2000
+
+668898, Yannick, Louis,pharma, 15/08/1994
+
+670380, Yannick, De Smedt ,chemistry, 03/11/1996
+
+673162, Yannick, Gillet,chemistry, 05/04/1994
+
+673230, Yannick, Van Acker ,chemistry, 03/05/1995
+
+682688, Yannick, Hermans ,physics, 16/02/1999
+
+684205, Yannick, Lemaire,math, 21/03/2002
+
+687656, Yannick, Guillot,physics, 23/08/2001
+
+689194, Yannick, Desmet ,pharma, 07/01/2000
+
+689649, Yannick, Gay,pharma, 13/07/1995
+
+691426, Yannick, Dumont ,pharma, 25/09/1999
+
+698987, Yannick, Arnaud,info, 22/12/1995
+
+702008, Yannick, Caron,math, 18/05/1995
+
+707065, Yannick, Carlier,math, 21/05/2000
+
+708754, Yannick, Bauwens ,info, 09/09/1998
+
+710595, Yannick, Thys ,chemistry, 25/11/1995
+
+714438, Yannick, Raes ,math, 22/09/1995
+
+714703, Yannick, Dupont,pharma, 01/08/1995
+
+734871, Yannick, Denis ,info, 14/09/1995
+
+736359, Yannick, Joly,pharma, 04/11/1999
+
+738069, Yannick, Remy,math, 19/03/1995
+
+738261, Yannick, Millet,math, 07/07/1993
+
+740200, Yannick, Jacobs,physics, 18/09/1997
+
+740439, Yannick, Carlier ,info, 15/07/2002
+
+742330, Yannick, Verheyen ,math, 06/04/1995
+
+749328, Yannick, Wauters ,math, 25/11/1998
+
+752492, Yannick, Laurent ,pharma, 17/10/2001
+
+758153, Yannick, Schmitt,math, 23/03/2000
+
+759147, Yannick, Dupont,pharma, 20/12/1994
+
+761060, Yannick, Lefèvre ,info, 28/04/1998
+
+775355, Yannick, De Vos ,pharma, 28/03/1994
+
+775430, Yannick, Verlinden ,pharma, 06/01/1996
+
+780536, Yannick, Carlier,pharma, 15/03/1996
+
+781278, Yannick, Claes,physics, 03/08/1996
+
+785395, Yannick, De Smet ,physics, 28/12/1993
+
+785627, Yannick, Renard ,chemistry, 06/07/2001
+
+785654, Yannick, Chauvin,math, 21/01/2001
+
+786206, Yannick, Jacques ,math, 22/07/1993
+
+798461, Yannick, Maes,physics, 02/08/1993
+
+801636, Yannick, Noël ,pharma, 25/02/1997
+
+805508, Yannick, Perrin,chemistry, 27/10/1995
+
+809106, Yannick, Royer,chemistry, 10/07/2000
+
+809617, Yannick, Hardy ,pharma, 01/12/1994
+
+809623, Yannick, De Backer ,info, 24/08/1999
+
+811898, Yannick, Menard,math, 26/10/1998
+
+814229, Yannick, Guyot,math, 23/05/1996
+
+814965, Yannick, Goossens ,math, 21/06/2000
+
+815566, Yannick, Hardy ,info, 18/11/2001
+
+815712, Yannick, Leclercq ,chemistry, 12/02/1994
+
+815754, Yannick, Delhaye ,pharma, 11/06/2000
+
+815955, Yannick, Collin,chemistry, 09/10/1994
+
+819595, Yannick, Verheyen ,pharma, 18/04/1996
+
+820755, Yannick, Lambrechts ,pharma, 25/02/2002
+
+821171, Yannick, Pierre ,pharma, 16/03/1997
+
+824391, Yannick, Thomas ,chemistry, 23/02/2001
+
+824955, Yannick, Denis,info, 17/07/1997
+
+829638, Yannick, Cornet ,pharma, 02/11/1999
+
+830635, Yannick, De Ridder ,physics, 04/12/1997
+
+832232, Yannick, Lecomte,math, 16/08/2002
+
+832784, Yannick, Tessier,physics, 11/11/1997
+
+833889, Yannick, Dumont ,chemistry, 04/08/1994
+
+834393, Yannick, Weber,chemistry, 20/06/1997
+
+836399, Yannick, De Ridder ,pharma, 07/08/2000
+
+838779, Yannick, Aerts ,chemistry, 27/07/2001
+
+845257, Yannick, Lecocq ,physics, 07/09/2001
+
+845604, Yannick, Robert,math, 23/10/2000
+
+846034, Yannick, Marchal ,math, 01/10/1996
+
+846989, Yannick, Robin,physics, 27/07/1999
+
+847696, Yannick, Riviere,math, 24/11/2000
+
+849512, Yannick, Mertens ,physics, 05/10/1998
+
+850015, Yannick, Maes ,chemistry, 07/07/1997
+
+853083, Yannick, Lucas,physics, 14/07/1993
+
+855205, Yannick, Robin,math, 27/12/2001
+
+856259, Yannick, Pirard,math, 28/01/1995
+
+862714, Yannick, Morel,info, 09/02/1995
+
+868654, Yannick, Delfosse ,physics, 03/03/1993
+
+874812, Yannick, Julien,chemistry, 10/01/1999
+
+875518, Yannick, Martinez,math, 22/05/2000
+
+875859, Yannick, Petit,math, 10/11/1993
+
+878363, Yannick, Dupuis,physics, 04/10/2000
+
+879544, Yannick, Lebrun ,math, 25/01/1994
+
+879619, Yannick, Piron ,math, 08/06/1997
+
+881168, Yannick, Robin,physics, 03/02/2002
+
+881601, Yannick, Blanc,info, 23/04/1994
+
+884589, Yannick, Dumas,chemistry, 09/01/1993
+
+885169, Yannick, Michiels ,pharma, 19/11/2001
+
+885674, Yannick, Aerts ,chemistry, 15/05/1997
+
+886673, Yannick, Langlois,math, 16/06/1994
+
+886674, Yannick, Morel,chemistry, 09/03/2000
+
+893844, Yannick, Smet ,pharma, 18/11/1994
+
+895971, Yannick, Goossens,info, 26/09/2000
+
+904327, Yannick, Dupont ,chemistry, 05/11/2000
+
+904800, Yannick, Lacroix ,chemistry, 09/10/1993
+
+907297, Yannick, Reynaud,math, 28/07/2000
+
+910063, Yannick, Mertens,physics, 03/01/1993
+
+916257, Yannick, Verhoeven ,pharma, 14/07/1997
+
+919948, Yannick, Delfosse ,info, 17/07/2000
+
+923509, Yannick, Nicolas,physics, 26/06/2002
+
+929356, Yannick, Geerts ,physics, 15/09/1994
+
+937263, Yannick, Gilles ,pharma, 11/08/1993
+
+937539, Yannick, Jean,math, 15/06/1995
+
+938222, Yannick, Laurent ,info, 20/10/1998
+
+946783, Yannick, Devos ,info, 13/02/1994
+
+951914, Yannick, Chevallier,chemistry, 09/02/1993
+
+952544, Yannick, Van de Velde ,math, 06/06/1997
+
+953507, Yannick, Willems ,info, 14/03/2002
+
+957059, Yannick, Van den Broeck ,chemistry, 14/11/1997
+
+957996, Yannick, Francois,pharma, 14/06/1998
+
+960969, Yannick, De Pauw ,math, 04/10/1998
+
+961306, Yannick, Christiaens ,pharma, 05/04/1995
+
+962087, Yannick, Mallet,math, 20/05/2001
+
+963057, Yannick, Noël ,info, 24/02/1998
+
+970890, Yannick, Verhaegen ,chemistry, 12/04/2002
+
+973822, Yannick, Jacobs,math, 17/08/1994
+
+975083, Yannick, Marchal,math, 19/10/1995
+
+975529, Yannick, Mertens ,info, 27/10/1994
+
+984289, Yannick, Schmitt,pharma, 15/01/2000
+
+985645, Yannick, Lejeune,chemistry, 25/12/1993
+
+987696, Yannick, Leclercq ,chemistry, 01/01/1998
+
+993370, Yannick, Mertens ,math, 16/10/1994
+
+993498, Yannick, Blanchard,physics, 15/06/1998
+
+993503, Yannick, Weber,chemistry, 19/07/1994
+
+996605, Yannick, Roels ,physics, 04/05/2000
+

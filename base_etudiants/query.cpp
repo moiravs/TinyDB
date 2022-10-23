@@ -86,7 +86,9 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
       if (strcmp(s->fname, value) == 0)
       {
         query_result_add(queryResult, *s);
+        puts("heeeee");
         if (strcmp(queryKey, "delete"))
+          puts("yeeee");
           db_delete(db, i);
       }
     }
@@ -125,14 +127,12 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
     }
   }
   queryResult->status = QUERY_SUCCESS;
-  char *buffer = new char[512];
-  student_to_str(buffer, &db->data[db->lsize-1]);
-  printf(buffer);
-  student_to_str(buffer, &db->data[db->lsize-2]);
-  printf(buffer);
-  student_to_str(buffer, &db->data[db->lsize]);
-  std::cout << db->lsize;
-  printf(buffer);
+  for (size_t i = 0; i < db->lsize; i++)
+  {
+    char *buffer = new char[256];
+    student_to_str(buffer, &db->data[i]);
+    printf(buffer);
+  }
   log_query(queryResult);
   delete s;
   delete queryResult;

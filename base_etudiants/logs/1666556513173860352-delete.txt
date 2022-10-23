@@ -1,0 +1,701 @@
+Query "delete fname=Waldo" completed in 0.001792ms with 350 results.
+15714, Waldo, Bogaert ,physics, 08/02/1994
+
+18665, Waldo, Dumont ,chemistry, 01/02/2002
+
+22448, Waldo, Lemaire ,pharma, 08/10/2001
+
+27861, Waldo, Grondin,pharma, 04/10/2000
+
+31557, Waldo, Van de Velde ,info, 06/06/2001
+
+41422, Waldo, Baron,chemistry, 01/09/1994
+
+42840, Waldo, Olivier,info, 13/09/1993
+
+44715, Waldo, Wouters ,physics, 18/07/1996
+
+45904, Waldo, Lecocq ,pharma, 08/04/1994
+
+56426, Waldo, Claes,math, 19/11/1997
+
+59480, Waldo, Nicolas,chemistry, 18/08/1999
+
+59856, Waldo, Cornet ,math, 05/07/1996
+
+64900, Waldo, Marty,info, 05/08/1993
+
+64927, Waldo, Pichon,info, 02/02/1996
+
+65011, Waldo, Carlier,physics, 21/01/1994
+
+69176, Waldo, Lievens ,pharma, 10/01/1993
+
+74007, Waldo, Devos ,chemistry, 19/08/1998
+
+77502, Waldo, Perrot,info, 05/08/1995
+
+77635, Waldo, Aerts ,math, 06/08/2000
+
+78676, Waldo, Pauwels ,chemistry, 02/06/2002
+
+80122, Waldo, Pierre ,info, 24/08/1994
+
+80342, Waldo, Wuyts ,chemistry, 27/06/1996
+
+84971, Waldo, Lopez,physics, 04/02/2002
+
+86403, Waldo, Verhoeven ,chemistry, 25/07/2000
+
+87274, Waldo, Pirard,physics, 06/03/2000
+
+91003, Waldo, Etienne ,info, 21/03/1996
+
+92397, Waldo, Chevalier,chemistry, 08/02/1999
+
+93856, Waldo, Carlier,math, 17/05/1996
+
+96016, Waldo, Dupont ,math, 24/02/1999
+
+97054, Waldo, Benoit,physics, 26/02/1997
+
+102568, Waldo, Bastin ,chemistry, 19/11/2001
+
+105498, Waldo, Vermeulen ,info, 20/02/1995
+
+114672, Waldo, Masson ,pharma, 21/06/1996
+
+116511, Waldo, Bodart ,math, 01/04/1999
+
+123701, Waldo, Bogaerts ,math, 08/06/1995
+
+125797, Waldo, Raes ,math, 18/05/1999
+
+126535, Waldo, Perrot,info, 18/09/2000
+
+130825, Waldo, Michaux ,pharma, 18/01/1999
+
+134557, Waldo, Verbeke ,info, 17/01/1993
+
+134571, Waldo, Bogaert ,math, 16/12/1993
+
+137299, Waldo, Wouters ,math, 11/03/1996
+
+138458, Waldo, Baron,pharma, 21/07/1998
+
+142904, Waldo, Vercammen ,math, 15/09/2000
+
+147859, Waldo, Rodriguez,math, 23/03/2000
+
+153678, Waldo, Christiaens ,chemistry, 16/03/1995
+
+153889, Waldo, Le,physics, 06/05/1995
+
+155645, Waldo, Michaud,pharma, 12/04/1993
+
+156075, Waldo, Richard,pharma, 04/01/1994
+
+162235, Waldo, Aubry,pharma, 23/01/1998
+
+162375, Waldo, Adam ,info, 28/03/1994
+
+163289, Waldo, Descamps ,chemistry, 05/10/1995
+
+163421, Waldo, Vandenberghe ,physics, 11/07/2001
+
+168162, Waldo, Collignon ,math, 20/04/1997
+
+170001, Waldo, Collin,physics, 17/09/1996
+
+175929, Waldo, De Backer ,math, 16/01/1995
+
+176203, Waldo, Menard,pharma, 03/08/1995
+
+178905, Waldo, Moens ,math, 02/11/1997
+
+181257, Waldo, Dupuy,physics, 15/05/2002
+
+183260, Waldo, Lefevre,physics, 16/05/1994
+
+185015, Waldo, Barbier,chemistry, 28/01/2000
+
+187180, Waldo, Simon ,info, 24/02/2001
+
+187302, Waldo, Maes ,pharma, 20/11/1995
+
+188121, Waldo, Barre,pharma, 27/10/2002
+
+192346, Waldo, Mahieu ,physics, 21/07/1993
+
+193027, Waldo, Simon ,math, 06/07/1995
+
+194772, Waldo, Girard,info, 02/06/2002
+
+196760, Waldo, Brunet,chemistry, 19/01/1999
+
+198773, Waldo, Smet ,info, 28/01/1997
+
+199380, Waldo, Lemaire,chemistry, 14/11/1993
+
+200973, Waldo, Bogaert ,physics, 23/05/2002
+
+201012, Waldo, Duval,math, 05/12/2002
+
+210603, Waldo, Muller,info, 25/06/1993
+
+212824, Waldo, Delfosse ,math, 02/10/1994
+
+217082, Waldo, Renard ,pharma, 27/11/1997
+
+217319, Waldo, Barthelemy,pharma, 19/05/1995
+
+219333, Waldo, Verbeeck ,math, 23/01/1999
+
+220080, Waldo, Willems ,pharma, 20/02/1995
+
+223258, Waldo, Reynaud,physics, 23/08/1997
+
+223878, Waldo, Garcia,chemistry, 14/09/1999
+
+223983, Waldo, Mathieu ,physics, 07/07/1999
+
+227616, Waldo, Martens ,physics, 22/11/1996
+
+227991, Waldo, Sanchez,physics, 07/04/1997
+
+228081, Waldo, Lemaire ,physics, 12/04/1999
+
+229316, Waldo, Le,chemistry, 01/07/1999
+
+229814, Waldo, Moens ,info, 07/10/1997
+
+230343, Waldo, Poirier,pharma, 26/09/2000
+
+231023, Waldo, Verhoeven ,chemistry, 25/11/1998
+
+238508, Waldo, Lambrechts ,math, 17/02/1995
+
+240541, Waldo, Bertrand,pharma, 13/06/1997
+
+242353, Waldo, Dumas,chemistry, 01/07/1995
+
+243491, Waldo, Lacroix,physics, 27/06/2002
+
+244364, Waldo, Verhaegen ,chemistry, 22/06/2000
+
+247340, Waldo, Martinez,pharma, 18/04/1999
+
+249284, Waldo, David,physics, 08/01/1996
+
+250558, Waldo, Christiaens ,physics, 17/01/2001
+
+261981, Waldo, Guillaume ,physics, 10/02/1998
+
+262110, Waldo, Durand,info, 23/10/1993
+
+262839, Waldo, Vervoort ,info, 06/07/2000
+
+263602, Waldo, Meunier ,pharma, 14/09/1993
+
+264294, Waldo, Meunier ,info, 14/02/2002
+
+265069, Waldo, Brasseur ,pharma, 08/04/1993
+
+280940, Waldo, Timmermans ,info, 14/02/2001
+
+285061, Waldo, Roussel,pharma, 26/04/2001
+
+286630, Waldo, Lambrechts ,pharma, 02/12/1998
+
+288332, Waldo, Peeters ,pharma, 07/06/1994
+
+288670, Waldo, Léonard ,physics, 26/05/2002
+
+291327, Waldo, Willems,math, 24/10/2000
+
+297095, Waldo, Van Acker ,pharma, 06/09/1993
+
+298781, Waldo, Mathieu ,math, 22/12/1999
+
+300538, Waldo, Jacobs,chemistry, 18/01/2000
+
+303350, Waldo, Mathieu ,chemistry, 08/01/1999
+
+308414, Waldo, Bauwens ,math, 18/08/1993
+
+308426, Waldo, Henry ,pharma, 13/10/1998
+
+309498, Waldo, Coppens ,pharma, 20/11/2000
+
+312529, Waldo, Goossens ,math, 08/06/2001
+
+313108, Waldo, Massart ,chemistry, 06/09/2000
+
+314976, Waldo, Bonnet,math, 13/10/1997
+
+318796, Waldo, Beckers ,info, 22/12/1995
+
+328277, Waldo, Pauwels ,physics, 08/12/2000
+
+329750, Waldo, Dupuy,pharma, 18/01/1994
+
+330804, Waldo, Sanchez,pharma, 06/06/2002
+
+332325, Waldo, Boulanger,physics, 07/03/1993
+
+334229, Waldo, Leclercq ,pharma, 15/09/1996
+
+335619, Waldo, Rodriguez,chemistry, 04/06/1997
+
+337669, Waldo, Dubois ,pharma, 23/08/1998
+
+338281, Waldo, Chauvin,math, 06/10/1998
+
+339404, Waldo, Huet,math, 03/04/2000
+
+344269, Waldo, Remy,pharma, 05/08/1997
+
+344715, Waldo, Blanchard,chemistry, 20/07/1993
+
+346431, Waldo, Marty,math, 04/12/1999
+
+349256, Waldo, Thomas ,physics, 19/12/1999
+
+357402, Waldo, Lejeune ,physics, 08/01/2000
+
+358739, Waldo, Denis ,chemistry, 08/07/2001
+
+358910, Waldo, Leroy ,math, 01/01/1999
+
+360630, Waldo, Picard,physics, 03/06/1995
+
+365158, Waldo, Vermeersch ,pharma, 18/03/2000
+
+369054, Waldo, Geerts ,chemistry, 03/05/1993
+
+372845, Waldo, Geerts ,pharma, 23/10/2001
+
+373067, Waldo, David,chemistry, 19/08/2001
+
+379672, Waldo, Bodart ,physics, 06/08/1995
+
+383166, Waldo, Perrier,pharma, 14/08/2000
+
+383348, Waldo, Ceulemans ,pharma, 09/01/1998
+
+385067, Waldo, Maes ,physics, 11/11/1995
+
+385203, Waldo, Bogaerts ,info, 03/01/2002
+
+386065, Waldo, Cornelis ,physics, 26/04/1993
+
+386587, Waldo, Vasseur,pharma, 07/04/2002
+
+388174, Waldo, De Smet ,pharma, 14/04/1997
+
+390100, Waldo, Mertens ,physics, 05/04/1997
+
+392296, Waldo, Van den Broeck ,math, 07/10/1998
+
+396252, Waldo, Bernard,info, 02/11/1996
+
+400570, Waldo, Gautier,physics, 15/02/1994
+
+409274, Waldo, Léonard ,info, 26/08/2002
+
+410355, Waldo, Leroy,physics, 20/10/1994
+
+410809, Waldo, Verstraeten ,chemistry, 26/10/2001
+
+415937, Waldo, Mertens ,pharma, 22/04/1993
+
+418437, Waldo, Le,pharma, 24/04/1994
+
+422580, Waldo, Leclercq ,math, 22/07/1995
+
+422955, Waldo, Smets ,info, 09/02/1995
+
+424001, Waldo, Verstraeten ,chemistry, 07/04/1993
+
+425790, Waldo, Hamon,pharma, 17/02/2001
+
+430670, Waldo, Van de Velde ,info, 07/01/1994
+
+432064, Waldo, Guerin,pharma, 20/08/1999
+
+433582, Waldo, Lecocq ,math, 25/10/1993
+
+435267, Waldo, Descamps ,pharma, 08/09/1994
+
+438450, Waldo, Stevens ,pharma, 23/05/1998
+
+439461, Waldo, Bogaerts ,math, 03/11/1995
+
+441071, Waldo, Louis ,math, 07/12/1998
+
+441082, Waldo, Wouters ,math, 19/12/2002
+
+446269, Waldo, ,chemistry, 17/01/1993
+
+446315, Waldo, Léonard ,physics, 11/02/1993
+
+446540, Waldo, Timmermans ,info, 23/01/1998
+
+447687, Waldo, Clement,info, 21/12/1998
+
+450852, Waldo, Antoine ,math, 01/02/2002
+
+451206, Waldo, Baert ,info, 12/06/1993
+
+452179, Waldo, Vermeersch ,chemistry, 09/09/2000
+
+453146, Waldo, Janssen ,math, 21/10/1993
+
+455162, Waldo, Bertrand ,chemistry, 26/05/1994
+
+456329, Waldo, Chevallier,math, 25/11/1995
+
+467709, Waldo, Poncelet ,pharma, 21/08/1994
+
+469488, Waldo, Antoine,physics, 23/09/1994
+
+474685, Waldo, Marechal,info, 03/12/2002
+
+475681, Waldo, Pichon,pharma, 05/09/2001
+
+477544, Waldo, Hubert,info, 03/05/1998
+
+479958, Waldo, Hamon,math, 10/02/2001
+
+481850, Waldo, Smets ,physics, 22/01/2001
+
+482151, Waldo, Chauvin,math, 10/10/2001
+
+483582, Waldo, Van de Velde ,physics, 13/09/1998
+
+485002, Waldo, Robert,math, 05/12/2001
+
+487847, Waldo, Jacquet ,pharma, 13/02/1999
+
+497007, Waldo, Thiry ,chemistry, 05/10/1997
+
+501516, Waldo, Charles,physics, 21/12/1997
+
+507074, Waldo, Van den Broeck ,physics, 02/09/1996
+
+508550, Waldo, De Groote ,info, 10/06/2002
+
+509036, Waldo, Antoine,physics, 17/05/1999
+
+515877, Waldo, Moreau ,info, 02/09/2000
+
+516759, Waldo, Langlois,math, 23/12/1998
+
+520004, Waldo, Pichon,pharma, 07/05/1999
+
+522714, Waldo, Goffin ,physics, 15/08/1999
+
+527648, Waldo, Durand,info, 18/11/2002
+
+538501, Waldo, Léonard ,math, 07/07/2001
+
+539616, Waldo, Roche,physics, 14/04/2000
+
+540332, Waldo, Laurent,math, 10/03/2001
+
+542221, Waldo, Charles,physics, 04/07/1996
+
+543386, Waldo, Hermans ,pharma, 16/09/1997
+
+550938, Waldo, Lambrechts ,math, 02/09/2001
+
+552296, Waldo, Boulanger ,pharma, 28/01/1996
+
+558313, Waldo, Bailly,info, 17/08/1998
+
+559965, Waldo, Breton,chemistry, 15/07/2002
+
+569552, Waldo, Guillot,info, 15/08/1999
+
+571413, Waldo, Charpentier,math, 24/03/1999
+
+571682, Waldo, Claes,pharma, 18/07/1998
+
+573280, Waldo, Jacquet ,math, 02/08/1997
+
+583037, Waldo, Martens ,math, 07/01/1994
+
+583882, Waldo, Marchand,pharma, 27/04/1999
+
+584785, Waldo, Blanc,pharma, 06/03/1995
+
+589321, Waldo, Mathieu ,pharma, 13/01/1999
+
+589419, Waldo, Delhaye ,pharma, 25/03/1997
+
+591997, Waldo, Bastin ,pharma, 04/07/1998
+
+592802, Waldo, Vermeersch ,chemistry, 18/02/1997
+
+593644, Waldo, Collin ,info, 27/02/1995
+
+594936, Waldo, Toussaint ,pharma, 19/11/1994
+
+595550, Waldo, Schmitz ,chemistry, 21/09/1998
+
+598804, Waldo, Vermeiren ,pharma, 09/10/1999
+
+600262, Waldo, Van Hecke ,info, 04/12/2000
+
+602651, Waldo, Verhaegen ,info, 16/08/1994
+
+613962, Waldo, Barthelemy,pharma, 06/02/1999
+
+624847, Waldo, Nicolas,physics, 08/04/1999
+
+630257, Waldo, Lemmens ,physics, 19/05/2001
+
+630834, Waldo, Maillard,math, 13/05/1995
+
+631127, Waldo, Bailly,math, 04/07/1999
+
+634784, Waldo, Simon,physics, 25/07/1999
+
+637015, Waldo, Clement,physics, 19/01/1998
+
+638999, Waldo, Petit ,pharma, 20/01/2002
+
+642567, Waldo, Lemmens ,chemistry, 03/07/2000
+
+646030, Waldo, Stevens ,math, 05/12/1997
+
+648620, Waldo, Laporte,physics, 18/06/1995
+
+648880, Waldo, Thomas ,chemistry, 12/03/1998
+
+655381, Waldo, Wouters ,physics, 24/01/2001
+
+657444, Waldo, Descamps ,info, 02/05/1995
+
+657893, Waldo, Noel,info, 15/03/1998
+
+666207, Waldo, Renault,math, 12/02/1999
+
+671777, Waldo, Gérard ,math, 28/04/1999
+
+674750, Waldo, Guichard,pharma, 11/10/2001
+
+686793, Waldo, Gauthier,math, 08/10/2000
+
+688864, Waldo, Marechal,pharma, 24/10/1993
+
+693059, Waldo, Remy,chemistry, 11/07/1993
+
+694570, Waldo, Gérard ,pharma, 22/07/1995
+
+694975, Waldo, Renault,pharma, 09/01/2002
+
+707921, Waldo, Michiels ,chemistry, 06/06/1993
+
+710758, Waldo, Lopez,physics, 03/06/2002
+
+711068, Waldo, De Smet,info, 12/04/1996
+
+725460, Waldo, Lejeune,chemistry, 21/09/1996
+
+726347, Waldo, Jacobs,info, 10/11/1993
+
+733837, Waldo, Michiels ,chemistry, 14/06/1996
+
+736027, Waldo, Verheyen ,math, 13/03/1999
+
+736926, Waldo, Timmermans ,info, 14/11/2002
+
+737413, Waldo, Sanchez,math, 10/02/1997
+
+738518, Waldo, Sanchez,math, 02/06/2002
+
+748653, Waldo, Masson ,physics, 12/10/1998
+
+749571, Waldo, Le,physics, 16/03/1997
+
+752946, Waldo, Antoine,info, 04/01/1998
+
+753383, Waldo, Julien,chemistry, 01/12/1997
+
+755332, Waldo, De Bruyn ,physics, 08/12/1996
+
+760028, Waldo, Aerts ,pharma, 12/05/2001
+
+762925, Waldo, Leger,math, 27/04/2001
+
+768580, Waldo, Caron,chemistry, 10/04/1996
+
+770182, Waldo, Lambert,physics, 09/12/2001
+
+771755, Waldo, Legrand,pharma, 26/01/2000
+
+773845, Waldo, Van den Broeck ,physics, 14/05/1997
+
+775957, Waldo, Hendrickx ,physics, 05/04/1997
+
+780167, Waldo, Verbruggen ,math, 19/10/1994
+
+780384, Waldo, Guyot,physics, 02/06/1995
+
+781270, Waldo, Noël ,pharma, 28/07/1995
+
+782878, Waldo, Deschamps,physics, 06/02/1996
+
+787365, Waldo, Fleury,physics, 22/09/2001
+
+788980, Waldo, Moreau ,pharma, 03/09/2000
+
+790751, Waldo, Servais ,info, 06/06/1999
+
+791183, Waldo, Antoine,chemistry, 15/07/2001
+
+800607, Waldo, Lucas,chemistry, 10/07/1996
+
+801031, Waldo, Verhaegen ,pharma, 14/08/1995
+
+808895, Waldo, Legrand,chemistry, 12/07/2001
+
+814106, Waldo, Michiels ,pharma, 05/05/1998
+
+819206, Waldo, Reynaud,chemistry, 01/10/2001
+
+820988, Waldo, Clement,chemistry, 06/03/2001
+
+824850, Waldo, Monnier,physics, 15/06/1996
+
+826347, Waldo, Adam ,physics, 24/09/1997
+
+831633, Waldo, Lambrechts ,physics, 23/10/2001
+
+835386, Waldo, Michel,chemistry, 17/04/2000
+
+839998, Waldo, Janssen ,math, 24/01/1994
+
+845037, Waldo, Lacroix ,chemistry, 04/02/1993
+
+846222, Waldo, Vermeulen ,physics, 25/04/2001
+
+849447, Waldo, Lecomte,physics, 02/09/1997
+
+852121, Waldo, Jacquet ,pharma, 08/12/2002
+
+852564, Waldo, Boulanger ,math, 10/06/1994
+
+854290, Waldo, Gillet ,info, 04/07/1997
+
+854424, Waldo, De Vos ,chemistry, 15/11/2001
+
+855801, Waldo, Claessens ,info, 03/03/1996
+
+856081, Waldo, Dupuy,chemistry, 01/02/1999
+
+856686, Waldo, Somers ,math, 03/11/1997
+
+859650, Waldo, Bouvier,info, 22/06/2002
+
+860342, Waldo, Gérard ,info, 11/12/2002
+
+864246, Waldo, Petit ,info, 10/07/2001
+
+866898, Waldo, Lauwers ,math, 06/12/1998
+
+870724, Waldo, Willems,physics, 05/03/1996
+
+872756, Waldo, Janssens,math, 08/07/2000
+
+876092, Waldo, Gilson ,pharma, 12/10/1997
+
+880991, Waldo, Jacobs,chemistry, 21/07/1996
+
+886661, Waldo, Mathieu ,math, 21/01/1996
+
+891715, Waldo, Blanchard,info, 12/01/1997
+
+896248, Waldo, De Coninck ,math, 18/06/1997
+
+896428, Waldo, Goossens ,physics, 25/02/2002
+
+897282, Waldo, Le,pharma, 23/03/1994
+
+898037, Waldo, Michel ,chemistry, 08/10/1998
+
+898394, Waldo, Janssen ,chemistry, 22/08/2001
+
+902499, Waldo, Willems ,info, 06/01/1994
+
+909300, Waldo, Rolland,chemistry, 03/04/1996
+
+914461, Waldo, Hoarau,physics, 06/08/1997
+
+915723, Waldo, Charlier ,info, 10/12/2000
+
+921662, Waldo, De Smet,info, 11/09/2002
+
+922068, Waldo, Lambert ,physics, 10/03/1993
+
+925518, Waldo, Jansen ,physics, 21/08/1997
+
+926794, Waldo, Perrin,chemistry, 16/05/1999
+
+928350, Waldo, Philippe,physics, 03/10/1995
+
+928818, Waldo, Laurent ,info, 23/03/1997
+
+929515, Waldo, Maes ,physics, 25/04/1997
+
+930711, Waldo, Chauvin,math, 28/02/2001
+
+934814, Waldo, Pieters ,chemistry, 24/12/1996
+
+938521, Waldo, Beckers ,math, 25/04/1999
+
+938953, Waldo, Verhaegen ,math, 03/05/2001
+
+943310, Waldo, Timmermans ,math, 24/12/1994
+
+944160, Waldo, Martin,physics, 23/06/1996
+
+944437, Waldo, Carlier,math, 14/11/1993
+
+950189, Waldo, Bauwens ,pharma, 23/09/1993
+
+953097, Waldo, Brun,physics, 05/08/2002
+
+956003, Waldo, Rousseau ,chemistry, 13/09/1999
+
+957733, Waldo, Marty,info, 21/02/2002
+
+958359, Waldo, Verhaegen ,info, 21/06/2001
+
+958416, Waldo, Hamon,physics, 03/10/1996
+
+961075, Waldo, Vercammen ,chemistry, 11/07/1998
+
+962748, Waldo, Andre,physics, 09/01/1996
+
+968666, Waldo, Cools ,pharma, 25/05/1996
+
+977225, Waldo, Bernard,physics, 23/12/1996
+
+980316, Waldo, Van Dyck ,pharma, 02/03/1999
+
+981129, Waldo, François ,pharma, 24/11/1997
+
+986571, Waldo, De Smedt ,pharma, 15/06/2001
+
+992123, Waldo, François ,chemistry, 14/07/1994
+
+994456, Waldo, Charlier ,info, 28/03/1994
+
+994681, Waldo, De Smet ,physics, 11/05/1994
+
+998697, Waldo, Mertens ,math, 05/01/1993
+
+999996, Waldo, Goossens ,physics, 21/05/2000
+
