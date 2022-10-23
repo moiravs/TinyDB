@@ -44,7 +44,7 @@ void db_load(database_t *db, const char *path)
 
 void db_upsize(database_t *db)
 {
-    puts("here");
+    //puts("here");
     if (db->lsize >= (db->psize / sizeof(student_t)))
     {
         puts("bfrfrfr");

@@ -134,6 +134,7 @@ void gestion_query(database_t *db, char *query, const char *keyWord)
     if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
     {
       db_add(db, *s);
+      query_result_add(queryResult, *s);
     }
     else
     {

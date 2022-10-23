@@ -74,7 +74,7 @@ int main(int argc, char const *argv[])
   {
     printf("select process:%d\n", getpid());
     char jsp[256] = "01";
-    puts("here");
+    //puts("here");
 
     while (true)
     {
@@ -110,7 +110,7 @@ int main(int argc, char const *argv[])
   {
     printf("insert process:%d\n", getpid());
     char jsp[256] = "01";
-    puts("here");
+    //puts("here");
 
     while (true)
     {
@@ -147,7 +147,7 @@ int main(int argc, char const *argv[])
   {
     printf("update process:%d\n", getpid());
     char jsp[256] = "01";
-    puts("here");
+    //puts("here");
 
     while (true)
     {
@@ -184,7 +184,7 @@ int main(int argc, char const *argv[])
   {
     printf("delete process:%d\n", getpid());
     char jsp[256] = "01";
-    puts("here");
+    //puts("here");
 
     while (true)
     {

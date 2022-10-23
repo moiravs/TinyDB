@@ -9,16 +9,16 @@ if [ "${1}" == "run" ]; then
         esac    
     done
     file="${2:-students.bin}"
-    if [ "$file" == "-f" ]; 
+    if [ "${file}" == "-f" ]; 
     then
         file="students.bin"
     fi
-    if [[ ! -f "$file" ]]
+    if [[ ! -f "${file}" ]]
     then 
-        echo "$1" 1>&2
+        echo "${1}" 1>&2
         touch $file
     fi
-    echo "Fichiers requetes: $fichier_requetes";
+    echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
     ./tinydb "$file"
 fi
