@@ -20,28 +20,50 @@ if [ "${1}" == "run" ]; then
     fi
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
-    ./tinydb "$file"
+    echo "whit";
+    ./tinydb "$file";
+    echo "what";
+    pids = $(pgrep <tinydb>);
+    echo "pids : $pids";
 fi
+
+
 
 
 if [ "${1}" == "sync" ]
 then
     echo "sync"
+    proc= "tinydb"
+    killall -s INT tinydb
+
 elif [ "${1}" == "status" ]
 then
-    process_id= pidof tinydb
     echo "status"
-    echo "${process_id}"
+    proc="tinydb"
+    pids=$(pgrep "$proc")
+    if [[ -n $pids ]]; then
+        printf "%s\n\nThere are currently %d processes running under the application '%s'\n" \
+            "$pids" "$(wc -l <<< "$pids")" "$proc"
+    fi
 
 elif [ "${1}" == "shutdown" ]
 then
     if [ $# -eq 1 ]
     then
-        echo "No arguments provided"
-        exit 1
+        proc="tinydb"
+        pids=$(pgrep "$proc")
+        for pid in $pids
+        do
+            echo $pid
+            read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || kill -SIGKILL $pid   
+        done
     else
         kill "${2}"
     fi
+
+    
+
+
 
 else 
     echo "Wrong parameters"
