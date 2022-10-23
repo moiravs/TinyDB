@@ -1,0 +1,3 @@
+Query "delete id=999980" completed in 0.000000ms with 1 results.
+999980, Abdelilah, Lambert ,info, 16/11/1993
+
