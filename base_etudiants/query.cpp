@@ -111,7 +111,60 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
   }
   delete s;
 }
-void query_update();
+void query_update(database_t* db, char * fieldFilter, char* valueFilter, char* fieldToUpdate, char* updateValue){
+   student_t *s = new student_t;
+  for (size_t i = 0; i < db->lsize; i++)
+  {
+
+    *s = db->data[i];
+    if (strcmp(fieldFilter, "id") == 0 && strcmp(s->id,valueFilter))
+    {
+      if (strcmp(fieldToUpdate, "id") == 0){ s->id = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0) {*s->fname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0){*s->lname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "section") == 0) {*s->section = *updateValue;}
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){*s->birthdate = *updateValue;}
+    }
+    else if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname,valueFilter))
+    {
+      if (strcmp(fieldToUpdate, "id") == 0){ s->id = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0) {*s->fname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0){*s->lname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "section") == 0) {*s->section = *updateValue;}
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){*s->birthdate = *updateValue;}
+    }
+    else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter))
+    {
+      if (strcmp(fieldToUpdate, "id") == 0){ s->id = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0) {*s->fname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0){*s->lname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "section") == 0) {*s->section = *updateValue;}
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){*s->birthdate = *updateValue;}
+    }
+    else if (strcmp(fieldFilter, "section") == 0 && strcmp(s->section, valueFilter))
+    {
+      if (strcmp(fieldToUpdate, "id") == 0){ s->id = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0) {*s->fname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0){*s->lname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "section") == 0) {*s->section = *updateValue;}
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){*s->birthdate = *updateValue;}
+    }
+    else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(s->fname, valueFilter))
+    {
+      if (strcmp(fieldToUpdate, "id") == 0){ s->id = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0) {*s->fname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "lname") == 0){*s->lname = *updateValue;}
+      else if (strcmp(fieldToUpdate, "section") == 0) {*s->section = *updateValue;}
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){*s->birthdate = *updateValue;}
+    }
+    else
+    {
+      std::cout << "An error has occurred during the select query : bad filter." << std::endl;
+      // break;
+    }
+  }
+  delete s;
+}
 
 void gestion_query(database_t *db, char *query, const char *keyWord)
 {
@@ -143,6 +196,7 @@ void gestion_query(database_t *db, char *query, const char *keyWord)
   }
   else if (strcmp(keyWord, "update") == 0 && parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))
   {
+    query_update(db, fieldFilter, valueFilter, fieldToUpdate, updateValue)
   }
   else if (strcmp(keyWord, "select") == 0 && parse_selectors(saveptr, fieldFilter, value))
   {
