@@ -46,11 +46,15 @@ void query_insert(database_t *db, char *query, char *saveptr)
   query_result_init(queryResult, query);
   student_t *s = new student_t;
   if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)){
+    std::cout << "db " << &db << " db->data " << &db->data;
     db_add(db, *s);
     query_result_add(queryResult, *s);}
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
   log_query(queryResult);
+  char * buffer = new char[512];
+  student_to_str(buffer, &db->data[db->lsize]);
+  printf(buffer);
   delete queryResult;
 }
 
@@ -121,6 +125,14 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
     }
   }
   queryResult->status = QUERY_SUCCESS;
+  char *buffer = new char[512];
+  student_to_str(buffer, &db->data[db->lsize-1]);
+  printf(buffer);
+  student_to_str(buffer, &db->data[db->lsize-2]);
+  printf(buffer);
+  student_to_str(buffer, &db->data[db->lsize]);
+  std::cout << db->lsize;
+  printf(buffer);
   log_query(queryResult);
   delete s;
   delete queryResult;

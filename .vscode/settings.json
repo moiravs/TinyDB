@@ -33,6 +33,14 @@
         "type_traits": "cpp",
         "tuple": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "bit": "cpp",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "ctime": "cpp",
+        "memory": "cpp",
+        "mutex": "cpp",
+        "ratio": "cpp",
+        "thread": "cpp"
     }
 }

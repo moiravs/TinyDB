@@ -46,14 +46,19 @@ int main(int argc, char const *argv[])
 
   database_t *db = (database_t *)create_shared_memory(sizeof(database_t));
   db_init(db);
+
   db_load(db, db_path);
   // int err;
-  int fd1[2], fd2[2], fd3[2], fd4[2];
+  int fd1[2];
   pipe(fd1);
+  int fd2[2];
   pipe(fd2);
+  int fd3[2];
   pipe(fd3);
+  int fd4[2];
   pipe(fd4);
   char query[256] = "0";
+  
   child_select = fork();
   if (child_select < 0)
   {
@@ -63,8 +68,39 @@ int main(int argc, char const *argv[])
   if (child_select == 0)
   {
     printf("select process:%d\n", getpid());
+    char query[256] = "01";
+    puts("here");
+
+    while (true)
+    {
+      close(fd2[1]);
+      read(fd2[0], query, 256);
+      if (strcmp(query, "01") != 0)
+      {
+        query_result_t *queryResult = new query_result_t();
+        query_result_init(queryResult, query);
+
+        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        memcpy(querymod, query, 256);
+        char *saveptr;
+        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        queryKey = strtok_r(querymod, " ", &saveptr);
+
+        if (strcmp(queryKey, "select") == 0)
+        {
+          query_result_t *queryResult = new query_result_t();
+          query_result_init(queryResult, query);
+          query_select_and_delete(db, query, saveptr, "select");
+        }
+        memcpy(query, "01", 256);
+      }
+      sleep(2);
+    }
+    exit(0);
+  }
 
   child_insert = fork();
+  if (child_insert < 0)
   {
     perror("fork error");
   }
@@ -80,8 +116,6 @@ int main(int argc, char const *argv[])
       read(fd1[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
-        query_result_t *queryResult = new query_result_t();
-        query_result_init(queryResult, query);
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
         memcpy(querymod, query, 256);
         char *saveptr;
@@ -92,9 +126,10 @@ int main(int argc, char const *argv[])
         {
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
-          query_insert(db, query, saveptr);}
-        memcpy(query, "01", 256);
+          query_insert(db, query, saveptr);
         }
+        memcpy(query, "01", 256);
+      }
       sleep(2);
       printf("t\n");
     }
@@ -108,8 +143,13 @@ int main(int argc, char const *argv[])
   if (child_update == 0)
   {
     printf("update process:%d\n", getpid());
+    char query[256] = "01";
+    puts("here");
+
+    while (true)
     {
       close(fd3[1]);
+      read(fd3[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
 
@@ -141,8 +181,18 @@ int main(int argc, char const *argv[])
   if (child_delete == 0)
   {
     printf("delete process:%d\n", getpid());
+    char query[256] = "01";
+    puts("here");
+
+    while (true)
+    {
+      close(fd4[1]);
+      read(fd4[0], query, 256);
+      if (strcmp(query, "01") != 0)
+      {
 
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        memcpy(querymod, query, 256);
         char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
         queryKey = strtok_r(querymod, " ", &saveptr);
@@ -151,9 +201,10 @@ int main(int argc, char const *argv[])
         {
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
-          query_select_and_delete(db, query, saveptr, "delete");}
-        memcpy(query, "01", 256);
+          query_select_and_delete(db, query, saveptr, "delete");
         }
+        memcpy(query, "01", 256);
+      }
       sleep(2);
       printf("t\n");
     }

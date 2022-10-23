@@ -47,10 +47,13 @@ void db_upsize(database_t *db)
     //puts("here");
     if (db->lsize >= (db->psize / sizeof(student_t)))
     {
-        puts("bfrfrfr");
         size_t old_psize = db->psize;
-        db->psize = db->psize * 2;
-        db->data = (student_t *)mremap(db->data, old_psize, db->psize, MREMAP_MAYMOVE);
+        db->psize *= 2;
+        student_t * toto;
+        toto = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+        memcpy(toto, db->data, old_psize);
+        munmap(db->data, old_psize);
+        db->data = toto;
     }
 }
 
@@ -58,14 +61,19 @@ void db_init(database_t *db)
 {
     db->lsize = 0;
     db->psize = sizeof(student_t) * 16;
-    db->data = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
+    db->data = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC|MAP_SHARED|MAP_ANONYMOUS , -1, 0);
 }
 
 void db_add(database_t *db, student_t student)
 {
     db->lsize += 1;
     db_upsize(db);
+    std::cout << "tata" << std::endl;
     db->data[db->lsize] = student; // at end of db
+    std::cout << "bjr" << std::endl;
+    char * buffer = new char[256];
+    student_to_str(buffer, &db->data[db->lsize]);
+    printf(buffer);
 }
 
 void db_delete(database_t *db, size_t indice)
