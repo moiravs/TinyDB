@@ -81,28 +81,27 @@ int main(int argc, char const *argv[])
   if (child_select == 0)
   {
     printf("select process:%d\n", getpid());
-    char jsp[256] = "01";
+    char query[256] = "01";
     puts("here");
 
     while (true)
     {
       close(fd2[1]);
-      read(fd2[0], jsp, 256);
-      if (strcmp(jsp, "01") != 0)
+      read(fd2[0], query, 256);
+      if (strcmp(query, "01") != 0)
       {
+        query_result_t *queryResult = new query_result_t();
+        query_result_init(queryResult, query);
 
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-        memcpy(querymod, jsp, 256);
+        memcpy(querymod, query, 256);
+        char * saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
-        queryKey = strtok(querymod, " ");
+        queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "select") == 0)
-        {
-
-          gestion_query(db, jsp, queryKey);
-          puts("ahhh ça fonctionne2");
-        }
-        memcpy(jsp, "01", 256);
+          query_select_and_delete(db, query, saveptr, "select");
+        memcpy(query, "01", 256);
       }
       sleep(2);
     }
@@ -117,29 +116,27 @@ int main(int argc, char const *argv[])
   if (child_insert == 0)
   {
     printf("insert process:%d\n", getpid());
-    char jsp[256] = "01";
+    char query[256] = "01";
     puts("here");
 
     while (true)
     {
       close(fd1[1]);
-      read(fd1[0], jsp, 256);
-      if (strcmp(jsp, "01") != 0)
+      read(fd1[0], query, 256);
+      if (strcmp(query, "01") != 0)
       {
-
+        query_result_t *queryResult = new query_result_t();
+        query_result_init(queryResult, query);
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-        memcpy(querymod, jsp, 256);
+        memcpy(querymod, query, 256);
         char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "insert") == 0)
         {
-
-          gestion_query(db, jsp, queryKey);
-          puts("ahhh ça fonctionne2");
         }
-        memcpy(jsp, "01", 256);
+        memcpy(query, "01", 256);
       }
       sleep(2);
       printf("t\n");
@@ -154,29 +151,26 @@ int main(int argc, char const *argv[])
   if (child_update == 0)
   {
     printf("update process:%d\n", getpid());
-    char jsp[256] = "01";
+    char query[256] = "01";
     puts("here");
 
     while (true)
     {
       close(fd3[1]);
-      read(fd3[0], jsp, 256);
-      if (strcmp(jsp, "01") != 0)
+      read(fd3[0], query, 256);
+      if (strcmp(query, "01") != 0)
       {
-
+        query_result_t *queryResult = new query_result_t();
+        query_result_init(queryResult, query);
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-        memcpy(querymod, jsp, 256);
+        memcpy(querymod, query, 256);
         char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
         queryKey = strtok_r(querymod, " ", &saveptr);
 
-        if (strcmp(queryKey, "update") == 0)
-        {
-
-          gestion_query(db, jsp, queryKey);
-          puts("ahhh ça fonctionne2");
-        }
-        memcpy(jsp, "01", 256);
+        if (strcmp(queryKey, "update") == 0) query_update(db, saveptr, query);
+          
+        memcpy(query, "01", 256);
       }
       sleep(2);
       printf("t\n");
@@ -191,29 +185,25 @@ int main(int argc, char const *argv[])
   if (child_delete == 0)
   {
     printf("delete process:%d\n", getpid());
-    char jsp[256] = "01";
+    char query[256] = "01";
     puts("here");
 
     while (true)
     {
       close(fd4[1]);
-      read(fd4[0], jsp, 256);
-      if (strcmp(jsp, "01") != 0)
+      read(fd4[0], query, 256);
+      if (strcmp(query, "01") != 0)
       {
 
         char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-        memcpy(querymod, jsp, 256);
+        memcpy(querymod, query, 256);
         char *saveptr;
         const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "delete") == 0)
-        {
-
-          gestion_query(db, jsp, queryKey);
-          puts("ahhh ça fonctionne2");
-        }
-        memcpy(jsp, "01", 256);
+          query_select_and_delete(db, query, saveptr, "delete");
+              memcpy(query, "01", 256);
       }
       sleep(2);
       printf("t\n");

@@ -39,11 +39,11 @@ void query_result_add(query_result_t *result, student_t s);
  **/
 void query_list_upsize(query_result_t *result);
 
-/**
- * Handles the select query
- **/
-void query_select_and_delete(database_t *db, query_result_t *queryResult, char *fieldFilter, char *value_str, char *value, char *date_str, const char *queryKey);
+void query_insert(database_t *db, char *query, char *saveptr);
 
-void gestion_query(database_t *db, char *query, const char *keyWord);
-
+void query_update(database_t *db, char *saveptr, char *query);
+    /**
+     * Handles the select query
+     **/
+void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey);
 #endif
