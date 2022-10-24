@@ -1,5 +1,4 @@
 #include "db.hpp"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -23,7 +22,6 @@ void db_save(database_t *db, const char *path)
         perror("Could not write in the DB file");
         exit(1);
     }
-    std::cout << "i wrote";
     fclose(f);
 }
 
@@ -45,15 +43,15 @@ void db_load(database_t *db, const char *path)
 
 void db_upsize(database_t *db)
 {
-    if (db->lsize >= (db->psize / sizeof(student_t)))
+    if (db->lsize >= (db->psize / sizeof(student_t)))  // if we reached the end of the allocated size for db
     {
-        size_t old_psize = db->psize;
+        size_t oldPsize = db->psize;
         db->psize *= 2;
-        student_t * toto;
-        toto = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-        memcpy(toto, db->data, old_psize);
-        munmap(db->data, old_psize);
-        db->data = toto;
+        student_t *newStudent;
+        newStudent = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+        memcpy(newStudent, db->data, oldPsize);  // copy db to newly allocated memory
+        munmap(db->data, oldPsize);  // deallocate old memory
+        db->data = newStudent;
     }
 }
 
