@@ -212,15 +212,18 @@ int main(int argc, char const *argv[])
   {
     signal(SIGINT, signal_handling); // gere le signal genre ctrl c
     signal(SIGUSR1, signal_handling);
-    std::cin.getline(query, sizeof(query));
-    close(fd2[0]);
-    write(fd2[1], query, 256);
-    close(fd1[0]);
-    write(fd1[1], query, 256);
-    close(fd3[0]);
-    write(fd3[1], query, 256);
-    close(fd4[0]);
-    write(fd4[1], query, 256);
+    //std::cin.getline(query, sizeof(query));
+    
+    while (fgets(query, sizeof(query), stdin)){
+      printf("query: %s\n", query);
+      close(fd2[0]);
+      write(fd2[1], query, 256);
+      close(fd1[0]);
+      write(fd1[1], query, 256);
+      close(fd3[0]);
+      write(fd3[1], query, 256);
+      close(fd4[0]);
+      write(fd4[1], query, 256);}
 
     /*
     while (n > 0)
