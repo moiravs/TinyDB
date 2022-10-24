@@ -35,15 +35,18 @@ void query_result_init(query_result_t *result, const char *query);
 void query_result_add(query_result_t *result, student_t s);
 
 /**
- * Make the list containing the students of a query bigger
+ * Makes the list containing the students of a query bigger
  **/
 void query_list_upsize(query_result_t *result);
 
+/**
+ * 
 void query_insert(database_t *db, char *query, char *saveptr);
 
 void query_update(database_t *db, char *saveptr, char *query);
-    /**
-     * Handles the select query
-     **/
+/**
+  * Handles the select query
+  **/
 void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey);
+
 #endif
