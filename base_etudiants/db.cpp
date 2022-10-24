@@ -45,7 +45,6 @@ void db_load(database_t *db, const char *path)
 
 void db_upsize(database_t *db)
 {
-    //puts("here");
     if (db->lsize >= (db->psize / sizeof(student_t)))
     {
         size_t old_psize = db->psize;
@@ -66,13 +65,10 @@ void db_init(database_t *db)
 }
 
 void db_add(database_t *db, student_t student)
-{
+{   bool exists = false;
     db->lsize += 1;
     db_upsize(db);
     db->data[db->lsize] = student; // at end of db
-    char * buffer = new char[256];
-    student_to_str(buffer, &db->data[db->lsize]);
-    printf(buffer);
 }
 
 void db_delete(database_t *db, size_t indice)
@@ -81,12 +77,5 @@ void db_delete(database_t *db, size_t indice)
         perror("db_delete()");
     }
     db->lsize--;
-<<<<<<< HEAD
     std::copy(db->data+indice+1, db->data+db->lsize, db->data+indice);
-=======
-    student_t *ptr = &db->data[indice+1];
-    size_t size_to_copy = db->lsize-indice;
-    //stdcopy
-    memcpy(&db->data[indice], &ptr, size_to_copy);
->>>>>>> 7eec1b9873e6351ee2745fd5918eb2007ca65e7b
 }

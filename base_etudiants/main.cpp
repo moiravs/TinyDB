@@ -46,8 +46,9 @@ int main(int argc, char const *argv[])
 
   database_t *db = (database_t *)create_shared_memory(sizeof(database_t));
   db_init(db);
-
+  std::cout << "Loading your tiny tiny database..." << std::endl;
   db_load(db, db_path);
+  std::cout << "Done !" << std::endl;
   // int err;
   int fd1[2];
   pipe(fd1);
@@ -67,9 +68,9 @@ int main(int argc, char const *argv[])
   }
   if (child_select == 0)
   {
-    printf("select process:%d\n", getpid());
+    //printf("select process:%d\n", getpid());
     char query[256] = "01";
-    puts("here");
+
 
     while (true)
     {
@@ -106,9 +107,9 @@ int main(int argc, char const *argv[])
   }
   if (child_insert == 0)
   {
-    printf("insert process:%d\n", getpid());
+    //printf("insert process:%d\n", getpid());
     char query[256] = "01";
-    puts("here");
+    
 
     while (true)
     {
@@ -131,7 +132,6 @@ int main(int argc, char const *argv[])
         memcpy(query, "01", 256);
       }
       sleep(2);
-      printf("t\n");
     }
     exit(0);
   }
@@ -142,9 +142,9 @@ int main(int argc, char const *argv[])
   }
   if (child_update == 0)
   {
-    printf("update process:%d\n", getpid());
+    //printf("update process:%d\n", getpid());
     char query[256] = "01";
-    puts("here");
+    
 
     while (true)
     {
@@ -169,7 +169,6 @@ int main(int argc, char const *argv[])
         memcpy(query, "01", 256);
       }
       sleep(2);
-      printf("t\n");
     }
     exit(0);
   }
@@ -180,9 +179,9 @@ int main(int argc, char const *argv[])
   }
   if (child_delete == 0)
   {
-    printf("delete process:%d\n", getpid());
+    //printf("delete process:%d\n", getpid());
     char query[256] = "01";
-    puts("here");
+    
 
     while (true)
     {
@@ -206,16 +205,14 @@ int main(int argc, char const *argv[])
         memcpy(query, "01", 256);
       }
       sleep(2);
-      printf("t\n");
     }
     exit(0);
   }
-  printf("main process:%d\n", getpid());
+  //printf("main process:%d\n", getpid());
   while (true)
   {
     signal(SIGINT, gere_signal); // gere le signal genre ctrl c
     signal(SIGUSR1, gere_signal);
-    printf("command:");
     std::cin.getline(query, sizeof(query));
     close(fd2[0]);
     write(fd2[1], query, 256);

@@ -46,15 +46,12 @@ void query_insert(database_t *db, char *query, char *saveptr)
   query_result_init(queryResult, query);
   student_t *s = new student_t;
   if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)){
-    std::cout << "db " << &db << " db->data " << &db->data;
+    std::cout << "Adding " << s->fname << " " << s->lname << " to the database..." << std::endl;
     db_add(db, *s);
     query_result_add(queryResult, *s);}
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
   log_query(queryResult);
-  char * buffer = new char[512];
-  student_to_str(buffer, &db->data[db->lsize]);
-  printf(buffer);
   delete queryResult;
 }
 
@@ -66,6 +63,12 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
   char value_str[64] = "0", date_str[64] = "0";
   parse_selectors(saveptr, fieldFilter, value);
+  if (strcmp(queryKey, "select") == 0){
+    std::cout << "Searching for all students whose " << fieldFilter << " is " << value << std::endl;
+  }
+  else if (strcmp(queryKey, "delete") == 0){
+    std::cout << "Deleting all students whose " << fieldFilter << " is " << value << std::endl;
+  }
   for (size_t i = 0; i < db->lsize; i++)
   {
 
@@ -86,10 +89,9 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
       if (strcmp(s->fname, value) == 0)
       {
         query_result_add(queryResult, *s);
-        puts("heeeee");
-        if (strcmp(queryKey, "delete"))
-          puts("yeeee");
+        if (strcmp(queryKey, "delete")){
           db_delete(db, i);
+        }
       }
     }
     else if (strcmp(fieldFilter, "lname") == 0)
@@ -122,17 +124,11 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
     }
     else
     {
-      std::cout << "An error has occurred during the select query : bad filter." << std::endl;
+      std::cout << "An error has occurred during the select or delete query : bad filter." << std::endl;
       // break;
     }
   }
   queryResult->status = QUERY_SUCCESS;
-  for (size_t i = 0; i < db->lsize; i++)
-  {
-    char *buffer = new char[256];
-    student_to_str(buffer, &db->data[i]);
-    printf(buffer);
-  }
   log_query(queryResult);
   delete s;
   delete queryResult;
