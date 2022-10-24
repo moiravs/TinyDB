@@ -8,6 +8,7 @@
 #include <iostream>
 #include "student.hpp"
 #include <sys/mman.h>
+#include <iterator>
 
 void db_save(database_t *db, const char *path)
 {
@@ -76,20 +77,9 @@ void db_add(database_t *db, student_t student)
 
 void db_delete(database_t *db, size_t indice)
 {
-    /*if (indice >= db->lsize)
-    { // indice out of range
-        perror("db_delete()");
-    }
-    db->lsize--;
-    for (size_t i = indice; i < db->lsize; i++)
-    {
-        db->data[i] = db->data[i + 1];
-    }*/
     if (indice >= db->lsize){
         perror("db_delete()");
     }
     db->lsize--;
-    student_t *ptr = &db->data[indice+1];
-    size_t size_to_copy = db->lsize-indice;
-    memcpy(&db->data[indice], &ptr, size_to_copy);
+    std::copy(db->data+indice+1, db->data+db->lsize, db->data+indice);
 }

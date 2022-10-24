@@ -1,3 +1,0 @@
-Query "delete id=999982" completed in 0.000256ms with 1 results.
-999982, Maïmoun, Verstraeten ,chemistry, 04/09/1996
-

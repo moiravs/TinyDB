@@ -1,3 +1,0 @@
-Query "delete id=999995" completed in 0.001536ms with 1 results.
-999995, Etienne, Hermans ,pharma, 03/01/1993
-
