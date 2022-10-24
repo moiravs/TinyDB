@@ -92,7 +92,7 @@ int main(int argc, char const *argv[])
           query_result_init(queryResult, query);
           query_select_and_delete(db, query, saveptr, "select");
         }
-        memcpy(query, "01", 256);
+        memcpy(query, "01", 256);  // change the query back to 01
       }
       sleep(2);
     }
@@ -106,7 +106,6 @@ int main(int argc, char const *argv[])
   }
   if (child_insert == 0)
   {
-    //printf("insert process:%d\n", getpid());
     char query[256] = "01";
     
 
@@ -116,10 +115,10 @@ int main(int argc, char const *argv[])
       read(fd1[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
-        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        char *querymod = new char[256];
         memcpy(querymod, query, 256);
         char *saveptr;
-        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "insert") == 0)
@@ -141,10 +140,8 @@ int main(int argc, char const *argv[])
   }
   if (child_update == 0)
   {
-    //printf("update process:%d\n", getpid());
     char query[256] = "01";
-    
-
+  
     while (true)
     {
       close(fd3[1]);
@@ -152,10 +149,10 @@ int main(int argc, char const *argv[])
       if (strcmp(query, "01") != 0)
       {
 
-        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        char *querymod = new char[256];
         memcpy(querymod, query, 256);
         char *saveptr;
-        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "update") == 0)
@@ -178,10 +175,8 @@ int main(int argc, char const *argv[])
   }
   if (child_delete == 0)
   {
-    //printf("delete process:%d\n", getpid());
     char query[256] = "01";
-    
-
+  
     while (true)
     {
       close(fd4[1]);
@@ -189,10 +184,10 @@ int main(int argc, char const *argv[])
       if (strcmp(query, "01") != 0)
       {
 
-        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
+        char *querymod = new char[256];
         memcpy(querymod, query, 256);
         char *saveptr;
-        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
+        const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
 
         if (strcmp(queryKey, "delete") == 0)
@@ -207,12 +202,11 @@ int main(int argc, char const *argv[])
     }
     exit(0);
   }
-  //printf("main process:%d\n", getpid());
+
   while (true)
   {
-    signal(SIGINT, signal_handling); // gere le signal genre ctrl c
-    signal(SIGUSR1, signal_handling);
-    //std::cin.getline(query, sizeof(query));
+    signal(SIGINT, signal_handling); // handles the signal Ctrl + C and terminates program
+    signal(SIGUSR1, signal_handling); // handles abnormal program termination
     
     while (fgets(query, sizeof(query), stdin)){
       printf("query: %s\n", query);
@@ -224,16 +218,5 @@ int main(int argc, char const *argv[])
       write(fd3[1], query, 256);
       close(fd4[0]);
       write(fd4[1], query, 256);}
-
-    /*
-    while (n > 0)
-      pid_t pid;
-    int n = 2;
-
-    pid = wait(&status);
-    printf("Child PID %ld exit with status%d\n", (long)pid, status);
-    n--;
-  }
-    */
   }
 }
