@@ -9,21 +9,21 @@
 #include <cstdio>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <iostream>           // std::cout
-#include <thread>             // std::thread
-#include <mutex>              // std::mutex, std::unique_lock
-#include <condition_variable> // std::condition_variable
+#include <iostream>
+#include <thread>             
+#include <mutex>              
+#include <condition_variable>
 #include <string>
 #include <string.h>
 #include <sys/mman.h>
 
-static volatile int keepRunning = 1; // jsp ce que c'est volatile ct dans stackoverflow
+static volatile int keepRunning = 1;
 pid_t child_select = -1;
 pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
 
-void gere_signal(int signum)
+void signal_handling(int signum)
 {
   printf("Programme terminé");
   keepRunning = 0;
@@ -39,7 +39,7 @@ void *create_shared_memory(size_t size)
   int visibility = MAP_SHARED | MAP_ANONYMOUS;
   return mmap(NULL, size, protection, visibility, -1, 0);
 }
-// mremap
+
 int main(int argc, char const *argv[])
 {
   const char *db_path = argv[1];
@@ -49,9 +49,11 @@ int main(int argc, char const *argv[])
   std::cout << "Loading your tiny tiny database..." << std::endl;
   db_load(db, db_path);
   std::cout << "Done !" << std::endl;
-  // int err;
+  // fd : file descriptor (fd0 : standard input (stdin), fd1 : standard output (stdout), fd2 : standard error (stderr))
+  // pipe(fd) : creates both the reading and writing ends of the pipe
+  // fd[0] : standard input, fd[1] : standard output
   int fd1[2];
-  pipe(fd1);
+  pipe(fd1);  
   int fd2[2];
   pipe(fd2);
   int fd3[2];
@@ -68,24 +70,21 @@ int main(int argc, char const *argv[])
   }
   if (child_select == 0)
   {
-    //printf("select process:%d\n", getpid());
     char query[256] = "01";
-
-
     while (true)
     {
-      close(fd2[1]);
-      read(fd2[0], query, 256);
-      if (strcmp(query, "01") != 0)
+      close(fd2[1]);  // close the writing end of the pipe
+      read(fd2[0], query, 256);  // reads 256 bytes into memory area indicated by query
+      if (strcmp(query, "01") != 0)  // if query changed
       {
         query_result_t *queryResult = new query_result_t();
         query_result_init(queryResult, query);
 
-        char *querymod = new char[256]; // créer un nv string modifiable car strtok modifie les strings
-        memcpy(querymod, query, 256);
+        char *querymod = new char[256]; // create a new modifiable string
+        memcpy(querymod, query, 256);  // save query to querymod
         char *saveptr;
-        const char *queryKey = new char[6](); // premier mot de la query (insert, delete, ...)
-        queryKey = strtok_r(querymod, " ", &saveptr);
+        const char *queryKey = new char[6](); // variable that'll hold the first keyword of the query (delete, insert, ...)
+        queryKey = strtok_r(querymod, " ", &saveptr); // write the first word to queryKey
 
         if (strcmp(queryKey, "select") == 0)
         {
@@ -211,8 +210,8 @@ int main(int argc, char const *argv[])
   //printf("main process:%d\n", getpid());
   while (true)
   {
-    signal(SIGINT, gere_signal); // gere le signal genre ctrl c
-    signal(SIGUSR1, gere_signal);
+    signal(SIGINT, signal_handling); // gere le signal genre ctrl c
+    signal(SIGUSR1, signal_handling);
     std::cin.getline(query, sizeof(query));
     close(fd2[0]);
     write(fd2[1], query, 256);
