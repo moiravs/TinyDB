@@ -141,27 +141,26 @@ void query_update(database_t *db, char *saveptr, char *query)
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
   parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue);  // check if valid query
   student_t *s = new student_t;
-  char date_str[64];
-  char *id;
-  if (strcmp(fieldToUpdate, "id") == 0){
-    sprintf(id, "%u", s->id);
-  }
-  else if (strcmp(fieldToUpdate, "birthdate") == 0){
-    strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);  // store birthdate struct as a string
-  }
-
-
+  
+  
   for (size_t i = 0; i < db->lsize; i++)
   {
-
     *s = db->data[i];
+    char date_str[64];
+    char *id;
+    if (strcmp(fieldToUpdate, "id") == 0){
+      sprintf(id, "%u", s->id);
+    }
+    else if (strcmp(fieldToUpdate, "birthdate") == 0){
+      strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);  // store birthdate struct as a string
+    }
     
     if (strcmp(fieldFilter, "id") == 0 && strcmp(id, valueFilter) == 0)
     {
       if (strcmp(fieldToUpdate, "id") == 0){
         *id = *updateValue;
-        long temp = atol(id);
-        s->id = static_cast<unsigned int>(temp);
+        long temp = atol(id);  // conversion to long int
+        s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->fname = *updateValue;
@@ -174,10 +173,13 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);  // transform the updated string to tm struct
       }
     }
-    if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter))
+    if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter) == 0)
     {
-      if (strcmp(fieldToUpdate, "id") == 0)
-        s->id = *updateValue;
+      if (strcmp(fieldToUpdate, "id") == 0){
+        *id = *updateValue;
+        long temp = atol(id);  // conversion to long int
+        s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
+      }
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
@@ -191,8 +193,11 @@ void query_update(database_t *db, char *saveptr, char *query)
     }
     else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter) == 0)
     {
-      if (strcmp(fieldToUpdate, "id") == 0)
-        s->id = *updateValue;
+      if (strcmp(fieldToUpdate, "id") == 0){
+        *id = *updateValue;
+        long temp = atol(id);  // conversion to long int
+        s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
+      }        
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
@@ -206,8 +211,11 @@ void query_update(database_t *db, char *saveptr, char *query)
     }
     else if (strcmp(fieldFilter, "section") == 0 && strcmp(s->section, valueFilter))
     {
-      if (strcmp(fieldToUpdate, "id") == 0)
-        s->id = *updateValue;
+      if (strcmp(fieldToUpdate, "id") == 0){
+        *id = *updateValue;
+        long temp = atol(id);  // conversion to long int
+        s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
+      }        
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
@@ -219,11 +227,14 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);
       }
     }
-    else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(s->birthdate, valueFilter))
+    else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(date_str, valueFilter))
     {
       strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
-      if (strcmp(fieldToUpdate, "id") == 0)
-        s->id = *updateValue;
+      if (strcmp(fieldToUpdate, "id") == 0){
+        *id = *updateValue;
+        long temp = atol(id);  // conversion to long int
+        s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
+      }
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
