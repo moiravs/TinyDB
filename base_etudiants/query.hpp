@@ -40,10 +40,15 @@ void query_result_add(query_result_t *result, student_t s);
 void query_list_upsize(query_result_t *result);
 
 /**
- * 
+ * Handles the insert query
+ **/
 void query_insert(database_t *db, char *query, char *saveptr);
 
+/**
+ * Handles the update query
+ */
 void query_update(database_t *db, char *saveptr, char *query);
+
 /**
   * Handles the select query
   **/

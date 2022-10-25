@@ -143,17 +143,18 @@ void query_update(database_t *db, char *saveptr, char *query)
   student_t *s = new student_t;
   
   
-  for (size_t i = 0; i < db->lsize; i++)
-  {
-    *s = db->data[i];
-    char date_str[64];
-    char *id;
+  //for (size_t i = 0; i < db->lsize; i++)
+  //{
+    *s = db->data[1];
+    char date_str[64] = "0";
+    char *id = "0";
     if (strcmp(fieldToUpdate, "id") == 0){
       sprintf(id, "%u", s->id);
     }
     else if (strcmp(fieldToUpdate, "birthdate") == 0){
       strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);  // store birthdate struct as a string
     }
+    printf("THis is ID : %u, tHis is the date : %d/%M/%Y", id, date_str);
     
     if (strcmp(fieldFilter, "id") == 0 && strcmp(id, valueFilter) == 0)
     {
@@ -162,7 +163,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         long temp = atol(id);  // conversion to long int
         s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
       }
-      else if (strcmp(fieldToUpdate, "lname") == 0)
+      else if (strcmp(fieldToUpdate, "fname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->lname = *updateValue;
@@ -173,14 +174,15 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);  // transform the updated string to tm struct
       }
     }
-    if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter) == 0)
+    else if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter) == 0)
     {
+      std::cout << "je passe par là " << std::endl;
       if (strcmp(fieldToUpdate, "id") == 0){
         *id = *updateValue;
         long temp = atol(id);  // conversion to long int
         s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
       }
-      else if (strcmp(fieldToUpdate, "lname") == 0)
+      else if (strcmp(fieldToUpdate, "fname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->lname = *updateValue;
@@ -198,7 +200,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         long temp = atol(id);  // conversion to long int
         s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
       }        
-      else if (strcmp(fieldToUpdate, "lname") == 0)
+      else if (strcmp(fieldToUpdate, "fname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->lname = *updateValue;
@@ -216,7 +218,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         long temp = atol(id);  // conversion to long int
         s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
       }        
-      else if (strcmp(fieldToUpdate, "lname") == 0)
+      else if (strcmp(fieldToUpdate, "fname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->lname = *updateValue;
@@ -235,7 +237,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         long temp = atol(id);  // conversion to long int
         s->id = static_cast<unsigned int>(temp);  // conversion to unsigned
       }
-      else if (strcmp(fieldToUpdate, "lname") == 0)
+      else if (strcmp(fieldToUpdate, "fname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->lname = *updateValue;
@@ -249,7 +251,7 @@ void query_update(database_t *db, char *saveptr, char *query)
     else
       std::cout << "An error has occurred during the update query : bad filter." << std::endl;
       // break;
-  }
+  //}
   log_query(queryResult);
   delete s;
   //delete queryResult;
