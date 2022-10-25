@@ -60,8 +60,10 @@ void signal_handling(int signum)
   puts("Committing database changes to the disk...");
   db_save(db, db_path);
   puts("Done");
-  kill(getpid(), SIGKILL);
-}
+  if (signum == 2)
+  {
+    kill(getpid(), SIGKILL);}
+  }
 
 void *create_shared_memory(size_t size)
 {

@@ -32,9 +32,12 @@ fi
 
 if [ "${1}" == "sync" ]
 then
-    echo "sync"
-    proc= "tinydb"
-    killall -s INT tinydb
+    for pid in $pids
+        do
+            echo "Sync process $pid ..."
+            kill -USR1 $pid
+        done
+    killall -USR1 tinydb
 
 elif [ "${1}" == "status" ]
 then
