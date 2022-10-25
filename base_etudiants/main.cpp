@@ -23,14 +23,13 @@ pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
 database_t *db ;
+const char *db_path ;
 int fd1[2], fd2[2], fd3[2], fd4[2], chldfd1[2], chldfd2[2], chldfd3[2], chldfd4[2];
 
-void save_db(int signum){
-  //db_save(db, )
-}
 
 void signal_handling(int signum)
 {
+  if (signum == 2){ //sigint
   keepRunning = 0;
   char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
   close(chldfd1[1]);
@@ -57,9 +56,9 @@ void signal_handling(int signum)
       
     }
     
-  }
+  }}
   puts("Committing database changes to the disk...");
-      // db_save(db, )
+  db_save(db, db_path);
   puts("Done");
   kill(getpid(), SIGKILL);
 }
@@ -73,7 +72,7 @@ void *create_shared_memory(size_t size)
 
 int main(int argc, char const *argv[])
 {
-  const char *db_path = argv[1];
+  db_path = argv[1];
 
   db = (database_t *)create_shared_memory(sizeof(database_t));
   db_init(db);
@@ -259,8 +258,8 @@ int main(int argc, char const *argv[])
 
   while (true)
   {
-    signal(SIGINT, signal_handling); // handles the signal Ctrl + C and terminates program
-    signal(SIGUSR1, save_db); // handles abnormal program termination
+    signal(SIGINT,  signal_handling); // handles the signal Ctrl + C and terminates program
+    signal(SIGUSR1, signal_handling); // handles abnormal program termination
     void * getstdin = fgets(query, sizeof(query), stdin);
     while (getstdin)
     {
