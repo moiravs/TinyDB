@@ -56,7 +56,7 @@ void query_insert(database_t *db, query_result_t *queryResult, char *query, char
 void query_select_and_delete(database_t *db, query_result_t *queryResult, char *query, char *saveptr, const char *queryKey)
 {
   student_t *s = new student_t;
-  char *fieldFilter = new char[64](), *value = new char[64]();
+  char fieldFilter[64], value[64];
   char value_str[64] = "0", date_str[64] = "0";
   parse_selectors(saveptr, fieldFilter, value);
   if (strcmp(queryKey, "select") == 0){
@@ -133,7 +133,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
 void query_update(database_t *db, query_result_t *queryResult, char *saveptr, char *query)
 {
 
-  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64]();
+  char fieldFilter[64], valueFilter[64], fieldToUpdate[64], updateValue[64];
   parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue);  // check if valid query
   student_t *s = new student_t;
   for (size_t i = 0; i < db->lsize; i++)
