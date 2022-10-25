@@ -16,6 +16,7 @@ void student_to_str(char *buffer, student_t *s)
 
 int student_equals(student_t *s1, student_t *s2)
 {
+  // comparing every attribute to see if both students are equal
   return (s1->id == s2->id && (strcmp(s1->fname, s2->fname) == 0) && 
     (strcmp(s1->lname, s2->lname) == 0) && (strcmp(s1->section, s2->section) == 0) &&
     s1->birthdate.tm_year == s2->birthdate.tm_year &&

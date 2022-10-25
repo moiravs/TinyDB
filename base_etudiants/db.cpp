@@ -48,7 +48,7 @@ void db_upsize(database_t *db)
         size_t oldPsize = db->psize;
         db->psize *= 2;
         student_t *newStudent;
-        newStudent = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+        newStudent = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);  // establishes a mapping between an adress space of a process and a memory object
         memcpy(newStudent, db->data, oldPsize);  // copy db to newly allocated memory
         munmap(db->data, oldPsize);  // deallocate old memory
         db->data = newStudent;
@@ -75,5 +75,5 @@ void db_delete(database_t *db, size_t indice)
         perror("db_delete()");
     }
     db->lsize--;
-    std::copy(db->data+indice+1, db->data+db->lsize, db->data+indice);
+    std::copy(db->data+indice+1, db->data+db->lsize, db->data+indice);  // overwrite the object to delete by copying everything following the given adress of the object to the said adress
 }

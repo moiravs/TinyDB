@@ -10,7 +10,7 @@ void query_result_init(query_result_t *result, const char *query)
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
-  memcpy(result->query,query,256);
+  memcpy(result->query,query,256);  // initialize query in result
   result->psize = sizeof(student_t);
   result->lsize = 0;
   result->students = (student_t *)malloc(sizeof(student_t));
@@ -22,7 +22,7 @@ void query_result_init(query_result_t *result, const char *query)
 void query_result_add(query_result_t *result, student_t s)
 {
   query_list_upsize(result);
-  result->students[result->lsize] = s;
+  result->students[result->lsize] = s;  // at end of list
   result->lsize += 1;
   result->status = QUERY_SUCCESS;
 }
@@ -32,11 +32,11 @@ void query_list_upsize(query_result_t *result)
 
   if (result->lsize >= ((result->psize) / sizeof(student_t)))
   {
-    student_t *old_data = result->students;
+    student_t *old_data = result->students; // save old students list
     size_t old_psize = result->psize;
     result->psize *= 2;
-    result->students = (student_t *)malloc(result->psize);
-    memcpy(result->students, old_data, old_psize);
+    result->students = (student_t *)malloc(result->psize);  // allocating new psize
+    memcpy(result->students, old_data, old_psize);  // copy old data into new allocated memory
   }
 }
 
@@ -45,14 +45,14 @@ void query_insert(database_t *db, char *query, char *saveptr)
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
   student_t *s = new student_t;
-  if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)){
+  if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)){  // if valid insert query
     std::cout << "Adding " << s->fname << " " << s->lname << " to the database..." << std::endl;
     db_add(db, *s);
     query_result_add(queryResult, *s);}
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
   log_query(queryResult);
-  delete queryResult;
+  //delete queryResult;
 }
 
 void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey)
@@ -69,13 +69,13 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
   else if (strcmp(queryKey, "delete") == 0){
     std::cout << "Deleting all students whose " << fieldFilter << " is " << value << std::endl;
   }
-  for (size_t i = 0; i < db->lsize; i++)
+  for (size_t i = 0; i < db->lsize; i++)  // iterating through database to find all students corresponding to the given filter
   {
 
     *s = db->data[i];
     if (strcmp(fieldFilter, "id") == 0)
     {
-      sprintf(value_str, "%u", s->id); // convertir le id (unsigned) à un char* pour la comparaison
+      sprintf(value_str, "%u", s->id); // convert id (unsigned) to char* for comparison
       if (strcmp(value_str, value) == 0)
       {
         query_result_add(queryResult, *s);
@@ -125,17 +125,12 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
     else
     {
       std::cout << "An error has occurred during the select or delete query : bad filter." << std::endl;
-      // break;
     }
   }
   queryResult->status = QUERY_SUCCESS;
   log_query(queryResult);
   delete s;
-  delete queryResult;
-}
-
-void query_brol(student_t *s){
-  
+  //delete queryResult;
 }
 
 
@@ -144,14 +139,23 @@ void query_update(database_t *db, char *saveptr, char *query)
   query_result_t *queryResult = new query_result_t();
   query_result_init(queryResult, query);
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
-  parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue);
+  parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue);  // check if valid query
   student_t *s = new student_t;
+  char date_str[64];
+  char *id;
+  if (strcmp(fieldToUpdate, "id") == 0){
+    sprintf(id, "%u", s->id);
+  }
+  else if (strcmp(fieldToUpdate, "birthdate") == 0){
+    strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);  // store birthdate struct as a string
+  }
+
   for (size_t i = 0; i < db->lsize; i++)
   {
 
     *s = db->data[i];
-    /*
-    if (strcmp(fieldFilter, "id") == 0 && strcmp(s->id, valueFilter))
+    
+    if (strcmp(fieldFilter, "id") == 0 && strcmp(id, valueFilter) == 0)
     {
       if (strcmp(fieldToUpdate, "id") == 0)
         s->id = *updateValue;
@@ -162,12 +166,12 @@ void query_update(database_t *db, char *saveptr, char *query)
       else if (strcmp(fieldToUpdate, "section") == 0)
         *s->section = *updateValue;
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
-        *s->birthdate = *updateValue;
-    }*/
+        s->birthdate = *updateValue;
+    }
     if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter))
     {
       if (strcmp(fieldToUpdate, "id") == 0)
-        s->id = *updateValue;
+        s->id = atoi(*updateValue);
       else if (strcmp(fieldToUpdate, "lname") == 0)
         *s->fname = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
@@ -177,7 +181,7 @@ void query_update(database_t *db, char *saveptr, char *query)
       else if (strcmp(fieldToUpdate, "birthdate") == 0);
        // *s->birthdate = *updateValue;
     }
-    else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter))
+    else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter) == 0)
     {
       if (strcmp(fieldToUpdate, "id") == 0)
         s->id = *updateValue;
@@ -203,8 +207,9 @@ void query_update(database_t *db, char *saveptr, char *query)
       else if (strcmp(fieldToUpdate, "birthdate") == 0);
         //*s->birthdate = *updateValue;
     }
-    else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(s->fname, valueFilter))
+    else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(s->birthdate, valueFilter))
     {
+      strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
       if (strcmp(fieldToUpdate, "id") == 0)
         s->id = *updateValue;
       else if (strcmp(fieldToUpdate, "lname") == 0)
@@ -222,5 +227,5 @@ void query_update(database_t *db, char *saveptr, char *query)
   }
   log_query(queryResult);
   delete s;
-  delete queryResult;
+  //delete queryResult;
 }
