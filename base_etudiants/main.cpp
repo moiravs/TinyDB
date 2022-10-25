@@ -58,7 +58,7 @@ void signal_handling(int signum)
     
   }}
   puts("Committing database changes to the disk...");
-  db_save(db, db_path);
+  //db_save(db, db_path);
   puts("Done");
   if (signum == 2)
   {
@@ -269,7 +269,7 @@ int main(int argc, char const *argv[])
         getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
       }
       */
-      printf("query: %s\n", query);
+      //printf("query: %s\n", query);
       close(fd2[0]);
       write(fd2[1], query, 256);
       close(fd1[0]);

@@ -143,19 +143,25 @@ void query_update(database_t *db, char *saveptr, char *query)
   student_t *s = new student_t;
   
   
-  //for (size_t i = 0; i < db->lsize; i++)
-  //{
-    *s = db->data[1];
-    char date_str[64] = "0";
-    char *id = "0";
+  for (size_t i = 0; i < db->lsize; i++)
+  {
+
+    *s = db->data[i];
+    char *buffer = new char[512];
+    student_to_str(buffer, s);
+    printf("buffer : %s\n", buffer);
+    char date_str[512] = "0";
+    char id[64];
+    printf("Update value : %s\n", updateValue);
     if (strcmp(fieldToUpdate, "id") == 0){
       sprintf(id, "%u", s->id);
     }
     else if (strcmp(fieldToUpdate, "birthdate") == 0){
-      strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);  // store birthdate struct as a string
+      strftime(date_str, 512, "%d/%m/%Y", &s->birthdate);  // store birthdate struct as a string
     }
-    printf("THis is ID : %u, tHis is the date : %d/%M/%Y", id, date_str);
-    
+    printf("date_str : %s\n", date_str);
+    printf("THis is ID : %u, tHis is the date : %s\n", s->id, date_str);
+    std::cout << "fieldfilter" << fieldFilter << "valuefilter" << valueFilter;
     if (strcmp(fieldFilter, "id") == 0 && strcmp(id, valueFilter) == 0)
     {
       if (strcmp(fieldToUpdate, "id") == 0){
@@ -195,6 +201,7 @@ void query_update(database_t *db, char *saveptr, char *query)
     }
     else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter) == 0)
     {
+      puts("going through lname");
       if (strcmp(fieldToUpdate, "id") == 0){
         *id = *updateValue;
         long temp = atol(id);  // conversion to long int
@@ -251,7 +258,7 @@ void query_update(database_t *db, char *saveptr, char *query)
     else
       std::cout << "An error has occurred during the update query : bad filter." << std::endl;
       // break;
-  //}
+  }
   log_query(queryResult);
   delete s;
   //delete queryResult;
