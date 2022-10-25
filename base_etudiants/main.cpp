@@ -22,7 +22,12 @@ pid_t child_select = -1;
 pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
+database_t *db ;
 int fd1[2], fd2[2], fd3[2], fd4[2], chldfd1[2], chldfd2[2], chldfd3[2], chldfd4[2];
+
+void save_db(int signum){
+  //db_save(db, )
+}
 
 void signal_handling(int signum)
 {
@@ -70,7 +75,7 @@ int main(int argc, char const *argv[])
 {
   const char *db_path = argv[1];
 
-  database_t *db = (database_t *)create_shared_memory(sizeof(database_t));
+  db = (database_t *)create_shared_memory(sizeof(database_t));
   db_init(db);
   std::cout << "Loading your tiny tiny database..." << std::endl;
   db_load(db, db_path);
@@ -255,7 +260,7 @@ int main(int argc, char const *argv[])
   while (true)
   {
     signal(SIGINT, signal_handling); // handles the signal Ctrl + C and terminates program
-    // signal(SIGUSR1, signal_handling); // handles abnormal program termination
+    signal(SIGUSR1, save_db); // handles abnormal program termination
     void * getstdin = fgets(query, sizeof(query), stdin);
     while (getstdin)
     {
