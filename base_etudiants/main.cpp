@@ -10,8 +10,8 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <iostream>
-#include <thread>             
-#include <mutex>              
+#include <thread>
+#include <mutex>
 #include <condition_variable>
 #include <string>
 #include <string.h>
@@ -22,15 +22,40 @@ pid_t child_select = -1;
 pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
+int fd1[2], fd2[2], fd3[2], fd4[2], chldfd1[2], chldfd2[2], chldfd3[2], chldfd4[2];
 
 void signal_handling(int signum)
 {
-  printf("Programme terminé");
   keepRunning = 0;
-  kill(child_insert, SIGKILL);
-  kill(child_insert, SIGKILL);
-  kill(child_delete, SIGKILL);
-  kill(child_update, SIGKILL);
+  char *status1 = new char[256];
+  char *status2 = new char[256];
+  char *status3 = new char[256];
+  char *status4 = new char[256];
+  close(chldfd1[1]);
+  read(chldfd1[0], status1, 256);
+  close(chldfd2[1]);
+  read(chldfd2[0], status2, 256);
+  close(chldfd3[1]);
+  read(chldfd3[0], status3, 256);
+  close(chldfd4[1]);
+  read(chldfd4[0], status4, 256);
+  bool finish = false;
+  while (!finish)
+  {
+    if ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0))
+    {
+      kill(child_insert, SIGKILL);
+      kill(child_select, SIGKILL);
+      kill(child_delete, SIGKILL);
+      kill(child_update, SIGKILL);
+      puts("Programme terminé");
+      finish = true;
+      kill(getpid(), SIGKILL);
+      
+    }
+    
+  }
+  
 }
 
 void *create_shared_memory(size_t size)
@@ -52,16 +77,16 @@ int main(int argc, char const *argv[])
   // fd : file descriptor (fd0 : standard input (stdin), fd1 : standard output (stdout), fd2 : standard error (stderr))
   // pipe(fd) : creates both the reading and writing ends of the pipe
   // fd[0] : standard input, fd[1] : standard output
-  int fd1[2];
-  pipe(fd1);  
-  int fd2[2];
+  pipe(fd1);
   pipe(fd2);
-  int fd3[2];
   pipe(fd3);
-  int fd4[2];
   pipe(fd4);
+  pipe(chldfd1);
+  pipe(chldfd2);
+  pipe(chldfd3);
+  pipe(chldfd4);
   char query[256] = "0";
-  
+
   child_select = fork();
   if (child_select < 0)
   {
@@ -71,28 +96,35 @@ int main(int argc, char const *argv[])
   if (child_select == 0)
   {
     char query[256] = "01";
+    close(chldfd2[0]);
+    write(chldfd2[1], "SUCCESS", 256);
     while (true)
     {
-      close(fd2[1]);  // close the writing end of the pipe
-      read(fd2[0], query, 256);  // reads 256 bytes into memory area indicated by query
-      if (strcmp(query, "01") != 0)  // if query changed
+      close(fd2[1]);                // close the writing end of the pipe
+      read(fd2[0], query, 256);     // reads 256 bytes into memory area indicated by query
+      if (strcmp(query, "01") != 0) // if query changed
       {
         query_result_t *queryResult = new query_result_t();
         query_result_init(queryResult, query);
 
         char *querymod = new char[256]; // create a new modifiable string
-        memcpy(querymod, query, 256);  // save query to querymod
+        memcpy(querymod, query, 256);   // save query to querymod
         char *saveptr;
-        const char *queryKey = new char[6](); // variable that'll hold the first keyword of the query (delete, insert, ...)
+        const char *queryKey = new char[6]();         // variable that'll hold the first keyword of the query (delete, insert, ...)
         queryKey = strtok_r(querymod, " ", &saveptr); // write the first word to queryKey
 
         if (strcmp(queryKey, "select") == 0)
         {
+          close(chldfd2[0]);
+          write(chldfd2[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_select_and_delete(db, query, saveptr, "select");
+          close(chldfd2[0]);
+          write(chldfd2[1], "SUCCESS", 256);
+          delete queryResult;
         }
-        memcpy(query, "01", 256);  // change the query back to 01
+        memcpy(query, "01", 256); // change the query back to 01
       }
       sleep(2);
     }
@@ -107,7 +139,8 @@ int main(int argc, char const *argv[])
   if (child_insert == 0)
   {
     char query[256] = "01";
-    
+    close(chldfd1[0]);
+    write(chldfd1[1], "SUCCESS", 256);
 
     while (true)
     {
@@ -123,9 +156,13 @@ int main(int argc, char const *argv[])
 
         if (strcmp(queryKey, "insert") == 0)
         {
+          close(chldfd1[0]);
+          write(chldfd1[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_insert(db, query, saveptr);
+          close(chldfd1[0]);
+          write(chldfd1[1], "SUCCESS", 256);
         }
         memcpy(query, "01", 256);
       }
@@ -141,7 +178,8 @@ int main(int argc, char const *argv[])
   if (child_update == 0)
   {
     char query[256] = "01";
-  
+    close(chldfd3[0]);
+    write(chldfd3[1], "SUCCESS", 256);
     while (true)
     {
       close(fd3[1]);
@@ -157,9 +195,13 @@ int main(int argc, char const *argv[])
 
         if (strcmp(queryKey, "update") == 0)
         {
+          close(chldfd3[0]);
+          write(chldfd3[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_update(db, saveptr, query);
+          close(chldfd3[0]);
+          write(chldfd3[1], "SUCCESS", 256);
         }
 
         memcpy(query, "01", 256);
@@ -176,7 +218,9 @@ int main(int argc, char const *argv[])
   if (child_delete == 0)
   {
     char query[256] = "01";
-  
+    close(chldfd4[0]);
+    write(chldfd4[1], "SUCCESS", 256);
+
     while (true)
     {
       close(fd4[1]);
@@ -192,9 +236,13 @@ int main(int argc, char const *argv[])
 
         if (strcmp(queryKey, "delete") == 0)
         {
+          close(chldfd4[0]);
+          write(chldfd4[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_select_and_delete(db, query, saveptr, "delete");
+          close(chldfd4[0]);
+          write(chldfd4[1], "SUCCESS", 256);
         }
         memcpy(query, "01", 256);
       }
@@ -206,9 +254,9 @@ int main(int argc, char const *argv[])
   while (true)
   {
     signal(SIGINT, signal_handling); // handles the signal Ctrl + C and terminates program
-    signal(SIGUSR1, signal_handling); // handles abnormal program termination
-    
-    while (fgets(query, sizeof(query), stdin)){
+    // signal(SIGUSR1, signal_handling); // handles abnormal program termination
+    while (fgets(query, sizeof(query), stdin))
+    {
       printf("query: %s\n", query);
       close(fd2[0]);
       write(fd2[1], query, 256);
@@ -217,6 +265,7 @@ int main(int argc, char const *argv[])
       close(fd3[0]);
       write(fd3[1], query, 256);
       close(fd4[0]);
-      write(fd4[1], query, 256);}
+      write(fd4[1], query, 256);
+    }
   }
 }

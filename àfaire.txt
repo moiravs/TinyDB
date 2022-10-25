@@ -1,7 +1,6 @@
 MOIRA
 
-(- nv file avec gestionnaire d'erreurs)
-- threads/processus
+- id test
 
 - Rapport 
 
@@ -13,9 +12,5 @@ MOIRA
 
 
 ANDRIUS
-- fichier lancer "< queries.txt"
-- propre 
-    nv file pr le truc du main
 - terminer la fct query
         - id value
-    - beta test select/delete/add
