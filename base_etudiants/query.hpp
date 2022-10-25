@@ -42,16 +42,16 @@ void query_list_upsize(query_result_t *result);
 /**
  * Handles the insert query
  **/
-void query_insert(database_t *db, char *query, char *saveptr);
+void query_insert(database_t *db, query_result_t * queryResult, char *query, char *saveptr);
 
 /**
  * Handles the update query
  */
-void query_update(database_t *db, char *saveptr, char *query);
+void query_update(database_t *db, query_result_t *queryResult, char *saveptr, char *query);
 
 /**
   * Handles the select query
   **/
-void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey);
+void query_select_and_delete(database_t *db, query_result_t *queryResult, char *query, char *saveptr, const char *queryKey);
 
 #endif

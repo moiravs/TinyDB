@@ -126,7 +126,7 @@ int main(int argc, char const *argv[])
           write(chldfd2[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
-          query_select_and_delete(db, query, saveptr, "select");
+          query_select_and_delete(db, queryResult, query, saveptr, "select");
           close(chldfd2[0]);
           write(chldfd2[1], "SUCCESS", 256);
           delete queryResult;
@@ -167,7 +167,7 @@ int main(int argc, char const *argv[])
           write(chldfd1[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
-          query_insert(db, query, saveptr);
+          query_insert(db, queryResult, query, saveptr);
           close(chldfd1[0]);
           write(chldfd1[1], "SUCCESS", 256);
         }
@@ -206,7 +206,7 @@ int main(int argc, char const *argv[])
           write(chldfd3[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
-          query_update(db, saveptr, query);
+          query_update(db, queryResult, saveptr, query);
           close(chldfd3[0]);
           write(chldfd3[1], "SUCCESS", 256);
         }
@@ -247,7 +247,7 @@ int main(int argc, char const *argv[])
           write(chldfd4[1], "UNRECOGNIZED FIELD", 256);
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
-          query_select_and_delete(db, query, saveptr, "delete");
+          query_select_and_delete(db, queryResult, query, saveptr, "delete");
           close(chldfd4[0]);
           write(chldfd4[1], "SUCCESS", 256);
         }
