@@ -40,10 +40,8 @@ void query_list_upsize(query_result_t *result)
   }
 }
 
-void query_insert(database_t *db, char *query, char *saveptr)
+void query_insert(database_t *db, query_result_t *queryResult, char *query, char *saveptr)
 {
-  query_result_t *queryResult = new query_result_t();
-  query_result_init(queryResult, query);
   student_t *s = new student_t;
   if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)){  // if valid insert query
     std::cout << "Adding " << s->fname << " " << s->lname << " to the database..." << std::endl;
@@ -55,12 +53,10 @@ void query_insert(database_t *db, char *query, char *saveptr)
   //delete queryResult;
 }
 
-void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey)
+void query_select_and_delete(database_t *db, query_result_t *queryResult, char *query, char *saveptr, const char *queryKey)
 {
   student_t *s = new student_t;
-  query_result_t *queryResult = new query_result_t();
-  query_result_init(queryResult, query);
-  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
+  char *fieldFilter = new char[64](), *value = new char[64]();
   char value_str[64] = "0", date_str[64] = "0";
   parse_selectors(saveptr, fieldFilter, value);
   if (strcmp(queryKey, "select") == 0){
@@ -134,18 +130,14 @@ void query_select_and_delete(database_t *db, char *query, char *saveptr, const c
 }
 
 
-void query_update(database_t *db, char *saveptr, char *query)
+void query_update(database_t *db, query_result_t *queryResult, char *saveptr, char *query)
 {
-  query_result_t *queryResult = new query_result_t();
-  query_result_init(queryResult, query);
-  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64](), *value = new char[64];
+
+  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64]();
   parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue);  // check if valid query
   student_t *s = new student_t;
-  
-  
   for (size_t i = 0; i < db->lsize; i++)
   {
-
     *s = db->data[i];
     char *buffer = new char[512];
     student_to_str(buffer, s);
@@ -161,8 +153,8 @@ void query_update(database_t *db, char *saveptr, char *query)
     }
     printf("date_str : %s\n", date_str);
     printf("THis is ID : %u, tHis is the date : %s\n", s->id, date_str);
-    std::cout << "fieldfilter" << fieldFilter << "valuefilter" << valueFilter;
-    if (strcmp(fieldFilter, "id") == 0 && strcmp(id, valueFilter) == 0)
+    std::cout << "fieldfilter " << fieldFilter << "valuefilter " << valueFilter << std::endl;
+    if ((strcmp(fieldFilter, "id") == 0) && (strcmp(id, valueFilter) == 0))
     {
       if (strcmp(fieldToUpdate, "id") == 0){
         *id = *updateValue;
@@ -180,7 +172,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);  // transform the updated string to tm struct
       }
     }
-    else if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter) == 0)
+    else if ((strcmp(fieldFilter, "fname") == 0) && (strcmp(s->fname, valueFilter) == 0))
     {
       std::cout << "je passe par là " << std::endl;
       if (strcmp(fieldToUpdate, "id") == 0){
@@ -199,7 +191,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);
       }
     }
-    else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter) == 0)
+    else if ((strcmp(fieldFilter, "lname") == 0) && (strcmp(s->lname, valueFilter) == 0))
     {
       puts("going through lname");
       if (strcmp(fieldToUpdate, "id") == 0){
@@ -218,7 +210,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);
       }
     }
-    else if (strcmp(fieldFilter, "section") == 0 && strcmp(s->section, valueFilter))
+    else if ((strcmp(fieldFilter, "section") == 0) && (strcmp(s->section, valueFilter) == 0))
     {
       if (strcmp(fieldToUpdate, "id") == 0){
         *id = *updateValue;
@@ -236,7 +228,7 @@ void query_update(database_t *db, char *saveptr, char *query)
         strptime(date_str, "%d/%B/%Y", &s->birthdate);
       }
     }
-    else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(date_str, valueFilter))
+    else if ((strcmp(fieldFilter, "birthdate") == 0) && (strcmp(date_str, valueFilter) == 0))
     {
       strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
       if (strcmp(fieldToUpdate, "id") == 0){
