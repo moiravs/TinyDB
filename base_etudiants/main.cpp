@@ -262,22 +262,23 @@ int main(int argc, char const *argv[])
   {
     signal(SIGINT,  signal_handling); // handles the signal Ctrl + C and terminates program
     signal(SIGUSR1, signal_handling); // handles abnormal program termination
-    void * getstdin = fgets(query, sizeof(query), stdin);
-    while (getstdin)
-    {
-      /*if ((strtok(query) == transaction){
-        getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
-      }
-      */
-      //printf("query: %s\n", query);
-      close(fd2[0]);
-      write(fd2[1], query, 256);
-      close(fd1[0]);
-      write(fd1[1], query, 256);
-      close(fd3[0]);
-      write(fd3[1], query, 256);
-      close(fd4[0]);
-      write(fd4[1], query, 256);
+    //void * getstdin = fgets(query, sizeof(query), stdin);
+    while
+      (fgets(query, sizeof(query), stdin))
+      {
+        /*if ((strtok(query) == transaction){
+          getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
+        }
+        */
+        // printf("query: %s\n", query);
+        close(fd2[0]);
+        write(fd2[1], query, 256);
+        close(fd1[0]);
+        write(fd1[1], query, 256);
+        close(fd3[0]);
+        write(fd3[1], query, 256);
+        close(fd4[0]);
+        write(fd4[1], query, 256);
     }
   }
 }

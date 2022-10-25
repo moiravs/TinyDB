@@ -1,0 +1,2 @@
+Query "select lname=Dubois set birthdate=06/06/2006
+" completed in 0.002048ms with 0 results.
