@@ -27,10 +27,7 @@ int fd1[2], fd2[2], fd3[2], fd4[2], chldfd1[2], chldfd2[2], chldfd3[2], chldfd4[
 void signal_handling(int signum)
 {
   keepRunning = 0;
-  char *status1 = new char[256];
-  char *status2 = new char[256];
-  char *status3 = new char[256];
-  char *status4 = new char[256];
+  char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
   close(chldfd1[1]);
   read(chldfd1[0], status1, 256);
   close(chldfd2[1]);
@@ -40,6 +37,7 @@ void signal_handling(int signum)
   close(chldfd4[1]);
   read(chldfd4[0], status4, 256);
   bool finish = false;
+  puts("Waiting for requests to terminate");
   while (!finish)
   {
     if ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0))
@@ -48,14 +46,17 @@ void signal_handling(int signum)
       kill(child_select, SIGKILL);
       kill(child_delete, SIGKILL);
       kill(child_update, SIGKILL);
-      puts("Programme terminé");
+      
       finish = true;
-      kill(getpid(), SIGKILL);
+      
       
     }
     
   }
-  
+  puts("Committing database changes to the disk...");
+      // db_save(db, )
+  puts("Done");
+  kill(getpid(), SIGKILL);
 }
 
 void *create_shared_memory(size_t size)
@@ -255,8 +256,13 @@ int main(int argc, char const *argv[])
   {
     signal(SIGINT, signal_handling); // handles the signal Ctrl + C and terminates program
     // signal(SIGUSR1, signal_handling); // handles abnormal program termination
-    while (fgets(query, sizeof(query), stdin))
+    void * getstdin = fgets(query, sizeof(query), stdin);
+    while (getstdin)
     {
+      /*if ((strtok(query) == transaction){
+        getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
+      }
+      */
       printf("query: %s\n", query);
       close(fd2[0]);
       write(fd2[1], query, 256);
