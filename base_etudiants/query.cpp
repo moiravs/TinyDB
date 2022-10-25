@@ -150,12 +150,31 @@ void query_update(database_t *db, char *saveptr, char *query)
     strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);  // store birthdate struct as a string
   }
 
+
   for (size_t i = 0; i < db->lsize; i++)
   {
 
     *s = db->data[i];
     
     if (strcmp(fieldFilter, "id") == 0 && strcmp(id, valueFilter) == 0)
+    {
+      if (strcmp(fieldToUpdate, "id") == 0){
+        *id = *updateValue;
+        long temp = atol(id);
+        s->id = static_cast<unsigned int>(temp);
+      }
+      else if (strcmp(fieldToUpdate, "lname") == 0)
+        *s->fname = *updateValue;
+      else if (strcmp(fieldToUpdate, "lname") == 0)
+        *s->lname = *updateValue;
+      else if (strcmp(fieldToUpdate, "section") == 0)
+        *s->section = *updateValue;
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){
+        *date_str = *updateValue;
+        strptime(date_str, "%d/%B/%Y", &s->birthdate);  // transform the updated string to tm struct
+      }
+    }
+    if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter))
     {
       if (strcmp(fieldToUpdate, "id") == 0)
         s->id = *updateValue;
@@ -165,21 +184,10 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->lname = *updateValue;
       else if (strcmp(fieldToUpdate, "section") == 0)
         *s->section = *updateValue;
-      else if (strcmp(fieldToUpdate, "birthdate") == 0)
-        s->birthdate = *updateValue;
-    }
-    if (strcmp(fieldFilter, "fname") == 0 && strcmp(s->fname, valueFilter))
-    {
-      if (strcmp(fieldToUpdate, "id") == 0)
-        s->id = atoi(*updateValue);
-      else if (strcmp(fieldToUpdate, "lname") == 0)
-        *s->fname = *updateValue;
-      else if (strcmp(fieldToUpdate, "lname") == 0)
-        *s->lname = *updateValue;
-      else if (strcmp(fieldToUpdate, "section") == 0)
-        *s->section = *updateValue;
-      else if (strcmp(fieldToUpdate, "birthdate") == 0);
-       // *s->birthdate = *updateValue;
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){
+        *date_str = *updateValue;
+        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+      }
     }
     else if (strcmp(fieldFilter, "lname") == 0 && strcmp(s->lname, valueFilter) == 0)
     {
@@ -191,8 +199,10 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->lname = *updateValue;
       else if (strcmp(fieldToUpdate, "section") == 0)
         *s->section = *updateValue;
-      else if (strcmp(fieldToUpdate, "birthdate") == 0);
-        //*s->birthdate = *updateValue;
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){
+        *date_str = *updateValue;
+        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+      }
     }
     else if (strcmp(fieldFilter, "section") == 0 && strcmp(s->section, valueFilter))
     {
@@ -204,8 +214,10 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->lname = *updateValue;
       else if (strcmp(fieldToUpdate, "section") == 0)
         *s->section = *updateValue;
-      else if (strcmp(fieldToUpdate, "birthdate") == 0);
-        //*s->birthdate = *updateValue;
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){
+        *date_str = *updateValue;
+        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+      }
     }
     else if (strcmp(fieldFilter, "birthdate") == 0 && strcmp(s->birthdate, valueFilter))
     {
@@ -218,11 +230,13 @@ void query_update(database_t *db, char *saveptr, char *query)
         *s->lname = *updateValue;
       else if (strcmp(fieldToUpdate, "section") == 0)
         *s->section = *updateValue;
-      else if (strcmp(fieldToUpdate, "birthdate") == 0);
-       // *s->birthdate = *updateValue;
+      else if (strcmp(fieldToUpdate, "birthdate") == 0){
+        *date_str = *updateValue;
+        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+      }
     }
     else
-      std::cout << "An error has occurred during the select query : bad filter." << std::endl;
+      std::cout << "An error has occurred during the update query : bad filter." << std::endl;
       // break;
   }
   log_query(queryResult);
