@@ -4,6 +4,7 @@
 #include <iostream>
 #include <time.h>
 #include <string.h>
+ #include <sys/mman.h>
 
 void query_result_init(query_result_t *result, const char *query)
 {
@@ -140,6 +141,7 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64];
   parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue); // check if valid query
   student_t *s = new student_t;
+  
   for (size_t i = 0; i < db->lsize; i++)
   {
     *s = db->data[i];
@@ -199,12 +201,14 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        memcpy(s->fname,updateValue, 64);
+        strcpy(s->fname,updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        memcpy(s->lname, updateValue,64);
+        puts("et ici aussi?");
+        strcpy(db->data[i].lname, updateValue);
+        //strcpy(s->lname,updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
@@ -314,10 +318,8 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
         query_result_add(queryResult, *s);
       }
     }
-    else
-      std::cout << "An error has occurred during the update query : bad filter." << std::endl;
-    // break;
   }
+  msync(&db, db->psize ,2);    
   log_query(queryResult);
   delete s;
   // delete queryResult;
