@@ -1,0 +1,677 @@
+Query "select fname=Olav" completed in 0.000000ms with 338 results.
+737, Olav, Lemaire ,chemistry, 26/08/1995
+
+3159, Olav, Cornelis ,physics, 14/02/1993
+
+4767, Olav, Lefevre,pharma, 18/11/1994
+
+15189, Olav, Morin,info, 27/03/1998
+
+15791, Olav, Claeys ,chemistry, 19/07/1998
+
+16048, Olav, Rousseau,physics, 28/08/2000
+
+20085, Olav, De Wilde ,physics, 01/12/1996
+
+24271, Olav, Vermeulen ,chemistry, 12/11/2002
+
+31053, Olav, Wauters ,pharma, 21/06/2002
+
+31992, Olav, Muller,chemistry, 12/02/1997
+
+32052, Olav, Lenaerts ,physics, 21/10/1996
+
+34657, Olav, Wuyts ,chemistry, 11/03/1993
+
+34886, Olav, Vervoort ,info, 02/02/1996
+
+35511, Olav, Herve,info, 15/11/1995
+
+35984, Olav, Lauwers ,chemistry, 02/08/2002
+
+37685, Olav, Lucas,pharma, 07/06/2000
+
+39530, Olav, Lemaire ,math, 15/01/1994
+
+39726, Olav, Noël ,pharma, 15/07/2002
+
+41866, Olav, Stevens ,math, 04/01/2000
+
+44338, Olav, Leclercq,math, 09/01/1995
+
+44574, Olav, ,physics, 26/12/1997
+
+51780, Olav, Jacquet,physics, 11/02/1993
+
+54206, Olav, Roux,chemistry, 14/02/2000
+
+56447, Olav, Hardy ,info, 09/08/1997
+
+56530, Olav, Adam ,physics, 05/06/2000
+
+57062, Olav, Daems ,info, 19/05/1998
+
+62006, Olav, Simons ,chemistry, 05/11/1994
+
+63738, Olav, Lamy,physics, 05/04/1994
+
+65950, Olav, Morel,math, 27/05/1998
+
+67582, Olav, Humbert,math, 04/03/1997
+
+73055, Olav, Giraud,physics, 16/10/1999
+
+81276, Olav, Peeters ,chemistry, 06/01/2002
+
+82968, Olav, Cools ,physics, 20/08/1993
+
+84472, Olav, Rousseau ,info, 02/05/1995
+
+84989, Olav, Coppens ,physics, 17/02/1999
+
+86120, Olav, Léonard ,chemistry, 09/03/2002
+
+87978, Olav, De Wilde ,math, 26/07/1994
+
+88239, Olav, Marchand,chemistry, 10/01/1995
+
+91671, Olav, Claeys ,info, 16/10/2000
+
+92777, Olav, Mertens ,info, 20/09/1993
+
+98947, Olav, De Smet ,physics, 04/12/2002
+
+101517, Olav, Fontaine ,chemistry, 14/12/1995
+
+104955, Olav, Julien,info, 06/08/2001
+
+107892, Olav, Urbain ,info, 12/10/2001
+
+108531, Olav, Peeters,chemistry, 20/02/2000
+
+108620, Olav, Lemaire ,physics, 24/04/1998
+
+115739, Olav, Aubert,physics, 06/03/1999
+
+119046, Olav, Heylen ,pharma, 03/12/1993
+
+125618, Olav, Faure,info, 08/05/2000
+
+127456, Olav, Lebrun,pharma, 26/04/1998
+
+131028, Olav, Bauwens ,info, 28/08/2000
+
+135965, Olav, François ,chemistry, 05/12/1999
+
+140032, Olav, Rousseau ,math, 28/12/2001
+
+140178, Olav, Barthelemy,pharma, 04/02/1999
+
+140705, Olav, Deprez ,pharma, 20/01/1994
+
+141650, Olav, Marchal ,math, 26/01/1993
+
+144446, Olav, Henry,physics, 28/05/2002
+
+147853, Olav, De Clercq ,physics, 16/02/1997
+
+148023, Olav, Christiaens ,physics, 16/10/2002
+
+148348, Olav, Collard ,math, 05/03/2002
+
+150141, Olav, Simon ,math, 09/03/2002
+
+151420, Olav, Claes ,chemistry, 06/05/2001
+
+153880, Olav, Lopez,chemistry, 23/04/2000
+
+157535, Olav, Michel,math, 06/01/2000
+
+161551, Olav, Christiaens ,chemistry, 06/12/1996
+
+162562, Olav, Peeters ,pharma, 27/02/1998
+
+165647, Olav, Noel,chemistry, 19/02/1997
+
+165982, Olav, Leclercq,info, 28/11/1993
+
+168714, Olav, Lambert,math, 19/06/1999
+
+170460, Olav, De Clercq ,pharma, 12/04/2000
+
+171616, Olav, Timmermans ,info, 16/02/2002
+
+171839, Olav, Coppens ,math, 07/04/1996
+
+172818, Olav, Beckers ,physics, 18/11/2002
+
+174888, Olav, Mertens ,physics, 09/12/1999
+
+177661, Olav, De Coninck ,chemistry, 05/04/1996
+
+183615, Olav, De Smet ,physics, 13/10/1998
+
+184355, Olav, Peeters ,pharma, 05/11/1996
+
+188449, Olav, Carlier,physics, 08/06/2002
+
+189715, Olav, Leroy ,info, 27/10/2000
+
+189768, Olav, Delfosse ,math, 28/03/1997
+
+196137, Olav, Piette ,physics, 06/04/2000
+
+197795, Olav, Martin ,math, 05/12/2002
+
+200586, Olav, Lambert ,math, 04/09/1998
+
+200945, Olav, Leroy,chemistry, 24/11/2002
+
+202214, Olav, Lejeune ,info, 07/07/1999
+
+202816, Olav, Geerts ,pharma, 01/10/2000
+
+203883, Olav, Bertrand ,chemistry, 20/05/1997
+
+210021, Olav, Claes ,pharma, 14/12/1995
+
+211214, Olav, Bernard,math, 08/12/1993
+
+211655, Olav, Jansen ,physics, 24/12/1999
+
+214565, Olav, Roels ,info, 18/06/1997
+
+222144, Olav, Leroy ,math, 25/10/1998
+
+222717, Olav, Marchand,pharma, 28/05/1999
+
+236754, Olav, Martens ,info, 21/11/1994
+
+246437, Olav, Masson,pharma, 26/09/1995
+
+247606, Olav, Laurent ,physics, 11/09/2001
+
+248858, Olav, Verschueren ,physics, 10/03/1995
+
+250415, Olav, De Ridder ,info, 24/05/2000
+
+250522, Olav, Thomas,pharma, 13/07/2001
+
+257229, Olav, Poncelet ,physics, 11/03/1993
+
+257664, Olav, Bonnet,physics, 04/09/1996
+
+259235, Olav, Jansen ,chemistry, 20/01/1995
+
+264555, Olav, Pieters ,pharma, 20/05/1996
+
+265941, Olav, Lambrechts ,pharma, 01/06/1996
+
+266164, Olav, Dupont ,chemistry, 15/05/1999
+
+278875, Olav, Bodart ,math, 13/04/1993
+
+280177, Olav, Guillaume ,info, 05/12/1998
+
+289329, Olav, Cools ,chemistry, 23/05/1993
+
+290100, Olav, Aerts ,chemistry, 03/02/2002
+
+292122, Olav, De Pauw ,physics, 11/07/1993
+
+293115, Olav, Jacobs,physics, 02/01/1998
+
+293804, Olav, Willems,info, 13/10/1996
+
+295129, Olav, François ,pharma, 02/06/1996
+
+297176, Olav, Leblanc,info, 07/08/2000
+
+303685, Olav, Roy,pharma, 12/03/1998
+
+304870, Olav, Dufour,info, 02/10/1993
+
+315301, Olav, Bogaerts ,pharma, 14/04/2001
+
+315310, Olav, Verlinden ,chemistry, 08/12/1995
+
+322297, Olav, De Meyer ,info, 01/10/1999
+
+322720, Olav, Verhoeven ,math, 12/05/2001
+
+324903, Olav, Laurent ,info, 25/03/1993
+
+325200, Olav, Stevens ,info, 12/02/2002
+
+326248, Olav, Deprez ,pharma, 05/04/1993
+
+327585, Olav, Coppens ,chemistry, 23/12/1998
+
+330227, Olav, Roels ,pharma, 27/12/1995
+
+330864, Olav, Cools ,info, 21/08/1998
+
+340271, Olav, Nicolas ,chemistry, 13/02/1995
+
+341303, Olav, Lecomte ,physics, 01/02/1995
+
+342142, Olav, Legrand ,chemistry, 24/08/2000
+
+346053, Olav, Declercq ,chemistry, 09/02/2002
+
+346368, Olav, Pirotte ,physics, 07/07/2000
+
+349506, Olav, Le,math, 16/07/1994
+
+351051, Olav, De Meyer ,pharma, 03/06/1995
+
+352211, Olav, Bogaerts ,chemistry, 03/01/2002
+
+353819, Olav, Paris,physics, 16/02/1998
+
+357828, Olav, De Meyer ,pharma, 13/05/1998
+
+361139, Olav, Vincent,physics, 26/08/1994
+
+376969, Olav, Claessens ,chemistry, 08/09/1995
+
+380056, Olav, Simons ,math, 16/08/1996
+
+381450, Olav, Durand,pharma, 23/01/2002
+
+382355, Olav, De Smedt ,chemistry, 20/03/1996
+
+382600, Olav, Thiry ,physics, 20/01/1996
+
+395310, Olav, Grégoire ,math, 09/04/2000
+
+401384, Olav, Segers ,chemistry, 18/10/1998
+
+403968, Olav, Lambert ,info, 27/10/2002
+
+406187, Olav, Simon,physics, 15/02/1993
+
+406644, Olav, Gaillard,info, 20/12/1998
+
+407912, Olav, Chevalier,info, 22/02/1997
+
+413007, Olav, Simons ,physics, 06/08/1994
+
+414382, Olav, Van Dyck ,chemistry, 22/10/2001
+
+416667, Olav, Matthys ,chemistry, 09/11/1994
+
+418919, Olav, Louis,physics, 02/11/2002
+
+421607, Olav, Gauthier,info, 22/10/2001
+
+423414, Olav, Mathieu ,pharma, 03/06/1996
+
+426035, Olav, Cordier,info, 16/09/1993
+
+426921, Olav, Smets ,math, 03/11/1996
+
+434939, Olav, Peeters,info, 13/01/2002
+
+449322, Olav, Lefevre,chemistry, 26/05/2001
+
+454959, Olav, Fernandez,math, 13/08/1999
+
+459987, Olav, Goethals ,physics, 16/10/1997
+
+463162, Olav, Barre,math, 18/10/2000
+
+463523, Olav, Aubry,physics, 09/11/1994
+
+463989, Olav, Goossens ,physics, 23/04/1998
+
+468486, Olav, Hendrickx ,info, 04/11/1994
+
+470495, Olav, Mathieu ,physics, 20/07/1995
+
+475679, Olav, Mercier,info, 24/11/1995
+
+478708, Olav, Leger,info, 15/01/1995
+
+478961, Olav, Deprez ,pharma, 26/04/2001
+
+480300, Olav, De Winter ,chemistry, 17/02/1995
+
+483336, Olav, Rodriguez,math, 24/04/1999
+
+492676, Olav, Simon,math, 12/12/1999
+
+495494, Olav, Delaunay,physics, 04/05/1995
+
+500326, Olav, Vasseur,chemistry, 27/09/1996
+
+500554, Olav, Verstraeten ,math, 22/03/1993
+
+500558, Olav, Dumas,math, 14/09/1998
+
+500951, Olav, Piron ,physics, 11/12/1994
+
+509298, Olav, Noël ,math, 15/09/1999
+
+511870, Olav, De Ridder ,chemistry, 23/02/1996
+
+512849, Olav, Durand,physics, 16/07/1993
+
+514630, Olav, Collin ,physics, 01/08/1994
+
+516609, Olav, Segers ,physics, 13/10/1996
+
+517559, Olav, Somers ,chemistry, 16/07/1996
+
+518700, Olav, Smets ,math, 05/06/1993
+
+520527, Olav, Bailly,physics, 05/05/1993
+
+521954, Olav, ,chemistry, 16/12/1997
+
+522101, Olav, Goossens ,info, 27/05/2000
+
+523531, Olav, Gerard,pharma, 13/05/1995
+
+525339, Olav, Brasseur ,pharma, 06/08/2000
+
+530492, Olav, Evrard ,physics, 06/07/2000
+
+534591, Olav, Baert ,physics, 15/10/1996
+
+535759, Olav, Menard,info, 24/02/1995
+
+537855, Olav, Grondin,pharma, 21/06/1993
+
+553329, Olav, Lefebvre ,chemistry, 03/07/1996
+
+555398, Olav, Dupont ,pharma, 17/02/1995
+
+555741, Olav, De Clercq ,chemistry, 22/05/1994
+
+557415, Olav, Goffin ,pharma, 27/12/2001
+
+557963, Olav, Roche,info, 13/06/2000
+
+561772, Olav, Cousin,physics, 14/11/1999
+
+566821, Olav, Pichon,math, 26/06/1999
+
+569250, Olav, Klein,pharma, 20/08/1997
+
+571809, Olav, Rousseau,physics, 23/12/1995
+
+572496, Olav, Devos ,info, 21/05/1998
+
+574327, Olav, Gillet ,info, 02/12/2000
+
+577373, Olav, Vermeulen ,math, 17/03/1993
+
+579396, Olav, Adam ,math, 23/11/1996
+
+580221, Olav, Paris,chemistry, 07/11/2000
+
+580517, Olav, Smet ,math, 01/06/2002
+
+592309, Olav, Schmitt,chemistry, 23/09/2002
+
+593016, Olav, Vercammen ,physics, 20/04/1997
+
+593127, Olav, Moreau ,physics, 14/10/1997
+
+598047, Olav, Perret,math, 17/05/1994
+
+603370, Olav, Adam ,pharma, 17/10/1995
+
+605071, Olav, Dumont ,info, 03/01/1994
+
+609637, Olav, Gillet,info, 22/02/1993
+
+615000, Olav, Luyten ,info, 04/06/1998
+
+616154, Olav, Servais ,pharma, 03/02/1995
+
+617745, Olav, Lenaerts ,info, 24/06/2002
+
+621983, Olav, Bertrand ,physics, 04/11/2002
+
+622071, Olav, Maes,info, 02/08/1994
+
+625616, Olav, Martens ,math, 14/12/1995
+
+632176, Olav, Smet ,info, 19/08/2002
+
+639754, Olav, Verschueren ,physics, 13/06/2000
+
+639913, Olav, Lemaire,chemistry, 02/10/2002
+
+640392, Olav, Van de Velde ,pharma, 21/06/1996
+
+643545, Olav, Wouters ,chemistry, 11/06/1998
+
+644204, Olav, Verbruggen ,chemistry, 09/01/1998
+
+644448, Olav, Timmermans ,math, 14/04/1998
+
+647368, Olav, Lauwers ,physics, 01/09/1995
+
+648129, Olav, Ceulemans ,pharma, 05/02/1999
+
+650273, Olav, Dubois ,chemistry, 20/11/1996
+
+657857, Olav, Hermans ,chemistry, 09/09/1994
+
+665359, Olav, Raes ,math, 13/05/1997
+
+670300, Olav, Lemaitre,math, 12/06/1996
+
+671843, Olav, Smet ,pharma, 06/02/1994
+
+672872, Olav, Dethier ,physics, 03/11/1999
+
+674378, Olav, Jacobs ,chemistry, 18/07/1993
+
+677171, Olav, Jacob,info, 01/02/2000
+
+682212, Olav, Hubert ,math, 11/07/2002
+
+684859, Olav, Urbain ,chemistry, 24/08/1998
+
+687480, Olav, Maes ,math, 23/05/1996
+
+689720, Olav, Roux,math, 24/06/1994
+
+701857, Olav, Petit ,math, 14/06/2002
+
+707401, Olav, Claessens ,math, 02/10/1999
+
+712999, Olav, Lejeune ,chemistry, 28/03/2002
+
+713033, Olav, Marchal,info, 10/12/1993
+
+727576, Olav, Carlier ,pharma, 18/06/2000
+
+727591, Olav, Bouchet,pharma, 09/03/1996
+
+731937, Olav, Leblanc,info, 17/03/2001
+
+733097, Olav, Gillet,physics, 17/01/1998
+
+735188, Olav, Meyer,math, 15/07/1995
+
+739473, Olav, Jansen ,math, 18/04/2001
+
+740474, Olav, Dupuy,pharma, 11/11/2000
+
+741844, Olav, Thomas ,pharma, 27/02/1998
+
+741986, Olav, Lambert ,physics, 01/10/1998
+
+742943, Olav, Germain,info, 20/04/1994
+
+743790, Olav, Marchand,math, 01/09/2001
+
+749029, Olav, François ,info, 07/08/2002
+
+751462, Olav, Bodson ,math, 09/10/1996
+
+753813, Olav, Jansen ,chemistry, 08/12/2000
+
+755061, Olav, Roger,info, 27/06/2002
+
+756564, Olav, Carpentier,math, 04/05/2000
+
+764745, Olav, Verhaegen ,math, 04/05/1993
+
+764947, Olav, Lemmens ,info, 22/12/2002
+
+771842, Olav, Verlinden ,pharma, 14/05/1994
+
+772694, Olav, André ,physics, 07/07/1998
+
+773747, Olav, Durand,chemistry, 01/01/1997
+
+774952, Olav, Michiels ,physics, 06/05/1995
+
+777442, Olav, Denis,info, 14/07/1994
+
+790695, Olav, Gay,math, 12/09/2001
+
+792478, Olav, Descamps ,pharma, 28/02/1994
+
+792904, Olav, Lambrechts ,chemistry, 12/11/1993
+
+795062, Olav, Bertrand,physics, 09/12/2000
+
+798482, Olav, Rolland,physics, 18/05/2002
+
+799014, Olav, Baron,math, 02/06/1995
+
+800920, Olav, Baron,chemistry, 17/09/1996
+
+805449, Olav, Menard,pharma, 12/01/1997
+
+812163, Olav, Bodart ,pharma, 16/12/1997
+
+815454, Olav, Carpentier,pharma, 03/03/1996
+
+818295, Olav, Van Hoof ,chemistry, 07/03/1998
+
+823573, Olav, Muller,info, 17/10/1993
+
+826894, Olav, Luyten ,chemistry, 16/09/1996
+
+827713, Olav, Marchal,info, 21/02/1996
+
+833778, Olav, Verbeeck ,pharma, 11/05/1996
+
+835715, Olav, Boulanger,pharma, 17/04/2001
+
+836829, Olav, Clement,info, 05/06/1998
+
+838989, Olav, Mercier,info, 27/11/1995
+
+841583, Olav, Duval,chemistry, 19/06/1994
+
+843849, Olav, Guillaume ,physics, 17/05/1998
+
+850455, Olav, Claessens ,chemistry, 16/07/2001
+
+852506, Olav, Cornelis ,info, 10/04/1996
+
+854575, Olav, Peeters ,chemistry, 05/09/2002
+
+854732, Olav, Daems ,pharma, 27/12/1998
+
+855220, Olav, Verheyen ,math, 25/03/1999
+
+857008, Olav, De Meyer ,chemistry, 02/08/1995
+
+859127, Olav, Rousseau,pharma, 14/09/2002
+
+864146, Olav, Cools ,info, 09/02/1998
+
+870157, Olav, Leroux,info, 20/02/1993
+
+880322, Olav, Verhoeven ,info, 05/08/1994
+
+881329, Olav, De Pauw ,physics, 21/05/2000
+
+881401, Olav, Chauvin,physics, 26/02/1998
+
+883077, Olav, Wouters ,chemistry, 24/03/1997
+
+889261, Olav, Poulain,chemistry, 10/03/2000
+
+897054, Olav, Gautier,math, 10/05/2002
+
+898219, Olav, Poncelet ,info, 23/08/1994
+
+903436, Olav, Urbain ,chemistry, 08/02/1995
+
+907319, Olav, Rodriguez,physics, 28/09/2001
+
+910800, Olav, Descamps ,physics, 21/02/2002
+
+910829, Olav, Smets ,physics, 18/04/1994
+
+911730, Olav, Colin,math, 21/10/2002
+
+911811, Olav, Petit ,pharma, 18/10/2000
+
+912081, Olav, Joly,math, 27/12/1996
+
+918315, Olav, Dierckx ,chemistry, 06/05/1994
+
+918998, Olav, Maes ,physics, 09/08/1994
+
+927145, Olav, Adam,physics, 21/10/1997
+
+929886, Olav, Coppens ,info, 09/10/2001
+
+935152, Olav, Mercier,physics, 19/07/2002
+
+935452, Olav, Lievens ,info, 13/02/1997
+
+936249, Olav, Fontaine,pharma, 23/12/1993
+
+945395, Olav, Hendrickx ,physics, 03/03/1998
+
+947894, Olav, Roux,chemistry, 11/09/2000
+
+948919, Olav, Schmitt,math, 09/01/1997
+
+952708, Olav, Charlier ,physics, 14/04/1996
+
+954784, Olav, Renault,chemistry, 03/04/1998
+
+957197, Olav, Pauwels ,info, 19/09/2001
+
+959973, Olav, Duval,physics, 23/10/1998
+
+961825, Olav, Giraud,info, 14/02/2000
+
+962089, Olav, Verhoeven ,chemistry, 22/12/1996
+
+964397, Olav, De Smedt ,chemistry, 24/02/2002
+
+968076, Olav, Vermeiren ,math, 23/03/2002
+
+970734, Olav, Chevallier,physics, 16/09/1997
+
+983754, Olav, Bauwens ,pharma, 28/08/1993
+
+984487, Olav, Dupuis,math, 27/08/2000
+
+987171, Olav, Dufour,physics, 27/03/2002
+
+987517, Olav, Le,pharma, 15/06/1996
+
+988710, Olav, Bosmans ,info, 23/03/1995
+
+995670, Olav, Maréchal ,pharma, 26/06/1994
+
+998718, Olav, Vermeiren ,math, 15/06/2001
+
+999989, Olav, Jacobs,chemistry, 27/06/1994
+

@@ -266,6 +266,7 @@ int main(int argc, char const *argv[])
     while
       (fgets(query, sizeof(query), stdin))
       {
+        query[strcspn(query, "\n")] = 0;
         /*if ((strtok(query) == transaction){
           getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
         }
