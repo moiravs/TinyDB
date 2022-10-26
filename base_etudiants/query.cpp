@@ -11,9 +11,9 @@ void query_result_init(query_result_t *result, const char *query)
   clock_gettime(CLOCK_REALTIME, &now);
   result->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
   memcpy(result->query, query, 256); // initialize query in result
-  result->psize = sizeof(student_t);
+  result->psize = sizeof(student_t) * 16;
   result->lsize = 0;
-  result->students = (student_t *)malloc(sizeof(student_t));
+  result->students = (student_t *)malloc(result->psize);
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   result->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
@@ -70,7 +70,6 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
   }
   for (size_t i = 0; i < db->lsize; i++) // iterating through database to find all students corresponding to the given filter
   {
-
     *s = db->data[i];
     if (strcmp(fieldFilter, "id") == 0)
     {
@@ -85,11 +84,14 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
 
     else if (strcmp(fieldFilter, "fname") == 0)
     {
+      std::cout << s->fname << value << std::endl;
       if (strcmp(s->fname, value) == 0)
       {
         query_result_add(queryResult, *s);
-        if (strcmp(queryKey, "delete"))
+        std::cout << "i found" << std::endl;
+        if (strcmp(queryKey, "delete")==0)
         {
+          std::cout << "weird";
           db_delete(db, i);
         }
       }
@@ -99,7 +101,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
       if (strcmp(s->lname, value) == 0)
       {
         query_result_add(queryResult, *s);
-        if (strcmp(queryKey, "delete"))
+        if (strcmp(queryKey, "delete")==0)
           db_delete(db, i);
       }
     }
@@ -108,7 +110,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
       if (strcmp(s->section, value) == 0)
       {
         query_result_add(queryResult, *s);
-        if (strcmp(queryKey, "delete"))
+        if (strcmp(queryKey, "delete")==0)
           db_delete(db, i);
       }
     }
@@ -118,13 +120,13 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
       if (strcmp(date_str, value) == 0)
       {
         query_result_add(queryResult, *s);
-        if (strcmp(queryKey, "delete"))
+        if (strcmp(queryKey, "delete")==0)
           db_delete(db, i);
       }
     }
     else
     {
-      std::cout << "An error has occurred during the select or delete query : bad filter." << std::endl;
+      //std::cout << "An error has occurred during the select or delete query : bad filter." << std::endl;
     }
   }
   queryResult->status = QUERY_SUCCESS;
@@ -146,7 +148,6 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
     printf("buffer : %s\n", buffer);
     char date_str[512] = "0";
     char id[64];
-    printf("Update value : %s\n", updateValue);
     if (strcmp(fieldToUpdate, "id") == 0)
     {
       sprintf(id, "%u", s->id);

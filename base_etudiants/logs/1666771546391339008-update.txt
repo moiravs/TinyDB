@@ -1,3 +1,0 @@
-Query "update fname=Yannick set lname=proutprout" completed in 0.000768ms with 1 results.
-886674, Yannick, porel,chemistry, 09/03/2000
-
