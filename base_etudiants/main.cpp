@@ -270,6 +270,7 @@ int main(int argc, char const *argv[])
         /*if ((strtok(query) == transaction){
           getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
         }
+        
         */
         // printf("query: %s\n", query);
         close(fd2[0]);

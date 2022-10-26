@@ -52,7 +52,6 @@ void query_insert(database_t *db, query_result_t *queryResult, char *query, char
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
   log_query(queryResult);
-  // delete queryResult;
 }
 
 void query_select_and_delete(database_t *db, query_result_t *queryResult, char *query, char *saveptr, const char *queryKey)
@@ -136,7 +135,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
 
 void query_update(database_t *db, query_result_t *queryResult, char *saveptr, char *query)
 {
-  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64]();
+  char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64];
   parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue); // check if valid query
   student_t *s = new student_t;
   for (size_t i = 0; i < db->lsize; i++)
@@ -167,12 +166,12 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        s->fname = updateValue;
+        memcpy(s->fname,updateValue,64);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        s->lname = updateValue;
+        memcpy(s->lname,updateValue,64);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
@@ -199,12 +198,12 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        s->fname = updateValue;
+        memcpy(s->fname,updateValue, 64);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        s->lname = updateValue;
+        memcpy(s->lname, updateValue,64);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
