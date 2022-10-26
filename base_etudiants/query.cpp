@@ -162,31 +162,33 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
     {
       if (strcmp(fieldToUpdate, "id") == 0)
       {
-        *id = *updateValue;
+        strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
-        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
+        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        memcpy(s->fname,updateValue,64);
+        strcpy(db->data[i].fname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        memcpy(s->lname,updateValue,64);
+        strcpy(db->data[i].lname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
       {
-        *s->section = *updateValue;
+        strcpy(db->data[i].section, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
       {
-        *date_str = *updateValue;
-        strptime(date_str, "%d/%B/%Y", &s->birthdate); // transform the updated string to tm struct
-        query_result_add(queryResult, *s);
+        strcpy(date_str, updateValue);
+        strptime(date_str, "%d/%B/%Y", &db->data[i].birthdate);
+        long temp = atol(id);                    // conversion to long int
+        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
+        query_result_add(queryResult, *s); // transform the updated string to tm struct
       }
     }
     else if ((strcmp(fieldFilter, "fname") == 0) && (strcmp(s->fname, valueFilter) == 0))
@@ -194,32 +196,30 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       std::cout << "je passe par là " << std::endl;
       if (strcmp(fieldToUpdate, "id") == 0)
       {
-        *id = *updateValue;
+        strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
-        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
+        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        strcpy(s->fname,updateValue);
+        strcpy(db->data[i].fname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        puts("et ici aussi?");
         strcpy(db->data[i].lname, updateValue);
-        //strcpy(s->lname,updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
       {
-        *s->section = *updateValue;
+        strcpy(db->data[i].section, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
       {
-        *date_str = *updateValue;
-        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+        strcpy(date_str, updateValue);
+        strptime(date_str, "%d/%B/%Y", &db->data[i].birthdate);
         query_result_add(queryResult, *s);
       }
     }
@@ -228,30 +228,30 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       puts("going through lname");
       if (strcmp(fieldToUpdate, "id") == 0)
       {
-        *id = *updateValue;
+        strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
         s->id = static_cast<unsigned int>(temp); // conversion to unsigned
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        *s->fname = *updateValue;
+        strcpy(db->data[i].fname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        *s->lname = *updateValue;
+        strcpy(db->data[i].lname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
       {
-        *s->section = *updateValue;
+        strcpy(db->data[i].section, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
       {
-        *date_str = *updateValue;
-        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+        strcpy(date_str, updateValue);
+        strptime(date_str, "%d/%B/%Y", &db->data[i].birthdate);
         query_result_add(queryResult, *s);
       }
     }
@@ -259,30 +259,30 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
     {
       if (strcmp(fieldToUpdate, "id") == 0)
       {
-        *id = *updateValue;
+        strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
         s->id = static_cast<unsigned int>(temp); // conversion to unsigned
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        *s->fname = *updateValue;
+        strcpy(db->data[i].fname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        *s->lname = *updateValue;
+        strcpy(db->data[i].lname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
       {
-        *s->section = *updateValue;
+        strcpy(db->data[i].section, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
       {
-        *date_str = *updateValue;
-        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+        strcpy(date_str, updateValue);
+        strptime(date_str, "%d/%B/%Y", &db->data[i].birthdate);
         query_result_add(queryResult, *s);
       }
     }
@@ -291,30 +291,30 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       strftime(date_str, 32, "%d/%B/%Y", &s->birthdate);
       if (strcmp(fieldToUpdate, "id") == 0)
       {
-        *id = *updateValue;
+        strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
         s->id = static_cast<unsigned int>(temp); // conversion to unsigned
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
-        *s->fname = *updateValue;
+        strcpy(db->data[i].fname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "lname") == 0)
       {
-        *s->lname = *updateValue;
+        strcpy(db->data[i].lname, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "section") == 0)
       {
-        *s->section = *updateValue;
+        strcpy(db->data[i].section, updateValue);
         query_result_add(queryResult, *s);
       }
       else if (strcmp(fieldToUpdate, "birthdate") == 0)
       {
-        *date_str = *updateValue;
-        strptime(date_str, "%d/%B/%Y", &s->birthdate);
+        strcpy(date_str, updateValue);
+        strptime(date_str, "%d/%B/%Y", &db->data[i].birthdate);
         query_result_add(queryResult, *s);
       }
     }
