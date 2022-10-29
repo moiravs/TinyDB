@@ -42,5 +42,17 @@
         "mutex": "cpp",
         "ratio": "cpp",
         "thread": "cpp"
-    }
+    },
+    "python.testing.pytestArgs": [
+        "base_etudiants"
+    ],
+    "python.testing.unittestEnabled": true,
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./base_etudiants",
+        "-p",
+        "*test*.py"
+    ]
 }

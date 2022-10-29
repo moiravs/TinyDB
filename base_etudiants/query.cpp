@@ -52,6 +52,8 @@ void query_insert(database_t *db, query_result_t *queryResult, char *query, char
   }
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
+  msync(&db, db->psize, 2);
+  delete s;
   log_query(queryResult);
 }
 
@@ -69,7 +71,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
   {
     std::cout << "Deleting all students whose " << fieldFilter << " is " << value << std::endl;
   }
-  for (size_t i = 0; i < db->lsize; i++) // iterating through database to find all students corresponding to the given filter
+  for (size_t i = 0; i < db->lsize+1; i++) // iterating through database to find all students corresponding to the given filter
   {
     *s = db->data[i];
     if (strcmp(fieldFilter, "id") == 0)
@@ -131,6 +133,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
     }
   }
   queryResult->status = QUERY_SUCCESS;
+  msync(&db, db->psize, 2);
   log_query(queryResult);
   delete s;
   // delete queryResult;

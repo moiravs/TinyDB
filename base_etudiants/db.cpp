@@ -43,37 +43,44 @@ void db_load(database_t *db, const char *path)
 
 void db_upsize(database_t *db)
 {
-    if (db->lsize >= (db->psize / sizeof(student_t)))  // if we reached the end of the allocated size for db
+    if (db->lsize >= (db->psize / sizeof(student_t))) // if we reached the end of the allocated size for db
     {
         size_t oldPsize = db->psize;
         db->psize *= 2;
         student_t *newStudent;
-        newStudent = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);  // establishes a mapping between an adress space of a process and a memory object
-        memcpy(newStudent, db->data, oldPsize);  // copy db to newly allocated memory
-        munmap(db->data, oldPsize);  // deallocate old memory
+        newStudent = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
+        memcpy(newStudent, db->data, oldPsize);                                                                                // copy db to newly allocated memory
+        munmap(db->data, oldPsize);                                                                                            // deallocate old memory
         db->data = newStudent;
     }
 }
 
 void db_init(database_t *db)
 {
-    db->lsize = 0;
+    db->lsize = -1;
     db->psize = sizeof(student_t) * 16;
-    db->data = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC|MAP_SHARED|MAP_ANONYMOUS , -1, 0);
+    db->data = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE, MAP_SYNC | MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 }
 
 void db_add(database_t *db, student_t student)
-{   bool exists = false;
+{
+    bool exists = false;
     db->lsize += 1;
     db_upsize(db);
+    puts("here");
     db->data[db->lsize] = student; // at end of db
+    char buffer[512];
+    student_to_str(buffer, &db->data[db->lsize]);
+    std::cout
+        << buffer << std::endl;
 }
 
 void db_delete(database_t *db, size_t indice)
 {
-    if (indice >= db->lsize){
+    if (indice >= db->lsize)
+    {
         perror("db_delete()");
     }
     db->lsize--;
-    std::copy(db->data+indice+1, db->data+db->lsize, db->data+indice);  // overwrite the object to delete by copying everything following the given adress of the object to the said adress
+    std::copy(db->data + indice + 1, db->data + db->lsize, db->data + indice); // overwrite the object to delete by copying everything following the given adress of the object to the said adress
 }

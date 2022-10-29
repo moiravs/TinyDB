@@ -10,60 +10,57 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <iostream>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
 #include <string>
 #include <string.h>
 #include <sys/mman.h>
+#include <fstream>
 
 static volatile int keepRunning = 1;
 pid_t child_select = -1;
 pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
-database_t *db ;
-const char *db_path ;
+database_t *db;
+const char *db_path;
 int fd1[2], fd2[2], fd3[2], fd4[2], chldfd1[2], chldfd2[2], chldfd3[2], chldfd4[2];
-
 
 void signal_handling(int signum)
 {
-  if (signum == 2){ //sigint
-  keepRunning = 0;
-  char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
-  close(chldfd1[1]);
-  read(chldfd1[0], status1, 256);
-  close(chldfd2[1]);
-  read(chldfd2[0], status2, 256);
-  close(chldfd3[1]);
-  read(chldfd3[0], status3, 256);
-  close(chldfd4[1]);
-  read(chldfd4[0], status4, 256);
-  bool finish = false;
-  puts("Waiting for requests to terminate");
-  while (!finish)
-  {
-    if ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0))
+  if (signum == 2)
+  { // sigint
+    keepRunning = 0;
+    char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
+    close(chldfd1[1]);
+    read(chldfd1[0], status1, 256);
+    close(chldfd2[1]);
+    read(chldfd2[0], status2, 256);
+    close(chldfd3[1]);
+    read(chldfd3[0], status3, 256);
+    close(chldfd4[1]);
+    read(chldfd4[0], status4, 256);
+    bool finish = false;
+    puts("Waiting for requests to terminate");
+    while (!finish)
     {
-      kill(child_insert, SIGKILL);
-      kill(child_select, SIGKILL);
-      kill(child_delete, SIGKILL);
-      kill(child_update, SIGKILL);
-      
-      finish = true;
-      
-      
+      if ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0))
+      {
+        kill(child_insert, SIGKILL);
+        kill(child_select, SIGKILL);
+        kill(child_delete, SIGKILL);
+        kill(child_update, SIGKILL);
+
+        finish = true;
+      }
     }
-    
-  }}
+  }
   puts("Committing database changes to the disk...");
-  //db_save(db, db_path);
+  db_save(db, db_path);
   puts("Done");
   if (signum == 2)
   {
-    kill(getpid(), SIGKILL);}
+    kill(getpid(), SIGKILL);
   }
+}
 
 void *create_shared_memory(size_t size)
 {
@@ -257,22 +254,15 @@ int main(int argc, char const *argv[])
     }
     exit(0);
   }
-
-  while (true)
+  bool transaction = false;
+  char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
+  while (std::cin.getline(query, 256))
   {
-    signal(SIGINT,  signal_handling); // handles the signal Ctrl + C and terminates program
-    signal(SIGUSR1, signal_handling); // handles abnormal program termination
-    //void * getstdin = fgets(query, sizeof(query), stdin);
-    while
-      (fgets(query, sizeof(query), stdin))
-      {
-        query[strcspn(query, "\n")] = 0;
-        /*if ((strtok(query) == transaction){
-          getstdin = ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0)) && fgets(query, sizeof(query), stdin)
-        }
-        
-        */
-        // printf("query: %s\n", query);
+    //(fgets(query, sizeof(query), stdin)){
+    query[strcspn(query, "\n")] = 0;
+    if ((strcmp(query, "transaction") == 0) and transaction == false)
+    {
+      while ((strcmp(status1, "SUCCESS") && strcmp(status2, "SUCCESS") && strcmp(status3, "SUCCESS") && strcmp(status4, "SUCCESS") && transaction == true && std::cin.getline(query, 256))){
         close(fd2[0]);
         write(fd2[1], query, 256);
         close(fd1[0]);
@@ -281,6 +271,37 @@ int main(int argc, char const *argv[])
         write(fd3[1], query, 256);
         close(fd4[0]);
         write(fd4[1], query, 256);
-    }
+        close(chldfd1[1]);
+        read(chldfd1[0], status1, 256);
+        close(chldfd2[1]);
+        read(chldfd2[0], status2, 256);
+        close(chldfd3[1]);
+        read(chldfd3[0], status3, 256);
+        close(chldfd4[1]);
+        read(chldfd4[0], status4, 256);
+        if (strcmp(query, "transaction")==0){
+          transaction = false;
+        }
+      };}
+      
+
+    signal(SIGINT, signal_handling);  // handles the signal Ctrl + C and terminates program
+    signal(SIGUSR1, signal_handling); // handles abnormal program termination
+    close(fd2[0]);
+    write(fd2[1], query, 256);
+    close(fd1[0]);
+    write(fd1[1], query, 256);
+    close(fd3[0]);
+    write(fd3[1], query, 256);
+    close(fd4[0]);
+    write(fd4[1], query, 256);
+    close(chldfd1[1]);
+    read(chldfd1[0], status1, 256);
+    close(chldfd2[1]);
+    read(chldfd2[0], status2, 256);
+    close(chldfd3[1]);
+    read(chldfd3[0], status3, 256);
+    close(chldfd4[1]);
+    read(chldfd4[0], status4, 256);
   }
 }
