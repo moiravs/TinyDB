@@ -22,73 +22,55 @@ pid_t child_delete = -1;
 pid_t child_update = -1;
 database_t *db;
 const char *db_path;
-int fd1[2], fd2[2], fd3[2], fd4[2], chldfd1[2], chldfd2[2], chldfd3[2], chldfd4[2];
+int fdInsert[2], fdSelect[2], fdUpdate[2], fdDelete[2], fdResponse[2];
 
-void signal_handling(int signum)
+void close_application(bool force)
 {
-  if (signum == 2)
-  { // sigint
-    keepRunning = 0;
-    char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
-    close(chldfd1[1]);
-    read(chldfd1[0], status1, 256);
-    close(chldfd2[1]);
-    read(chldfd2[0], status2, 256);
-    close(chldfd3[1]);
-    read(chldfd3[0], status3, 256);
-    close(chldfd4[1]);
-    read(chldfd4[0], status4, 256);
-    bool finish = false;
-    puts("Waiting for requests to terminate");
-    while (!finish)
-    {
-      if ((strcmp(status1, "SUCCESS") == 0) && (strcmp(status2, "SUCCESS") == 0) && (strcmp(status3, "SUCCESS") == 0) && (strcmp(status4, "SUCCESS") == 0))
-      {
-        kill(child_insert, SIGKILL);
-        kill(child_select, SIGKILL);
-        kill(child_delete, SIGKILL);
-        kill(child_update, SIGKILL);
 
-        finish = true;
-      }
-    }
+  if (!force)
+  {
+    puts("Waiting for requests to terminate");
+    close(fdSelect[0]);
+    write(fdSelect[1], "KILL", 256);
+    close(fdUpdate[0]);
+    write(fdUpdate[1], "KILL", 256);
+    close(fdDelete[0]);
+    write(fdDelete[1], "KILL", 256);
+    close(fdInsert[0]);
+    write(fdInsert[1], "KILL", 256);
+
+    int wstatus;
+    waitpid(-1, &wstatus, 0);
   }
   puts("Committing database changes to the disk...");
   db_save(db, db_path);
   puts("Done");
-  if (signum == 2)
-  {
-    kill(getpid(), SIGKILL);
-  }
 }
-
-void *create_shared_memory(size_t size)
+void signal_handling(int signum)
 {
-  int protection = PROT_READ | PROT_WRITE;
-  int visibility = MAP_SHARED | MAP_ANONYMOUS;
-  return mmap(NULL, size, protection, visibility, -1, 0);
+  close_application(signum != 2);
+  kill(getpid(), SIGKILL);
 }
 
 int main(int argc, char const *argv[])
 {
+
   db_path = argv[1];
 
-  db = (database_t *)create_shared_memory(sizeof(database_t));
+  db = (database_t *)mmap(NULL, (sizeof(database_t)), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
   db_init(db);
   std::cout << "Loading your tiny tiny database..." << std::endl;
   db_load(db, db_path);
   std::cout << "Done !" << std::endl;
-  // fd : file descriptor (fd0 : standard input (stdin), fd1 : standard output (stdout), fd2 : standard error (stderr))
+  // fd : file descriptor (fd0 : standard input (stdin), fdInsert : standard output (stdout), fd2 : standard error (stderr))
   // pipe(fd) : creates both the reading and writing ends of the pipe
   // fd[0] : standard input, fd[1] : standard output
-  pipe(fd1);
-  pipe(fd2);
-  pipe(fd3);
-  pipe(fd4);
-  pipe(chldfd1);
-  pipe(chldfd2);
-  pipe(chldfd3);
-  pipe(chldfd4);
+  pipe(fdInsert);
+  pipe(fdSelect);
+  pipe(fdUpdate);
+  pipe(fdDelete);
+  pipe(fdResponse);
+
   char query[256] = "0";
 
   child_select = fork();
@@ -100,37 +82,37 @@ int main(int argc, char const *argv[])
   if (child_select == 0)
   {
     char query[256] = "01";
-    close(chldfd2[0]);
-    write(chldfd2[1], "SUCCESS", 256);
-    while (true)
+    close(fdResponse[0]);
+    write(fdResponse[1], "SUCCESS", 256);
+    bool killed = false;
+    while (!killed)
     {
-      close(fd2[1]);                // close the writing end of the pipe
-      read(fd2[0], query, 256);     // reads 256 bytes into memory area indicated by query
+      close(fdSelect[1]);            // close the writing end of the pipe
+      read(fdSelect[0], query, 256); // reads 256 bytes into memory area indicated by query
       if (strcmp(query, "01") != 0) // if query changed
       {
-        query_result_t *queryResult = new query_result_t();
-        query_result_init(queryResult, query);
-
         char *querymod = new char[256]; // create a new modifiable string
         memcpy(querymod, query, 256);   // save query to querymod
         char *saveptr;
         const char *queryKey = new char[6]();         // variable that'll hold the first keyword of the query (delete, insert, ...)
         queryKey = strtok_r(querymod, " ", &saveptr); // write the first word to queryKey
 
-        if (strcmp(queryKey, "select") == 0)
+        if (strcmp(queryKey, "KILL") == 0)
         {
-          close(chldfd2[0]);
-          write(chldfd2[1], "UNRECOGNIZED FIELD", 256);
+          killed = true;
+        }
+        else if (strcmp(queryKey, "select") == 0)
+        {
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_select_and_delete(db, queryResult, query, saveptr, "select");
-          close(chldfd2[0]);
-          write(chldfd2[1], "SUCCESS", 256);
+
+          close(fdResponse[0]);
+          write(fdResponse[1], "SUCCESS", 256);
           delete queryResult;
         }
         memcpy(query, "01", 256); // change the query back to 01
       }
-      sleep(2);
     }
     exit(0);
   }
@@ -143,13 +125,14 @@ int main(int argc, char const *argv[])
   if (child_insert == 0)
   {
     char query[256] = "01";
-    close(chldfd1[0]);
-    write(chldfd1[1], "SUCCESS", 256);
+    close(fdResponse[0]);
+    write(fdResponse[1], "SUCCESS", 256);
 
-    while (true)
+    bool killed = false;
+    while (!killed)
     {
-      close(fd1[1]);
-      read(fd1[0], query, 256);
+      close(fdInsert[1]);
+      read(fdInsert[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
         char *querymod = new char[256];
@@ -157,20 +140,21 @@ int main(int argc, char const *argv[])
         char *saveptr;
         const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
-
-        if (strcmp(queryKey, "insert") == 0)
+        if (strcmp(queryKey, "KILL") == 0)
         {
-          close(chldfd1[0]);
-          write(chldfd1[1], "UNRECOGNIZED FIELD", 256);
+          killed = true;
+        }
+        else if (strcmp(queryKey, "insert") == 0)
+        {
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_insert(db, queryResult, query, saveptr);
-          close(chldfd1[0]);
-          write(chldfd1[1], "SUCCESS", 256);
+          close(fdResponse[0]);
+          write(fdResponse[1], "SUCCESS", 256);
+          delete queryResult;
         }
         memcpy(query, "01", 256);
       }
-      sleep(2);
     }
     exit(0);
   }
@@ -182,12 +166,13 @@ int main(int argc, char const *argv[])
   if (child_update == 0)
   {
     char query[256] = "01";
-    close(chldfd3[0]);
-    write(chldfd3[1], "SUCCESS", 256);
-    while (true)
+    close(fdResponse[0]);
+    write(fdResponse[1], "SUCCESS", 256);
+    bool killed = false;
+    while (!killed)
     {
-      close(fd3[1]);
-      read(fd3[0], query, 256);
+      close(fdUpdate[1]);
+      read(fdUpdate[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
 
@@ -196,21 +181,23 @@ int main(int argc, char const *argv[])
         char *saveptr;
         const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
-
-        if (strcmp(queryKey, "update") == 0)
+        if (strcmp(queryKey, "KILL") == 0)
         {
-          close(chldfd3[0]);
-          write(chldfd3[1], "UNRECOGNIZED FIELD", 256);
+          killed = true;
+        }
+
+        else if (strcmp(queryKey, "update") == 0)
+        {
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_update(db, queryResult, saveptr, query);
-          close(chldfd3[0]);
-          write(chldfd3[1], "SUCCESS", 256);
+          close(fdResponse[0]);
+          write(fdResponse[1], "SUCCESS", 256);
+          delete queryResult;
         }
 
         memcpy(query, "01", 256);
       }
-      sleep(2);
     }
     exit(0);
   }
@@ -222,13 +209,14 @@ int main(int argc, char const *argv[])
   if (child_delete == 0)
   {
     char query[256] = "01";
-    close(chldfd4[0]);
-    write(chldfd4[1], "SUCCESS", 256);
+    close(fdResponse[0]);
+    write(fdResponse[1], "SUCCESS", 256);
 
-    while (true)
+    bool killed = false;
+    while (!killed)
     {
-      close(fd4[1]);
-      read(fd4[0], query, 256);
+      close(fdDelete[1]);
+      read(fdDelete[0], query, 256);
       if (strcmp(query, "01") != 0)
       {
 
@@ -237,71 +225,58 @@ int main(int argc, char const *argv[])
         char *saveptr;
         const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
-
-        if (strcmp(queryKey, "delete") == 0)
+        if (strcmp(queryKey, "KILL") == 0)
         {
-          close(chldfd4[0]);
-          write(chldfd4[1], "UNRECOGNIZED FIELD", 256);
+          killed = true;
+        }
+
+        else if (strcmp(queryKey, "delete") == 0)
+        {
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_select_and_delete(db, queryResult, query, saveptr, "delete");
-          close(chldfd4[0]);
-          write(chldfd4[1], "SUCCESS", 256);
+          close(fdResponse[0]);
+          write(fdResponse[1], "SUCCESS", 256);
+          delete queryResult;
         }
         memcpy(query, "01", 256);
       }
-      sleep(2);
     }
     exit(0);
   }
-  bool transaction = false;
-  char *status1 = new char[256], *status2 = new char[256], *status3 = new char[256], *status4 = new char[256];
-  while (std::cin.getline(query, 256))
-  {
-    //(fgets(query, sizeof(query), stdin)){
-    query[strcspn(query, "\n")] = 0;
-    if ((strcmp(query, "transaction") == 0) and transaction == false)
-    {
-      while ((strcmp(status1, "SUCCESS") && strcmp(status2, "SUCCESS") && strcmp(status3, "SUCCESS") && strcmp(status4, "SUCCESS") && transaction == true && std::cin.getline(query, 256))){
-        close(fd2[0]);
-        write(fd2[1], query, 256);
-        close(fd1[0]);
-        write(fd1[1], query, 256);
-        close(fd3[0]);
-        write(fd3[1], query, 256);
-        close(fd4[0]);
-        write(fd4[1], query, 256);
-        close(chldfd1[1]);
-        read(chldfd1[0], status1, 256);
-        close(chldfd2[1]);
-        read(chldfd2[0], status2, 256);
-        close(chldfd3[1]);
-        read(chldfd3[0], status3, 256);
-        close(chldfd4[1]);
-        read(chldfd4[0], status4, 256);
-        if (strcmp(query, "transaction")==0){
-          transaction = false;
-        }
-      };}
-      
+  signal(SIGINT, signal_handling);  // handles the signal Ctrl + C and terminates program
+  signal(SIGUSR1, signal_handling); // handles abnormal program termination
 
-    signal(SIGINT, signal_handling);  // handles the signal Ctrl + C and terminates program
-    signal(SIGUSR1, signal_handling); // handles abnormal program termination
-    close(fd2[0]);
-    write(fd2[1], query, 256);
-    close(fd1[0]);
-    write(fd1[1], query, 256);
-    close(fd3[0]);
-    write(fd3[1], query, 256);
-    close(fd4[0]);
-    write(fd4[1], query, 256);
-    close(chldfd1[1]);
-    read(chldfd1[0], status1, 256);
-    close(chldfd2[1]);
-    read(chldfd2[0], status2, 256);
-    close(chldfd3[1]);
-    read(chldfd3[0], status3, 256);
-    close(chldfd4[1]);
-    read(chldfd4[0], status4, 256);
+  bool transaction = false;
+  char *status1 = new char[256];
+  while (!std::cin.eof())
+  {
+    while (std::cin.getline(query, 256))
+    {
+      //(fgets(query, sizeof(query), stdin)){
+      query[strcspn(query, "\n")] = 0;
+      if (strcmp(query, "transaction") == 0)
+      {
+        transaction ^= transaction;
+      }
+      else
+      {
+        close(fdSelect[0]);
+        write(fdSelect[1], query, 256);
+        close(fdInsert[0]);
+        write(fdInsert[1], query, 256);
+        close(fdUpdate[0]);
+        write(fdUpdate[1], query, 256);
+        close(fdDelete[0]);
+        write(fdDelete[1], query, 256);
+      }
+
+      if (transaction == true)
+      {
+        close(fdResponse[1]);
+        read(fdResponse[0], status1, 256);
+      }
+    }
   }
+  close_application(false);
 }

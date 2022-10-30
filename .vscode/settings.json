@@ -54,5 +54,6 @@
         "./base_etudiants",
         "-p",
         "*test*.py"
-    ]
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools"
 }

@@ -67,12 +67,7 @@ void db_add(database_t *db, student_t student)
     bool exists = false;
     db->lsize += 1;
     db_upsize(db);
-    puts("here");
     db->data[db->lsize] = student; // at end of db
-    char buffer[512];
-    student_to_str(buffer, &db->data[db->lsize]);
-    std::cout
-        << buffer << std::endl;
 }
 
 void db_delete(database_t *db, size_t indice)
@@ -81,6 +76,8 @@ void db_delete(database_t *db, size_t indice)
     {
         perror("db_delete()");
     }
+
+    // std::copy(db->data[indice + 1], db->data + db->lsize, db->data + indice); // overwrite the object to delete by copying everything following the given adress of the object to the said adress
     db->lsize--;
-    std::copy(db->data + indice + 1, db->data + db->lsize, db->data + indice); // overwrite the object to delete by copying everything following the given adress of the object to the said adress
+    memmove(&db->data[indice], &db->data[indice + 1], (sizeof(student_t) * (db->lsize - indice)));
 }
