@@ -1,3 +1,10 @@
+/*
+Projet 1 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
+Description du projet *TinyDB* : 
+  base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
+*/
+
 #include "query.hpp"
 #include "parsing.hpp"
 #include "utils.hpp"
@@ -52,7 +59,8 @@ void query_insert(database_t *db, query_result_t *queryResult, char *query, char
   }
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
-  msync(&db, db->psize, 2);
+  queryResult->status = QUERY_SUCCESS;
+  msync(&db, db->psize, 2);  // synchronize the db with added student
   delete s;
   log_query(queryResult);
 }
@@ -142,7 +150,7 @@ void query_select_and_delete(database_t *db, query_result_t *queryResult, char *
   msync(&db, db->psize, 2);
   log_query(queryResult);
   delete s;
-  // delete queryResult;
+  delete queryResult;
 }
 
 void query_update(database_t *db, query_result_t *queryResult, char *saveptr, char *query)
@@ -206,7 +214,7 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
       std::cout << "je passe par là " << std::endl;
       if (strcmp(fieldToUpdate, "id") == 0)
       {
-        strcpy(id, updateValue);
+        strcpy(id, updateValue);  // copy id in the variable updateValue
         long temp = atol(id);                    // conversion to long int
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         query_result_add(queryResult, db->data[i]);
