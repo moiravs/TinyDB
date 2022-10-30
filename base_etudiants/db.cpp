@@ -1,3 +1,10 @@
+/*
+Projet 1 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
+Description du projet *TinyDB* : 
+  base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
+*/
+
 #include "db.hpp"
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,5 +86,5 @@ void db_delete(database_t *db, size_t indice)
 
     // std::copy(db->data[indice + 1], db->data + db->lsize, db->data + indice); // overwrite the object to delete by copying everything following the given adress of the object to the said adress
     db->lsize--;
-    memmove(&db->data[indice], &db->data[indice + 1], (sizeof(student_t) * (db->lsize - indice)));
+    memmove(&db->data[indice], &db->data[indice + 1], (sizeof(student_t) * (db->lsize - indice)));  // overriding a student by moving what's after it to the deleted student's location in memory
 }

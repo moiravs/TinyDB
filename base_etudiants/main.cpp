@@ -1,3 +1,10 @@
+/*
+Projet 1 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
+Description du projet *TinyDB* : 
+  base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
+*/
+
 #include <stdio.h>
 #include "db.hpp"
 #include <sys/types.h>
@@ -73,7 +80,7 @@ int main(int argc, char const *argv[])
 
   char query[256] = "0";
 
-  child_select = fork();
+  child_select = fork();  // create child
   if (child_select < 0)
   {
     perror("fork error");
