@@ -175,7 +175,7 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
     printf("buffer : %s\n", buffer);*/
     char date_str[512] = "0";
     char id[64];
-    if (strcmp(fieldToUpdate, "id") == 0)
+    if (strcmp(fieldFilter, "id") == 0)
     {
       sprintf(id, "%u", s->id);
     }
@@ -185,6 +185,7 @@ void query_update(database_t *db, query_result_t *queryResult, char *saveptr, ch
     }
     if ((strcmp(fieldFilter, "id") == 0) && (strcmp(id, valueFilter) == 0))
     {
+      puts("hii");
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);

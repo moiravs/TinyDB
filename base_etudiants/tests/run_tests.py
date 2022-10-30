@@ -15,7 +15,7 @@ def check_log_content(logs, expected_lines):
     res = True
     for line in expected_lines:
         if line not in logs:
-            print('"%s" should be in the results but is not!', line)
+            print('"%s" should be in the results but is not!')
             res = False
     return res
 
@@ -199,7 +199,13 @@ if __name__ == "__main__":
     tests = [
         test_insert_single,
         test_insert_multiple,
-        test_select_single]
+        test_select_single,
+        test_select_multiple,
+        test_delete,
+        test_delete_multiple,
+        test_update,
+        test_update_multiple
+    ]
     for test in tests:
         if test() == SUCCESS:
             success += 1

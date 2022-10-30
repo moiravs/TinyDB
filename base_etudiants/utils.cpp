@@ -2,7 +2,7 @@
 Projet 1 du cours *systèmes d'exploitation*, INFO-F201
 Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
 Cursus : BA2-INFO
-Description du projet *TinyDB* : 
+Description du projet *TinyDB* :
   base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 
@@ -13,47 +13,57 @@ Description du projet *TinyDB* :
 #include "query.hpp"
 #include "student.hpp"
 
-size_t safe_read(int fd, void* buffer, size_t nbytes) {
+size_t safe_read(int fd, void *buffer, size_t nbytes)
+{
   ssize_t nbytes_read = read(fd, buffer, nbytes);
-  if (nbytes_read < 0) {
+  if (nbytes_read < 0)
+  {
     perror("read error: ");
     exit(1);
   }
   return (size_t)nbytes_read;
 }
 
-size_t safe_write(int fd, const void* buffer, size_t nbytes) {
+size_t safe_write(int fd, const void *buffer, size_t nbytes)
+{
   ssize_t bytes_written = write(fd, buffer, nbytes);
-  if (bytes_written < 0) {
+  if (bytes_written < 0)
+  {
     perror("write: ");
     exit(1);
   }
   return (size_t)bytes_written;
 }
 
-void log_query(query_result_t* result) {
+void log_query(query_result_t *result)
+{
   char buffer[512];
-  if (result->status == QUERY_SUCCESS) {
+  if (result->status == QUERY_SUCCESS)
+  {
     char filename[512];
     char type[256];
     strcpy(type, result->query);
     type[6] = '\0';
     sprintf(filename, "logs/%ld-%s.txt", result->start_ns, type);
     printf("%s\n", filename);
-    FILE* f = fopen(filename, "w");
+    FILE *f = fopen(filename, "w");
     float duration = (float)(result->end_ns - result->start_ns) / 1.0e6;
     sprintf(buffer, "Query \"%s\" completed in %fms with %ld results.\n", result->query, duration, result->lsize);
     fwrite(buffer, sizeof(char), strlen(buffer), f);
-    
-    if (result->lsize > 0) {
-      for (size_t i = 0; i < result->lsize; i++) {
+
+    if (result->lsize > 0)
+    {
+      for (size_t i = 0; i < result->lsize; i++)
+      {
         student_to_str(buffer, &result->students[i]);
         fwrite(buffer, sizeof(char), strlen(buffer), f);
         fwrite("\n", sizeof(char), 1, f);
       }
     }
     fclose(f);
-  } else if (result->status == UNRECOGNISED_FIELD) {
+  }
+  else if (result->status == UNRECOGNISED_FIELD)
+  {
     fprintf(stderr, "Unrecognized field in query %s\n", result->query);
   }
 }

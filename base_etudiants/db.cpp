@@ -19,8 +19,6 @@ Description du projet *TinyDB* :
 
 void db_save(database_t *db, const char *path)
 {
-    std::cout << "db save" << path << std::endl;
-    std::cout << "size" << db->lsize << std::endl;
     FILE *f = fopen(path, "wb");
     if (!f)
     {
