@@ -1,7 +1,7 @@
 /*
 Projet 1 du cours *systèmes d'exploitation*, INFO-F201
 Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
-Description du projet *TinyDB* : 
+Description du projet *TinyDB* :
   base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 
@@ -21,22 +21,50 @@ Description du projet *TinyDB* :
 #include <string.h>
 #include <sys/mman.h>
 #include <fstream>
+#include <fcntl.h>
 
 static volatile int keepRunning = 1;
 pid_t child_select = -1;
 pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
+
 database_t *db;
 const char *db_path;
 int fdInsert[2], fdSelect[2], fdUpdate[2], fdDelete[2], fdResponse[2];
 
+int operationInProgress = 0;
+
 void close_application(bool force)
 {
+  char *status1 = new char[256];
 
   if (!force)
   {
     puts("Waiting for requests to terminate");
+
+    close(fdResponse[1]);
+    while (operationInProgress > 0)
+    {
+      while (read(fdResponse[0], status1, 256) > 0)
+      {
+        operationInProgress--;
+      }
+      if (operationInProgress > 0)
+      {
+        std::cout << operationInProgress << " operations in progress: Wait" << std::endl;
+        sleep(1);
+      }
+    }
+  }
+
+
+  puts("Committing database changes to the disk...");
+  db_save(db, db_path);
+
+  if (!force)
+  {
+
     close(fdSelect[0]);
     write(fdSelect[1], "KILL", 256);
     close(fdUpdate[0]);
@@ -47,10 +75,13 @@ void close_application(bool force)
     write(fdInsert[1], "KILL", 256);
 
     int wstatus;
-    waitpid(-1, &wstatus, 0);
+    // waitpid(0, &wstatus, 0);
+    waitpid(child_delete, &wstatus, 0);
+    waitpid(child_select, &wstatus, 0);
+    waitpid(child_insert, &wstatus, 0);
+    waitpid(child_update, &wstatus, 0);
   }
-  puts("Committing database changes to the disk...");
-  db_save(db, db_path);
+
   puts("Done");
 }
 void signal_handling(int signum)
@@ -78,9 +109,12 @@ int main(int argc, char const *argv[])
   pipe(fdDelete);
   pipe(fdResponse);
 
+  // no blocking pipe for response
+  int retval = fcntl(fdResponse[0], F_SETFL, fcntl(fdResponse[0], F_GETFL) | O_NONBLOCK);
+
   char query[256] = "0";
 
-  child_select = fork();  // create child
+  child_select = fork(); // create child
   if (child_select < 0)
   {
     perror("fork error");
@@ -89,14 +123,12 @@ int main(int argc, char const *argv[])
   if (child_select == 0)
   {
     char query[256] = "01";
-    close(fdResponse[0]);
-    write(fdResponse[1], "SUCCESS", 256);
     bool killed = false;
     while (!killed)
     {
       close(fdSelect[1]);            // close the writing end of the pipe
       read(fdSelect[0], query, 256); // reads 256 bytes into memory area indicated by query
-      if (strcmp(query, "01") != 0) // if query changed
+      if (strcmp(query, "01") != 0)  // if query changed
       {
         char *querymod = new char[256]; // create a new modifiable string
         memcpy(querymod, query, 256);   // save query to querymod
@@ -132,14 +164,13 @@ int main(int argc, char const *argv[])
   if (child_insert == 0)
   {
     char query[256] = "01";
-    close(fdResponse[0]);
-    write(fdResponse[1], "SUCCESS", 256);
 
     bool killed = false;
     while (!killed)
     {
       close(fdInsert[1]);
       read(fdInsert[0], query, 256);
+      std::cout << query << std::endl;
       if (strcmp(query, "01") != 0)
       {
         char *querymod = new char[256];
@@ -173,8 +204,6 @@ int main(int argc, char const *argv[])
   if (child_update == 0)
   {
     char query[256] = "01";
-    close(fdResponse[0]);
-    write(fdResponse[1], "SUCCESS", 256);
     bool killed = false;
     while (!killed)
     {
@@ -198,9 +227,9 @@ int main(int argc, char const *argv[])
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_update(db, queryResult, saveptr, query);
+          delete queryResult;
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
-          delete queryResult;
         }
 
         memcpy(query, "01", 256);
@@ -216,8 +245,6 @@ int main(int argc, char const *argv[])
   if (child_delete == 0)
   {
     char query[256] = "01";
-    close(fdResponse[0]);
-    write(fdResponse[1], "SUCCESS", 256);
 
     bool killed = false;
     while (!killed)
@@ -242,9 +269,9 @@ int main(int argc, char const *argv[])
           query_result_t *queryResult = new query_result_t();
           query_result_init(queryResult, query);
           query_select_and_delete(db, queryResult, query, saveptr, "delete");
+          delete queryResult;
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
-          delete queryResult;
         }
         memcpy(query, "01", 256);
       }
@@ -260,14 +287,38 @@ int main(int argc, char const *argv[])
   {
     while (std::cin.getline(query, 256))
     {
+      close(fdResponse[1]);
+      while (read(fdResponse[0], status1, 256) > 0)
+      {
+        operationInProgress--;
+      }
+      if (operationInProgress > 0)
+      {
+        std::cout << operationInProgress << " operations in progress: no wait" << std::endl;
+      }
       //(fgets(query, sizeof(query), stdin)){
       query[strcspn(query, "\n")] = 0;
       if (strcmp(query, "transaction") == 0)
       {
+        close(fdResponse[1]);
+        while (operationInProgress > 0)
+        {
+          while (read(fdResponse[0], status1, 256) > 0)
+          {
+            operationInProgress--;
+          }
+          if (operationInProgress > 0)
+          {
+            std::cout << operationInProgress << " operations in progress: Wait" << std::endl;
+            sleep(1);
+          }
+        }
+
         transaction ^= transaction;
       }
       else
       {
+        operationInProgress++;
         close(fdSelect[0]);
         write(fdSelect[1], query, 256);
         close(fdInsert[0]);
@@ -281,9 +332,18 @@ int main(int argc, char const *argv[])
       if (transaction == true)
       {
         close(fdResponse[1]);
-        read(fdResponse[0], status1, 256);
+        while (operationInProgress > 0)
+        {
+          std::cout << operationInProgress << " operations in progress: Wait" << std::endl;
+          if (read(fdResponse[0], status1, 256) > 0)
+          {
+            operationInProgress--;
+          }
+          sleep(1);
+        }
       }
     }
   }
+
   close_application(false);
 }
