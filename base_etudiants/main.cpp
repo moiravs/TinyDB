@@ -51,18 +51,19 @@ void close_application(bool force)
 
   puts("Committing database changes to the disk...");
   db->db_save(db_path);
+  char kill[256] = "KILL";
 
   if (!force)
   {
 
     close(fdSelect[0]);
-    write(fdSelect[1], "KILL", 256);
+    write(fdSelect[1], kill, 256);
     close(fdUpdate[0]);
-    write(fdUpdate[1], "KILL", 256);
+    write(fdUpdate[1], kill, 256);
     close(fdDelete[0]);
-    write(fdDelete[1], "KILL", 256);
+    write(fdDelete[1], kill, 256);
     close(fdInsert[0]);
-    write(fdInsert[1], "KILL", 256);
+    write(fdInsert[1], kill, 256);
     int wstatus;
     waitpid(child_delete, &wstatus, 0);
     waitpid(child_select, &wstatus, 0);
@@ -118,9 +119,11 @@ int main(int argc, char const *argv[])
       read(fdSelect[0], query, 256); // reads 256 bytes into memory area indicated by query
       if (strcmp(query, "01") != 0)  // if query changed
       {
+        char zero_one[256] = "01";
         char *querymod = new char[256]; // create a new modifiable string
         memcpy(querymod, query, 256);   // save query to querymod
         char *saveptr;
+        char success[256] = "SUCCESS";
         const char *queryKey = new char[6]();         // variable that'll hold the first keyword of the query (delete, insert, ...)
         queryKey = strtok_r(querymod, " ", &saveptr); // write the first word to queryKey
 
@@ -134,9 +137,9 @@ int main(int argc, char const *argv[])
           queryResult.query_select_and_delete(db, query, saveptr, "select");
 
           close(fdResponse[0]);
-          write(fdResponse[1], "SUCCESS", 256);
+          write(fdResponse[1], success, 256);
         }
-        memcpy(query, "01", 256); // change the query back to 01
+        memcpy(query, zero_one, 256); // change the query back to 01
       }
     }
     exit(0);
@@ -162,6 +165,8 @@ int main(int argc, char const *argv[])
         char *querymod = new char[256];
         memcpy(querymod, query, 256);
         char *saveptr;
+        char zero_one[256] = "01";
+        char success[256] = "SUCCESS";
         const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
         if (strcmp(queryKey, "KILL") == 0)
@@ -173,9 +178,9 @@ int main(int argc, char const *argv[])
           query_result_t queryResult{query};
           queryResult.query_insert(db, query, saveptr);
           close(fdResponse[0]);
-          write(fdResponse[1], "SUCCESS", 256);
+          write(fdResponse[1], success, 256);
         }
-        memcpy(query, "01", 256);
+        memcpy(query, zero_one, 256);
       }
     }
     exit(0);
@@ -199,6 +204,8 @@ int main(int argc, char const *argv[])
         char *querymod = new char[256];
         memcpy(querymod, query, 256);
         char *saveptr;
+        char zero_one[256] = "01";
+        char success[256] = "SUCCESS";
         const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
         if (strcmp(queryKey, "KILL") == 0)
@@ -211,10 +218,10 @@ int main(int argc, char const *argv[])
           query_result_t queryResult{query};
           queryResult.query_update(db, saveptr, query);
           close(fdResponse[0]);
-          write(fdResponse[1], "SUCCESS", 256);
+          write(fdResponse[1], success, 256);
         }
 
-        memcpy(query, "01", 256);
+        memcpy(query, zero_one, 256);
       }
     }
     exit(0);
@@ -239,6 +246,8 @@ int main(int argc, char const *argv[])
         char *querymod = new char[256];
         memcpy(querymod, query, 256);
         char *saveptr;
+        char success[256] = "SUCCESS";
+        char zero_one[256] = "01";
         const char *queryKey = new char[6]();
         queryKey = strtok_r(querymod, " ", &saveptr);
         if (strcmp(queryKey, "KILL") == 0)
@@ -251,9 +260,9 @@ int main(int argc, char const *argv[])
           query_result_t queryResult{query};
           queryResult.query_select_and_delete(db,query, saveptr, "delete");
           close(fdResponse[0]);
-          write(fdResponse[1], "SUCCESS", 256);
+          write(fdResponse[1], success, 256);
         }
-        memcpy(query, "01", 256);
+        memcpy(query, zero_one, 256);
       }
     }
     exit(0);
