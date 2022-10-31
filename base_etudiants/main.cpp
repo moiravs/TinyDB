@@ -42,7 +42,6 @@ void close_application(bool force)
   if (!force)
   {
     puts("Waiting for requests to terminate");
-
     close(fdResponse[1]);
     while (operationInProgress > 0)
     {
@@ -72,9 +71,7 @@ void close_application(bool force)
     write(fdDelete[1], "KILL", 256);
     close(fdInsert[0]);
     write(fdInsert[1], "KILL", 256);
-
     int wstatus;
-    // waitpid(0, &wstatus, 0);
     waitpid(child_delete, &wstatus, 0);
     waitpid(child_select, &wstatus, 0);
     waitpid(child_insert, &wstatus, 0);
@@ -287,7 +284,6 @@ int main(int argc, char const *argv[])
       {
         std::cout << operationInProgress << " operations in progress: no wait" << std::endl;
       }
-      //(fgets(query, sizeof(query), stdin)){
       query[strcspn(query, "\n")] = 0;
       if (strcmp(query, "transaction") == 0)
       {
@@ -304,7 +300,6 @@ int main(int argc, char const *argv[])
             sleep(1);
           }
         }
-
         transaction ^= transaction;
       }
       else
@@ -335,6 +330,5 @@ int main(int argc, char const *argv[])
       }
     }
   }
-
   close_application(false);
 }

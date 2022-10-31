@@ -60,6 +60,9 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
   this->status = QUERY_SUCCESS;
+  struct timespec after;
+  clock_gettime(CLOCK_REALTIME, &after);
+  this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
   log_query(this);
   delete s;
 }
@@ -101,11 +104,8 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(s->fname, value) == 0)
       {
         this->query_result_add(*s);
-        ;
-        std::cout << "i found" << std::endl;
         if (strcmp(queryKey, "delete") == 0)
         {
-          std::cout << "weird";
           db->db_delete(i);
           i--;
         }
@@ -116,7 +116,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(s->lname, value) == 0)
       {
         this->query_result_add(*s);
-        ;
         if (strcmp(queryKey, "delete") == 0)
         {
           db->db_delete(i);
@@ -129,7 +128,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(s->section, value) == 0)
       {
         this->query_result_add(*s);
-        ;
         if (strcmp(queryKey, "delete") == 0)
         {
           db->db_delete(i);
@@ -144,7 +142,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(date_str, value) == 0)
       {
         this->query_result_add(*s);
-        ;
         if (strcmp(queryKey, "delete") == 0)
         {
           db->db_delete(i);
@@ -159,8 +156,10 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
     i++;
   }
   this->status = QUERY_SUCCESS;
-  msync(&db, db->psize, 2);
   log_query(this);
+  struct timespec after;
+  clock_gettime(CLOCK_REALTIME, &after);
+  this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
   delete s;
 }
 
@@ -168,28 +167,21 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
 {
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64];
   parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue); // check if valid query
-  student_t *s = new student_t;
 
   for (size_t i = 0; i < db->lsize; i++)
   {
-    *s = db->data[i];
-    /*
-    char *buffer = new char[512];
-    student_to_str(buffer, s);
-    printf("buffer : %s\n", buffer);*/
     char date_str[512] = "0";
     char id[64];
     if (strcmp(fieldFilter, "id") == 0)
     {
-      sprintf(id, "%u", s->id);
+      sprintf(id, "%u", db->data[i].id);
     }
     else if (strcmp(fieldToUpdate, "birthdate") == 0)
     {
-      strftime(date_str, 512, "%d/%m/%Y", &s->birthdate); // store birthdate struct as a string
+      strftime(date_str, 512, "%d/%m/%Y", &db->data[i].birthdate); // store birthdate struct as a string
     }
     if ((strcmp(fieldFilter, "id") == 0) && (strcmp(id, valueFilter) == 0))
     {
-      puts("hii");
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
@@ -217,13 +209,12 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
         strcpy(date_str, updateValue);
         strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
         long temp = atol(id);                    // conversion to long int
-        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
+        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]); // transform the updated string to tm struct
       }
     }
-    else if ((strcmp(fieldFilter, "fname") == 0) && (strcmp(s->fname, valueFilter) == 0))
+    else if ((strcmp(fieldFilter, "fname") == 0) && (strcmp(db->data[i].fname, valueFilter) == 0))
     {
-      std::cout << "je passe par là " << std::endl;
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);                          // copy id in the variable updateValue
@@ -253,15 +244,14 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
         this->query_result_add(db->data[i]);
       }
     }
-    else if ((strcmp(fieldFilter, "lname") == 0) && (strcmp(s->lname, valueFilter) == 0))
+    else if ((strcmp(fieldFilter, "lname") == 0) && (strcmp(db->data[i].lname, valueFilter) == 0))
     {
-      puts("going through lname");
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
-        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(*s);
+        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
+        this->query_result_add(db->data[i]);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
       {
@@ -285,13 +275,13 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
         this->query_result_add(db->data[i]);
       }
     }
-    else if ((strcmp(fieldFilter, "section") == 0) && (strcmp(s->section, valueFilter) == 0))
+    else if ((strcmp(fieldFilter, "section") == 0) && (strcmp(db->data[i].section, valueFilter) == 0))
     {
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
-        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
+        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
@@ -318,12 +308,12 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
     }
     else if ((strcmp(fieldFilter, "birthdate") == 0) && (strcmp(date_str, valueFilter) == 0))
     {
-      strftime(date_str, 32, "%d/%m/%Y", &s->birthdate);
+      strftime(date_str, 32, "%d/%m/%Y", &db->data[i].birthdate);
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
         long temp = atol(id);                    // conversion to long int
-        s->id = static_cast<unsigned int>(temp); // conversion to unsigned
+        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);
       }
       else if (strcmp(fieldToUpdate, "fname") == 0)
@@ -350,7 +340,8 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
     }
   }
   this->status = QUERY_SUCCESS;
-  msync(&db, db->psize, 2);
+  struct timespec after;
+  clock_gettime(CLOCK_REALTIME, &after);
+  this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
   log_query(this);
-  delete s;
 }

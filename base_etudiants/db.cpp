@@ -78,21 +78,14 @@ void database_t::db_add(student_t student)
     this->lsize += 1;
     this->db_upsize();
     memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db
-    /*
-    char *buffer = new char[512];
-    student_to_str(buffer, &db->data[db->lsize - 1]);
-    printf("buffer : %s\n", buffer);*/
-    msync(this->data, this->psize, MS_SYNC); // synchronize the db with added student
 }
 
-void database_t::db_delete( size_t indice)
+void database_t::db_delete(size_t indice)
 {
     if (indice >= this->lsize)
     {
         perror("db_delete()");
     }
-
-    // std::copy(db->data[indice + 1], db->data + db->lsize, db->data + indice); // overwrite the object to delete by copying everything following the given adress of the object to the said adress
     this->lsize--;
     memmove(&this->data[indice], &this->data[indice + 1], (sizeof(student_t) * (this->lsize - indice))); // overriding a student by moving what's after it to the deleted student's location in memory
 }

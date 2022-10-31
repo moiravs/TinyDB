@@ -34,6 +34,11 @@ Lorsque qu'un processus termine sa query, il écrit dans une pipe. Le processus 
 la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
 même si il ne lit rien dans la pipe. Lors d'une transaction, on limite OperationInProgress à 1.
 
+\section{Classes}
+
+Nous avons mis la database\_t et le query\_result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
+nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\_result\_init, pour que le code
+crée directement le query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
 \section{Améliorations possibles}
     \subsection{std::map}
     Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. \newline
