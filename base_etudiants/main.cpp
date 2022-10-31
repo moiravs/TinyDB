@@ -59,7 +59,7 @@ void close_application(bool force)
   }
 
   puts("Committing database changes to the disk...");
-  db_save(db, db_path);
+  db->db_save(db_path);
 
   if (!force)
   {
@@ -97,7 +97,7 @@ int main(int argc, char const *argv[])
   db = (database_t *)mmap(NULL, (sizeof(database_t)), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
   db->db_init();
   std::cout << "Loading your tiny tiny database..." << std::endl;
-  db_load(db, db_path);
+  db->db_load(db_path);
   std::cout << "Done !" << std::endl;
   // fd : file descriptor (fd0 : standard input (stdin), fdInsert : standard output (stdout), fd2 : standard error (stderr))
   // pipe(fd) : creates both the reading and writing ends of the pipe

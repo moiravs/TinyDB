@@ -40,7 +40,7 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
   if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
   { // if valid insert query
     std::cout << "Adding " << s->fname << " " << s->lname << " to the database..." << std::endl;
-    db_add(db, *s);
+    db->db_add(*s);
     this->query_result_add(*s);
   }
   else
@@ -76,7 +76,7 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
         this->query_result_add(*s);
         if (strcmp(queryKey, "delete"))
         {
-          db_delete(db, i);
+          db->db_delete(i);
           i--;
         }
       }
@@ -92,7 +92,7 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
         if (strcmp(queryKey, "delete") == 0)
         {
           std::cout << "weird";
-          db_delete(db, i);
+          db->db_delete(i);
           i--;
         }
       }
@@ -105,7 +105,7 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
         ;
         if (strcmp(queryKey, "delete") == 0)
         {
-          db_delete(db, i);
+          db->db_delete(i);
           i--;
         }
       }
@@ -118,7 +118,7 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
         ;
         if (strcmp(queryKey, "delete") == 0)
         {
-          db_delete(db, i);
+          db->db_delete(i);
           i--;
         }
       }
@@ -133,7 +133,7 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
         ;
         if (strcmp(queryKey, "delete") == 0)
         {
-          db_delete(db, i);
+          db->db_delete(i);
           i--;
         }
       }

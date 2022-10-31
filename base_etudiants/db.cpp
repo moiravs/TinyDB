@@ -17,7 +17,7 @@ Description du projet *TinyDB* :
 #include <sys/mman.h>
 #include <iterator>
 
-void db_save(database_t *db, const char *path)
+void database_t::db_save(const char *path)
 {
     FILE *f = fopen(path, "wb");
     if (!f)
@@ -25,7 +25,7 @@ void db_save(database_t *db, const char *path)
         perror("Could not open the DB file");
         exit(1);
     }
-    if (fwrite(db->data, sizeof(student_t), db->lsize, f) < 0)
+    if (fwrite(this->data, sizeof(student_t), this->lsize, f) < 0)
     {
         perror("Could not write in the DB file");
         exit(1);
@@ -34,7 +34,7 @@ void db_save(database_t *db, const char *path)
     std::cout << "db save finisihed" << std::endl;
 }
 
-void db_load(database_t *db, const char *path)
+void database_t::db_load( const char *path)
 {
     FILE *file = fopen(path, "rb");
     if (!file)
@@ -45,22 +45,22 @@ void db_load(database_t *db, const char *path)
     student_t student;
     while (fread(&student, sizeof(student_t), 1, file))
     {
-        db_add(db, student);
+        this->db_add(student);
     }
     fclose(file);
 }
 
-void db_upsize(database_t *db)
+void database_t::db_upsize()
 {
-    if (db->lsize > (db->psize / sizeof(student_t))) // if we reached the end of the allocated size for db
+    if (this->lsize > (this->psize / sizeof(student_t))) // if we reached the end of the allocated size for this
     {
-        size_t oldPsize = db->psize;
-        db->psize *= 2;
+        size_t oldPsize = this->psize;
+        this->psize *= 2;
         student_t *newStudent;
-        newStudent = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE,MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
-        memcpy(newStudent, db->data, oldPsize);                            // copy db to newly allocated memory
-        munmap(db->data, oldPsize);                                        // deallocate old memory
-        db->data = newStudent;
+        newStudent = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
+        memcpy(newStudent, this->data, oldPsize);                            // copy this to newly allocated memory
+        munmap(this->data, oldPsize);                                        // deallocate old memory
+        this->data = newStudent;
     }
 }
 
@@ -72,28 +72,27 @@ void database_t::db_init()
                                  MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 }
 
-void db_add(database_t *db, student_t student)
+void database_t::db_add(student_t student)
 {
     bool exists = false;
-    db->lsize += 1;
-    db_upsize(db);
-    memcpy(&db->data[db->lsize - 1], &student, 256); // at end of db
+    this->lsize += 1;
+    this->db_upsize();
+    memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db
     /*
     char *buffer = new char[512];
     student_to_str(buffer, &db->data[db->lsize - 1]);
     printf("buffer : %s\n", buffer);*/
-    msync(&db, sizeof(database_t), MS_SYNC);
-    msync(db->data, db->psize, MS_SYNC); // synchronize the db with added student
+    msync(this->data, this->psize, MS_SYNC); // synchronize the db with added student
 }
 
-void db_delete(database_t *db, size_t indice)
+void database_t::db_delete( size_t indice)
 {
-    if (indice >= db->lsize)
+    if (indice >= this->lsize)
     {
         perror("db_delete()");
     }
 
     // std::copy(db->data[indice + 1], db->data + db->lsize, db->data + indice); // overwrite the object to delete by copying everything following the given adress of the object to the said adress
-    db->lsize--;
-    memmove(&db->data[indice], &db->data[indice + 1], (sizeof(student_t) * (db->lsize - indice))); // overriding a student by moving what's after it to the deleted student's location in memory
+    this->lsize--;
+    memmove(&this->data[indice], &this->data[indice + 1], (sizeof(student_t) * (this->lsize - indice))); // overriding a student by moving what's after it to the deleted student's location in memory
 }

@@ -20,29 +20,29 @@ class database_t {
    * ```
    **/
   void db_init();
+  /**
+   *  Add a student to the database.
+   **/
+  void db_add( student_t s);
+  void db_upsize();
+      /**
+       * Save the content of a database_t in the specified file.
+       **/
+      void db_save(const char *path);
+
+  /**
+   * Load the content of a database of students.
+   **/
+  void db_load( const char *path);
+
+  void db_resize();
+
+  /**
+   * Delete a student from the database
+   **/
+  void db_delete(size_t indice);
 } ;
 
-/**
- *  Add a student to the database.
- **/
-void db_add(database_t *db, student_t s);
 
-/**
- * Save the content of a database_t in the specified file.
- **/
-void db_save(database_t *db, const char *path);
-
-/**
- * Load the content of a database of students.
- **/
-void db_load(database_t *db, const char *path);
-
-void db_resize(database_t *db);
-
-
-/**
- * Delete a student from the database
- **/
-void db_delete(database_t *db, size_t indice);
 
 #endif
