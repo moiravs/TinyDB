@@ -43,13 +43,12 @@ class query_result_t
      * Add a student to a query result.
      **/
     void query_result_add(student_t s);
+    /**
+     * Makes the list containing the students of a query bigger
+     **/
+    void query_list_upsize();
 } ;
 
-
-/**
- * Makes the list containing the students of a query bigger
- **/
-void query_list_upsize(query_result_t *result);
 
 /**
  * Handles the insert query

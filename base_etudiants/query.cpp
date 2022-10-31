@@ -15,22 +15,22 @@ Description du projet *TinyDB* :
 
 void query_result_t::query_result_add(student_t s)
 {
-  query_list_upsize(this);
+  this->query_list_upsize();
   this->students[this->lsize] = s; // at end of list
   this->lsize += 1;
   this->status = QUERY_SUCCESS;
 }
 
-void query_list_upsize(query_result_t *result)
+void query_result_t::query_list_upsize()
 {
 
-  if (result->lsize >= ((result->psize) / sizeof(student_t)))
+  if (this->lsize >= ((this->psize) / sizeof(student_t)))
   {
-    student_t *old_data = result->students; // save old students list
-    size_t old_psize = result->psize;
-    result->psize *= 2;
-    result->students = (student_t *)malloc(result->psize); // allocating new psize
-    memcpy(result->students, old_data, old_psize);         // copy old data into new allocated memory
+    student_t *old_data = this->students; // save old students list
+    size_t old_psize = this->psize;
+    this->psize *= 2;
+    this->students = (student_t *)malloc(this->psize); // allocating new psize
+    memcpy(this->students, old_data, old_psize);         // copy old data into new allocated memory
   }
 }
 
