@@ -1,16 +1,4 @@
 MOIRA
+ 
+- TESTER LID DE LETUDIANT
 
-- id test
-
-- Rapport 
-
-- monitoring
-    en aﬀichant un message d’avertissement sur stderr   
-    status
-    sync
-    shutdown
-
-
-ANDRIUS
-- terminer la fct query
-        - id value
