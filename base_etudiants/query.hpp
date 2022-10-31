@@ -51,17 +51,18 @@ class query_result_t
      * Handles the insert query
      **/
     void query_insert(database_t *db, char *query, char *saveptr);
+    /**
+     * Handles the update query
+     */
+    void query_update(database_t *db, char *saveptr, char *query);
+
+    /**
+     * Handles the select query
+     **/
+    void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey);
 } ;
 
 
-/**
- * Handles the update query
- */
-void query_update(database_t *db, query_result_t *queryResult, char *saveptr, char *query);
 
-/**
-  * Handles the select query
-  **/
-void query_select_and_delete(database_t *db, query_result_t *queryResult, char *query, char *saveptr, const char *queryKey);
 
 #endif

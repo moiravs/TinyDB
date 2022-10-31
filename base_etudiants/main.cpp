@@ -142,7 +142,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "select") == 0)
         {
           query_result_t queryResult(query);
-          query_select_and_delete(db, &queryResult, query, saveptr, "select");
+          queryResult.query_select_and_delete(db, query, saveptr, "select");
 
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
@@ -220,7 +220,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "update") == 0)
         {
           query_result_t queryResult{query};
-          query_update(db, &queryResult, saveptr, query);
+          queryResult.query_update(db, saveptr, query);
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
         }
@@ -260,7 +260,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "delete") == 0)
         {
           query_result_t queryResult{query};
-          query_select_and_delete(db, &queryResult, query, saveptr, "delete");
+          queryResult.query_select_and_delete(db,query, saveptr, "delete");
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
         }
