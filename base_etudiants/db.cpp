@@ -74,7 +74,6 @@ void database_t::db_init()
 
 void database_t::db_add(student_t student)
 {
-    bool exists = false;
     this->lsize += 1;
     this->db_upsize();
     memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db
