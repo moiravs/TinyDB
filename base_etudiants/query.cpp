@@ -10,8 +10,6 @@ Description du projet *TinyDB* :
 #include "utils.hpp"
 #include <iostream>
 #include <time.h>
-#include <string.h>
-#include <sys/mman.h>
 
 query_result_t::query_result_t(const char * query){
   struct timespec now;

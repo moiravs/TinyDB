@@ -2,7 +2,6 @@
 #define _QUERY_H
 
 #include "db.hpp"
-#include <cstdlib>
 
 typedef enum
 {

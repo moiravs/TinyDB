@@ -5,22 +5,14 @@ Description du projet *TinyDB* :
   base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 
-#include <stdio.h>
 #include "db.hpp"
-#include <sys/types.h>
-#include <signal.h>
-#include <stdlib.h>
 #include "query.hpp"
 #include "parsing.hpp"
 #include "utils.hpp"
-#include <cstdio>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <iostream>
-#include <string>
-#include <string.h>
 #include <sys/mman.h>
-#include <fstream>
 #include <fcntl.h>
 
 static volatile int keepRunning = 1;
@@ -106,7 +98,7 @@ int main(int argc, char const *argv[])
   pipe(fdResponse);
 
   // no blocking pipe for response
-  int retval = fcntl(fdResponse[0], F_SETFL, fcntl(fdResponse[0], F_GETFL) | O_NONBLOCK);
+  fcntl(fdResponse[0], F_SETFL, fcntl(fdResponse[0], F_GETFL) | O_NONBLOCK);
 
   char query[256] = "0";
 
