@@ -47,13 +47,12 @@ class query_result_t
      * Makes the list containing the students of a query bigger
      **/
     void query_list_upsize();
+    /**
+     * Handles the insert query
+     **/
+    void query_insert(database_t *db, char *query, char *saveptr);
 } ;
 
-
-/**
- * Handles the insert query
- **/
-void query_insert(database_t *db, query_result_t * queryResult, char *query, char *saveptr);
 
 /**
  * Handles the update query

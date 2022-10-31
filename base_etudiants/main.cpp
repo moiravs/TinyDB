@@ -182,7 +182,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "insert") == 0)
         {
           query_result_t queryResult{query};
-          query_insert(db, &queryResult, query, saveptr);
+          queryResult.query_insert(db, query, saveptr);
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
         }

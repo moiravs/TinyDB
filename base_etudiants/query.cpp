@@ -34,19 +34,19 @@ void query_result_t::query_list_upsize()
   }
 }
 
-void query_insert(database_t *db, query_result_t *queryResult, char *query, char *saveptr)
+void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
 {
   student_t *s = new student_t;
   if (parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate))
   { // if valid insert query
     std::cout << "Adding " << s->fname << " " << s->lname << " to the database..." << std::endl;
     db_add(db, *s);
-    queryResult->query_result_add(*s);
+    this->query_result_add(*s);
   }
   else
     std::cout << "An error has occurred during the insert query." << std::endl;
-  queryResult->status = QUERY_SUCCESS;
-  log_query(queryResult);
+  this->status = QUERY_SUCCESS;
+  log_query(this);
   delete s;
 }
 
