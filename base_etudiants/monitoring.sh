@@ -21,7 +21,7 @@ if [ "${1}" == "run" ]; then
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
     echo "whit";
-    ./tinydb "$file";
+    ./tinydb "$file" & echo $!;
     echo "what";
     pids = $(pgrep <tinydb>);
     echo "pids : $pids";
@@ -32,12 +32,20 @@ fi
 
 if [ "${1}" == "sync" ]
 then
+    i=0;
+    proc="tinydb"
+    pids=$(pgrep "$proc")
+    echo "$pids";
     for pid in $pids
-        do
-            echo "Sync process $pid ..."
-            kill -USR1 $pid
-        done
-    killall -USR1 tinydb
+    do
+        res=$((i%5));
+        if [[ $res = 0 ]];
+        then
+            echo "Sync process $pid ...";
+            kill -USR1 $pid;
+        fi
+        ((i++));
+    done
 
 elif [ "${1}" == "status" ]
 then
