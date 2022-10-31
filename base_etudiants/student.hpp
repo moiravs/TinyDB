@@ -12,20 +12,20 @@
 class student_t
 {
     public:
-    unsigned id;         /** Unique ID **/
-    char fname[64];      /** Firstname **/
-    char lname[64];      /** Lastname **/
-    char section[64];    /** Section **/
-    struct tm birthdate; /** Birth date **/
-    /**
-     * @brief Convert a student to a human-readlable string.
-     **/
-    void student_to_str(char *buffer);
+        unsigned id;         /** Unique ID **/
+        char fname[64];      /** Firstname **/
+        char lname[64];      /** Lastname **/
+        char section[64];    /** Section **/
+        struct tm birthdate; /** Birth date **/
+        /**
+         * @brief Convert a student to a human-readlable string.
+         **/
+        void student_to_str(char *buffer);
 
-    /**
-     * @brief Return whether two students are equal or not.
-     **/
-    int student_equals(student_t *s2);
+        /**
+         * @brief Return whether two students are equal or not.
+         **/
+        int student_equals(student_t *s2);
 };
 
 
