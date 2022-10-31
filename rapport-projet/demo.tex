@@ -26,6 +26,13 @@ Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en pyt
 clés ont été l'identifiant de l'élève et les valeurs la struct student. Seulement, cela
 prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons 
 
+\subsection{Checker l'identifiant}
+
+Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
+dans une array (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides.
+Seulement, si l'utilisateur introduit un id=20000000, alors le stockage de la data base sera très grand, pour très peu d'étudiants.
+Nous avons donc décidé de partir sur une recherche dichotomique et de trier les étudiants par id(utilisation de la librairie binarysearch)
+
 \section{Fin d'une query}
 
 Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 

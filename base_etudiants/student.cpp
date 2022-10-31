@@ -25,9 +25,5 @@ void student_t::student_to_str(char *buffer)
 int student_t::student_equals(student_t *s2)
 {
   // comparing every attribute to see if both students are equal
-  return (this->id == s2->id && (strcmp(this->fname, s2->fname) == 0) &&
-          (strcmp(this->lname, s2->lname) == 0) && (strcmp(this->section, s2->section) == 0) &&
-          this->birthdate.tm_year == s2->birthdate.tm_year &&
-          this->birthdate.tm_mon == s2->birthdate.tm_mon &&
-          this->birthdate.tm_mday == s2->birthdate.tm_mday);
+  return (this->id == s2->id);
 }
