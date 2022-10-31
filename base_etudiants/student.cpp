@@ -13,23 +13,21 @@ Description du projet *TinyDB* :
 #include <time.h>
 #include <stdbool.h>
 
-void student_to_str(char *buffer, student_t *s)
+void student_t::student_to_str(char *buffer)
 {
-  char birthdate[44];
-  
-  snprintf(buffer, 512, "%i: %s %s in section %s, born on the %d/%d/%d", s->id, s->fname, s->lname, s->section, 
-    s->birthdate.tm_mday,
-    s->birthdate.tm_mon+1,
-    s->birthdate.tm_year+1900
+  snprintf(buffer, 512, "%i: %s %s in section %s, born on the %d/%d/%d", this->id, this->fname, this->lname, this->section, 
+    this->birthdate.tm_mday,
+    this->birthdate.tm_mon+1,
+    this->birthdate.tm_year+1900
     );
 }
 
-int student_equals(student_t *s1, student_t *s2)
+int student_t::student_equals(student_t *s2)
 {
   // comparing every attribute to see if both students are equal
-  return (s1->id == s2->id && (strcmp(s1->fname, s2->fname) == 0) &&
-          (strcmp(s1->lname, s2->lname) == 0) && (strcmp(s1->section, s2->section) == 0) &&
-          s1->birthdate.tm_year == s2->birthdate.tm_year &&
-          s1->birthdate.tm_mon == s2->birthdate.tm_mon &&
-          s1->birthdate.tm_mday == s2->birthdate.tm_mday);
+  return (this->id == s2->id && (strcmp(this->fname, s2->fname) == 0) &&
+          (strcmp(this->lname, s2->lname) == 0) && (strcmp(this->section, s2->section) == 0) &&
+          this->birthdate.tm_year == s2->birthdate.tm_year &&
+          this->birthdate.tm_mon == s2->birthdate.tm_mon &&
+          this->birthdate.tm_mday == s2->birthdate.tm_mday);
 }

@@ -55,7 +55,7 @@ void log_query(query_result_t *result)
     {
       for (size_t i = 0; i < result->lsize; i++)
       {
-        student_to_str(buffer, &result->students[i]);
+        result->students[i].student_to_str(buffer);
         fwrite(buffer, sizeof(char), strlen(buffer), f);
         fwrite("\n", sizeof(char), 1, f);
       }

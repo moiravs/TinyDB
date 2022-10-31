@@ -16,7 +16,7 @@ typedef enum
  */
 class query_result_t
 {
-  private : 
+  public : 
     student_t *students;           /** A list of students **/
     size_t lsize;                  /** Logical size **/
     size_t psize;                  /** Physical size **/
