@@ -2,7 +2,7 @@
 Projet 1 du cours *systèmes d'exploitation*, INFO-F201
 Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
 Description du projet *TinyDB* :
-  base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
+  Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 
 #include "db.hpp"
@@ -34,7 +34,7 @@ void database_t::db_save(const char *path)
     std::cout << "db save finisihed" << std::endl;
 }
 
-void database_t::db_load( const char *path)
+void database_t::db_load(const char *path)
 {
     FILE *file = fopen(path, "rb");
     if (!file)
@@ -57,9 +57,9 @@ void database_t::db_upsize()
         size_t oldPsize = this->psize;
         this->psize *= 2;
         student_t *newStudent;
-        newStudent = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
-        memcpy(newStudent, this->data, oldPsize);                            // copy this to newly allocated memory
-        munmap(this->data, oldPsize);                                        // deallocate old memory
+        newStudent = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
+        memcpy(newStudent, this->data, oldPsize);                                                                     // copy this to newly allocated memory
+        munmap(this->data, oldPsize);                                                                                 // deallocate old memory
         this->data = newStudent;
     }
 }
@@ -69,7 +69,7 @@ void database_t::db_init()
     this->lsize = 0;
     this->psize = sizeof(student_t) * 2000000;
     this->data = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
-                                 MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+                                   MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 }
 
 void database_t::db_add(student_t student)
