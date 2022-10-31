@@ -20,18 +20,9 @@ if [ "${1}" == "run" ]; then
     fi
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
-    echo "whit";
     ./tinydb "$file" & echo $!;
-    echo "what";
-    pids = $(pgrep <tinydb>);
-    echo "pids : $pids";
-fi
 
-
-
-
-if [ "${1}" == "sync" ]
-then
+elif [ "${1}" == "sync" ]; then
     i=0;
     proc="tinydb"
     pids=$(pgrep "$proc")
@@ -47,8 +38,7 @@ then
         ((i++));
     done
 
-elif [ "${1}" == "status" ]
-then
+elif [ "${1}" == "status" ]; then
     echo "status"
     proc="tinydb"
     pids=$(pgrep "$proc")
@@ -57,10 +47,8 @@ then
             "$pids" "$(wc -l <<< "$pids")" "$proc"
     fi
 
-elif [ "${1}" == "shutdown" ]
-then
-    if [ $# -eq 1 ]
-    then
+elif [ "${1}" == "shutdown" ]; then
+    if [ $# -eq 1 ]; then
         proc="tinydb"
         pids=$(pgrep "$proc")
         for pid in $pids
@@ -70,12 +58,24 @@ then
         done
 
     else
-        echo An error message > /dev/stderr
-        kill "${2}"
+        i=0;
+        proc="tinydb"
+        pids=$(pgrep "$proc")
+        for pid in $pids
+        do
+        res=$((i%5));
+        if [ $res = 0 ] && [ $pid = $2 ]; then
+            echo "Shutdown $pid ...";
+            kill -USR1 $pid;
+        elif [ $res != 0 ] && [ $pid = $2 ]; then 
+            echo This is not the main process, choose another pid > /dev/stderr;
+        else
+            echo "$pid - No such process of tinydb"
+        fi
+        ((i++));
+        done
     fi
-
-
 else 
-    echo "Wrong parameters"
+    echo "Unknown parameter"
 fi
 
