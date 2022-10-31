@@ -6,11 +6,21 @@
 /**
  * Database structure type.
  */
-typedef struct {
+class database_t {
+  public :
   student_t *data; /** The list of students **/
   size_t lsize;    /** The logical size of the list **/
   size_t psize;    /** The physical size of the list **/
-} database_t;
+  /**
+   * Initialise a database_t structure.
+   * Typical use:
+   * ```
+   * database_t db;
+   * db_init(&db);
+   * ```
+   **/
+  void db_init();
+} ;
 
 /**
  *  Add a student to the database.
@@ -28,15 +38,7 @@ void db_save(database_t *db, const char *path);
 void db_load(database_t *db, const char *path);
 
 void db_resize(database_t *db);
-/**
-* Initialise a database_t structure.
-* Typical use:
-* ```
-* database_t db;
-* db_init(&db);
-* ```
-**/
-void db_init(database_t *db);
+
 
 /**
  * Delete a student from the database

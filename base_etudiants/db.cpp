@@ -64,11 +64,11 @@ void db_upsize(database_t *db)
     }
 }
 
-void db_init(database_t *db)
+void database_t::db_init()
 {
-    db->lsize = 0;
-    db->psize = sizeof(student_t) * 2000000;
-    db->data = (student_t *)mmap(NULL, db->psize, PROT_READ | PROT_WRITE,
+    this->lsize = 0;
+    this->psize = sizeof(student_t) * 2000000;
+    this->data = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
                                  MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 }
 

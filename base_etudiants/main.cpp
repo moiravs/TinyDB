@@ -95,7 +95,7 @@ int main(int argc, char const *argv[])
   db_path = argv[1];
 
   db = (database_t *)mmap(NULL, (sizeof(database_t)), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-  db_init(db);
+  db->db_init();
   std::cout << "Loading your tiny tiny database..." << std::endl;
   db_load(db, db_path);
   std::cout << "Done !" << std::endl;
