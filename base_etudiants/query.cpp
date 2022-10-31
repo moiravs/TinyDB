@@ -13,6 +13,20 @@ Description du projet *TinyDB* :
 #include <string.h>
 #include <sys/mman.h>
 
+query_result_t::query_result_t(const char * query){
+  struct timespec now;
+  clock_gettime(CLOCK_REALTIME, &now);
+  this->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
+  memcpy(this->query, query, 256); // initialize query in result
+  this->psize = sizeof(student_t) * 16;
+  this->lsize = 0;
+  this->students = (student_t *)malloc(this->psize);
+  struct timespec after;
+  clock_gettime(CLOCK_REALTIME, &after);
+  this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
+}
+
+
 void query_result_t::query_result_add(student_t s)
 {
   this->query_list_upsize();
