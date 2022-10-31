@@ -58,7 +58,6 @@ void close_application(bool force)
     }
   }
 
-
   puts("Committing database changes to the disk...");
   db_save(db, db_path);
 
@@ -142,13 +141,11 @@ int main(int argc, char const *argv[])
         }
         else if (strcmp(queryKey, "select") == 0)
         {
-          query_result_t *queryResult = new query_result_t();
-          query_result_init(queryResult, query);
-          query_select_and_delete(db, queryResult, query, saveptr, "select");
+          query_result_t queryResult(query);
+          query_select_and_delete(db, &queryResult, query, saveptr, "select");
 
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
-          delete queryResult;
         }
         memcpy(query, "01", 256); // change the query back to 01
       }
@@ -184,12 +181,10 @@ int main(int argc, char const *argv[])
         }
         else if (strcmp(queryKey, "insert") == 0)
         {
-          query_result_t *queryResult = new query_result_t();
-          query_result_init(queryResult, query);
-          query_insert(db, queryResult, query, saveptr);
+          query_result_t queryResult{query};
+          query_insert(db, &queryResult, query, saveptr);
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
-          delete queryResult;
         }
         memcpy(query, "01", 256);
       }
@@ -224,10 +219,8 @@ int main(int argc, char const *argv[])
 
         else if (strcmp(queryKey, "update") == 0)
         {
-          query_result_t *queryResult = new query_result_t();
-          query_result_init(queryResult, query);
-          query_update(db, queryResult, saveptr, query);
-          delete queryResult;
+          query_result_t queryResult{query};
+          query_update(db, &queryResult, saveptr, query);
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
         }
@@ -266,10 +259,8 @@ int main(int argc, char const *argv[])
 
         else if (strcmp(queryKey, "delete") == 0)
         {
-          query_result_t *queryResult = new query_result_t();
-          query_result_init(queryResult, query);
-          query_select_and_delete(db, queryResult, query, saveptr, "delete");
-          delete queryResult;
+          query_result_t queryResult{query};
+          query_select_and_delete(db, &queryResult, query, saveptr, "delete");
           close(fdResponse[0]);
           write(fdResponse[1], "SUCCESS", 256);
         }
