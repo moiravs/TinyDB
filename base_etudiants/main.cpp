@@ -4,7 +4,7 @@ Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
 Description du projet *TinyDB* :
   Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
-
+#include "process.hpp"
 #include "db.hpp"
 #include "query.hpp"
 #include "parsing.hpp"
@@ -15,15 +15,15 @@ Description du projet *TinyDB* :
 #include <sys/mman.h>
 #include <fcntl.h>
 
+database_t *db;
+const char *db_path;
+int fdInsert[2], fdSelect[2], fdUpdate[2], fdDelete[2], fdResponse[2];
+
 static volatile int keepRunning = 1;
 pid_t child_select = -1;
 pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
-
-database_t *db;
-const char *db_path;
-int fdInsert[2], fdSelect[2], fdUpdate[2], fdDelete[2], fdResponse[2];
 
 int operationInProgress = 0;
 
@@ -111,37 +111,7 @@ int main(int argc, char const *argv[])
   }
   if (child_select == 0)
   {
-    char query[256] = "01";
-    bool killed = false;
-    while (!killed)
-    {
-      close(fdSelect[1]);            // close the writing end of the pipe
-      read(fdSelect[0], query, 256); // reads 256 bytes into memory area indicated by query
-      if (strcmp(query, "01") != 0)  // if query changed
-      {
-        char zero_one[256] = "01";
-        char *querymod = new char[256]; // create a new modifiable string
-        memcpy(querymod, query, 256);   // save query to querymod
-        char *saveptr;
-        char success[256] = "SUCCESS";
-        const char *queryKey = new char[6]();         // variable that'll hold the first keyword of the query (delete, insert, ...)
-        queryKey = strtok_r(querymod, " ", &saveptr); // write the first word to queryKey
-
-        if (strcmp(queryKey, "KILL") == 0)
-        {
-          killed = true;
-        }
-        else if (strcmp(queryKey, "select") == 0)
-        {
-          query_result_t queryResult(query);
-          queryResult.query_select(db, query, saveptr);
-
-          close(fdResponse[0]);
-          write(fdResponse[1], success, 256);
-        }
-        memcpy(query, zero_one, 256); // change the query back to 01
-      }
-    }
+    process_select();
     exit(0);
   }
 
@@ -152,37 +122,7 @@ int main(int argc, char const *argv[])
   }
   if (child_insert == 0)
   {
-    char query[256] = "01";
-
-    bool killed = false;
-    while (!killed)
-    {
-      close(fdInsert[1]);
-      read(fdInsert[0], query, 256);
-      std::cout << query << std::endl;
-      if (strcmp(query, "01") != 0)
-      {
-        char *querymod = new char[256];
-        memcpy(querymod, query, 256);
-        char *saveptr;
-        char zero_one[256] = "01";
-        char success[256] = "SUCCESS";
-        const char *queryKey = new char[6]();
-        queryKey = strtok_r(querymod, " ", &saveptr);
-        if (strcmp(queryKey, "KILL") == 0)
-        {
-          killed = true;
-        }
-        else if (strcmp(queryKey, "insert") == 0)
-        {
-          query_result_t queryResult{query};
-          queryResult.query_insert(db, query, saveptr);
-          close(fdResponse[0]);
-          write(fdResponse[1], success, 256);
-        }
-        memcpy(query, zero_one, 256);
-      }
-    }
+    process_insert();
     exit(0);
   }
   child_update = fork();
@@ -192,38 +132,7 @@ int main(int argc, char const *argv[])
   }
   if (child_update == 0)
   {
-    char query[256] = "01";
-    bool killed = false;
-    while (!killed)
-    {
-      close(fdUpdate[1]);
-      read(fdUpdate[0], query, 256);
-      if (strcmp(query, "01") != 0)
-      {
-
-        char *querymod = new char[256];
-        memcpy(querymod, query, 256);
-        char *saveptr;
-        char zero_one[256] = "01";
-        char success[256] = "SUCCESS";
-        const char *queryKey = new char[6]();
-        queryKey = strtok_r(querymod, " ", &saveptr);
-        if (strcmp(queryKey, "KILL") == 0)
-        {
-          killed = true;
-        }
-
-        else if (strcmp(queryKey, "update") == 0)
-        {
-          query_result_t queryResult{query};
-          queryResult.query_update(db, saveptr, query);
-          close(fdResponse[0]);
-          write(fdResponse[1], success, 256);
-        }
-
-        memcpy(query, zero_one, 256);
-      }
-    }
+    process_update();
     exit(0);
   }
   child_delete = fork();
@@ -233,39 +142,7 @@ int main(int argc, char const *argv[])
   }
   if (child_delete == 0)
   {
-    char query[256] = "01";
-
-    bool killed = false;
-    while (!killed)
-    {
-      close(fdDelete[1]);
-      read(fdDelete[0], query, 256);
-      if (strcmp(query, "01") != 0)
-      {
-
-        char *querymod = new char[256];
-        memcpy(querymod, query, 256);
-        char *saveptr;
-        char success[256] = "SUCCESS";
-        char zero_one[256] = "01";
-        const char *queryKey = new char[6]();
-        queryKey = strtok_r(querymod, " ", &saveptr);
-        if (strcmp(queryKey, "KILL") == 0)
-        {
-          killed = true;
-        }
-
-        else if (strcmp(queryKey, "delete") == 0)
-        {
-          query_result_t queryResult{query};
-          queryResult.query_delete(db, query, saveptr);
-          close(fdResponse[0]);
-          write(fdResponse[1], success, 256);
-        }
-        memcpy(query, zero_one, 256);
-      }
-    }
-    exit(0);
+    process_delete();
   }
   signal(SIGINT, signal_handling);  // handles the signal Ctrl + C and terminates program
   signal(SIGUSR1, signal_handling); // handles abnormal program termination

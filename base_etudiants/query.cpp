@@ -219,7 +219,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
   delete s;
 }
 
-void query_result_t::query_update(database_t *db, char *saveptr, char *query)
+void query_result_t::query_update(database_t *db, char *query, char *saveptr)
 {
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64];
   if (!parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))

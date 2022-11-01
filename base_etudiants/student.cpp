@@ -24,6 +24,5 @@ void student_t::student_to_str(char *buffer)
 
 int student_t::student_equals(student_t *s2)
 {
-  // comparing every attribute to see if both students are equal
-  return (this->id == s2->id);
+  return (this->id == s2->id); // comparing every attribute to see if both students are equal
 }
