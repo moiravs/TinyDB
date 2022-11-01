@@ -13,7 +13,6 @@ void process_select() {
     read(fdSelect[0], query, 256); // reads 256 bytes into memory area indicated by query
     if (strcmp(query, "01") != 0)  // if query changed
     {
-        char zero_one[256] = "01";
         char *querymod = new char[256]; // create a new modifiable string
         memcpy(querymod, query, 256);   // save query to querymod
         char *saveptr;
@@ -33,7 +32,7 @@ void process_select() {
             close(fdResponse[0]);
             write(fdResponse[1], success, 256);
         }
-        memcpy(query, zero_one, 256); // change the query back to 01
+        memcpy(query, "\n", 2); // change the query back to 01
     }}
 }
 
@@ -50,9 +49,9 @@ void process_insert()
         if (strcmp(query, "01") != 0)
         {
             char *querymod = new char[256];
-            memcpy(querymod, query, 256);
             char *saveptr;
-            char zero_one[256] = "01";
+            memcpy(querymod, query, 256);
+            
             char success[256] = "SUCCESS";
             const char *queryKey = new char[6]();
             queryKey = strtok_r(querymod, " ", &saveptr);
@@ -67,7 +66,7 @@ void process_insert()
                 close(fdResponse[0]);
                 write(fdResponse[1], success, 256);
             }
-            memcpy(query, zero_one, 256);
+            memcpy(query, "\n", 2);
         }
     }
 }
@@ -87,7 +86,6 @@ void process_delete()
             memcpy(querymod, query, 256);
             char *saveptr;
             char success[256] = "SUCCESS";
-            char zero_one[256] = "01";
             const char *queryKey = new char[6]();
             queryKey = strtok_r(querymod, " ", &saveptr);
             if (strcmp(queryKey, "KILL") == 0)
@@ -102,7 +100,7 @@ void process_delete()
                 close(fdResponse[0]);
                 write(fdResponse[1], success, 256);
             }
-            memcpy(query, zero_one, 256);
+            memcpy(query, "\n", 2);
         }
     }
     exit(0);
@@ -121,7 +119,6 @@ void process_update()
             char *querymod = new char[256];
             memcpy(querymod, query, 256);
             char *saveptr;
-            char zero_one[256] = "01";
             char success[256] = "SUCCESS";
             const char *queryKey = new char[6]();
             queryKey = strtok_r(querymod, " ", &saveptr);
@@ -137,7 +134,7 @@ void process_update()
                 close(fdResponse[0]);
                 write(fdResponse[1], success, 256);
             }
-            memcpy(query, zero_one, 256);
+            memcpy(query, "\n", 2);
         }
     }
 }

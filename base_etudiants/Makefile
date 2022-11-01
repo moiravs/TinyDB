@@ -1,6 +1,6 @@
 
 FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE  -Werror
-COMPILER=g++
+COMPILER=g++-12
 
 main: process.o main.cpp student.o parsing.o db.o query.o utils.o 
 	${COMPILER} -pthread -o tinydb process.o main.cpp parsing.o student.o db.o query.o utils.o  ${FLAGS}
@@ -33,4 +33,6 @@ tests: tests/run_tests.py
 	./tests/run_tests.py
 
 clean:
-	rm logs/*
+	rm -f *.o
+	rm -f tinydb
+	rm -f logs/*
