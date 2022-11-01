@@ -134,7 +134,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "select") == 0)
         {
           query_result_t queryResult(query);
-          queryResult.query_select_and_delete(db, query, saveptr, "select");
+          queryResult.query_select(db, query, saveptr);
 
           close(fdResponse[0]);
           write(fdResponse[1], success, 256);
@@ -258,7 +258,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "delete") == 0)
         {
           query_result_t queryResult{query};
-          queryResult.query_select_and_delete(db, query, saveptr, "delete");
+          queryResult.query_delete(db, query, saveptr);
           close(fdResponse[0]);
           write(fdResponse[1], success, 256);
         }

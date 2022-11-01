@@ -11,7 +11,8 @@ Description du projet *TinyDB* :
 #include <iostream>
 #include <time.h>
 
-query_result_t::query_result_t(const char * query){
+query_result_t::query_result_t(const char *query)
+{
   struct timespec now;
   clock_gettime(CLOCK_REALTIME, &now);
   this->start_ns = now.tv_nsec + 1e9 * now.tv_sec;
@@ -23,7 +24,6 @@ query_result_t::query_result_t(const char * query){
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
 }
-
 
 void query_result_t::query_result_add(student_t s)
 {
@@ -42,7 +42,7 @@ void query_result_t::query_list_upsize()
     size_t old_psize = this->psize;
     this->psize *= 2;
     this->students = (student_t *)malloc(this->psize); // allocating new psize
-    memcpy(this->students, old_data, old_psize);         // copy old data into new allocated memory
+    memcpy(this->students, old_data, old_psize);       // copy old data into new allocated memory
   }
 }
 
@@ -56,7 +56,7 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
     this->query_result_add(*s);
   }
   else
-    std::cout << "An error has occurred during the insert query." << std::endl;
+    std::cout << "Invalid Arguments : insert <fname> <lname> <id> <section> <birthdate>" << std::endl;
   this->status = QUERY_SUCCESS;
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
@@ -65,20 +65,18 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
   delete s;
 }
 
-void query_result_t::query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey)
+void query_result_t::query_select(database_t *db, char *query, char *saveptr)
 {
   student_t *s = new student_t;
+  this->status = QUERY_FAILURE;
   char *fieldFilter = new char[64](), *value = new char[64];
   char value_str[64] = "0", date_str[64] = "0";
-  parse_selectors(saveptr, fieldFilter, value);
-  if (strcmp(queryKey, "select") == 0)
+  if (!parse_selectors(saveptr, fieldFilter, value))
   {
-    std::cout << "Searching for all students whose " << fieldFilter << " is " << value << std::endl;
+    puts("Invalid Arguments : select <champ>=<valeur>");
+    return;
   }
-  else if (strcmp(queryKey, "delete") == 0)
-  {
-    std::cout << "Deleting all students whose " << fieldFilter << " is " << value << std::endl;
-  }
+  std::cout << "Searching for all students whose " << fieldFilter << " is " << value << std::endl;
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
@@ -89,11 +87,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(value_str, value) == 0)
       {
         this->query_result_add(*s);
-        if (strcmp(queryKey, "delete"))
-        {
-          db->db_delete(i);
-          i--;
-        }
       }
     }
 
@@ -102,11 +95,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(s->fname, value) == 0)
       {
         this->query_result_add(*s);
-        if (strcmp(queryKey, "delete") == 0)
-        {
-          db->db_delete(i);
-          i--;
-        }
       }
     }
     else if (strcmp(fieldFilter, "lname") == 0)
@@ -114,11 +102,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(s->lname, value) == 0)
       {
         this->query_result_add(*s);
-        if (strcmp(queryKey, "delete") == 0)
-        {
-          db->db_delete(i);
-          i--;
-        }
       }
     }
     else if (strcmp(fieldFilter, "section") == 0)
@@ -126,11 +109,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(s->section, value) == 0)
       {
         this->query_result_add(*s);
-        if (strcmp(queryKey, "delete") == 0)
-        {
-          db->db_delete(i);
-          i--;
-        }
       }
     }
     else if (strcmp(fieldFilter, "birthdate") == 0)
@@ -139,31 +117,116 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
       if (strcmp(date_str, value) == 0)
       {
         this->query_result_add(*s);
-        if (strcmp(queryKey, "delete") == 0)
-        {
-          db->db_delete(i);
-          i--;
-        }
       }
     }
     else
     {
-      // std::cout << "An error has occurred during the select or delete query : bad filter." << std::endl;
+      std::cout << "An error has occurred during the select query : bad filter." << std::endl;
+      this->status = UNRECOGNISED_FIELD;
+      return;
     }
     i++;
   }
+
   this->status = QUERY_SUCCESS;
-  log_query(this);
+
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
+  log_query(this);
+  delete s;
+}
+
+void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
+{
+  student_t *s = new student_t;
+  this->status = QUERY_FAILURE;
+  char *fieldFilter = new char[64](), *value = new char[64];
+  char value_str[64] = "0", date_str[64] = "0";
+  if (!parse_selectors(saveptr, fieldFilter, value))
+  {
+    puts("Invalid Arguments : delete <champ>=<valeur>");
+    return;
+  }
+  std::cout << "Deleting all students whose " << fieldFilter << " is " << value << std::endl;
+  size_t i = 0;
+  while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
+  {
+    *s = db->data[i];
+    if (strcmp(fieldFilter, "id") == 0)
+    {
+      sprintf(value_str, "%u", s->id); // convert id (unsigned) to char* for comparison
+      if (strcmp(value_str, value) == 0)
+      {
+        this->query_result_add(*s);
+        db->db_delete(i);
+        i--;
+      }
+    }
+
+    else if (strcmp(fieldFilter, "fname") == 0)
+    {
+      if (strcmp(s->fname, value) == 0)
+      {
+        this->query_result_add(*s);
+          db->db_delete(i);
+          i--;
+      }
+    }
+    else if (strcmp(fieldFilter, "lname") == 0)
+    {
+      if (strcmp(s->lname, value) == 0)
+      {
+        this->query_result_add(*s);
+          db->db_delete(i);
+          i--;
+      }
+    }
+    else if (strcmp(fieldFilter, "section") == 0)
+    {
+      if (strcmp(s->section, value) == 0)
+      {
+        this->query_result_add(*s);
+          db->db_delete(i);
+          i--;
+      }
+    }
+    else if (strcmp(fieldFilter, "birthdate") == 0)
+    {
+      strftime(date_str, 44, "%d/%m/%Y", &s->birthdate);
+      if (strcmp(date_str, value) == 0)
+      {
+        this->query_result_add(*s);
+          db->db_delete(i);
+          i--;
+      }
+    }
+    else
+    {
+      std::cout << "An error has occurred during the delete query : bad filter." << std::endl;
+      this->status = UNRECOGNISED_FIELD;
+      return;
+    }
+    i++;
+  }
+
+  this->status = QUERY_SUCCESS;
+
+  struct timespec after;
+  clock_gettime(CLOCK_REALTIME, &after);
+  this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
+  log_query(this);
   delete s;
 }
 
 void query_result_t::query_update(database_t *db, char *saveptr, char *query)
 {
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64];
-  parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue); // check if valid query
+  if (!parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))
+  {
+    puts("Invalid Arguments : update <filtre>=<valeur> set <champ_modifie>=<valeur_modifiee>");
+    return;
+  } // check if valid query
 
   for (size_t i = 0; i < db->lsize; i++)
   {
@@ -205,9 +268,9 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
       {
         strcpy(date_str, updateValue);
         strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
-        long temp = atol(id);                    // conversion to long int
+        long temp = atol(id);                             // conversion to long int
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(db->data[i]); // transform the updated string to tm struct
+        this->query_result_add(db->data[i]);              // transform the updated string to tm struct
       }
     }
     else if ((strcmp(fieldFilter, "fname") == 0) && (strcmp(db->data[i].fname, valueFilter) == 0))
@@ -246,7 +309,7 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
-        long temp = atol(id);                    // conversion to long int
+        long temp = atol(id);                             // conversion to long int
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);
       }
@@ -277,7 +340,7 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
-        long temp = atol(id);                    // conversion to long int
+        long temp = atol(id);                             // conversion to long int
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);
       }
@@ -309,7 +372,7 @@ void query_result_t::query_update(database_t *db, char *saveptr, char *query)
       if (strcmp(fieldToUpdate, "id") == 0)
       {
         strcpy(id, updateValue);
-        long temp = atol(id);                    // conversion to long int
+        long temp = atol(id);                             // conversion to long int
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);
       }

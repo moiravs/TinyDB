@@ -46,10 +46,11 @@ class query_result_t
      */
     void query_update(database_t *db, char *saveptr, char *query);
 
-    /**
-     * Handles the select query
-     **/
-    void query_select_and_delete(database_t *db, char *query, char *saveptr, const char *queryKey);
+    void query_select(database_t *db, char *query, char *saveptr);
+        /**
+         * Handles the select query
+         **/
+        void query_delete(database_t *db, char *query, char *saveptr);
 } ;
 
 
