@@ -13,16 +13,16 @@ Description du projet *TinyDB* :
 #include <time.h>
 #include <stdbool.h>
 
-void student_t::student_to_str(char *buffer)
+void student_to_str(student_t *s, char *buffer)
 {
-  snprintf(buffer, 512, "%i: %s %s in section %s, born on the %d/%d/%d", this->id, this->fname, this->lname, this->section, 
-    this->birthdate.tm_mday,
-    this->birthdate.tm_mon+1,
-    this->birthdate.tm_year+1900
+  snprintf(buffer, 512, "%i: %s %s in section %s, born on the %d/%d/%d", s->id, s->fname, s->lname, s->section, 
+    s->birthdate.tm_mday,
+    s->birthdate.tm_mon+1,
+    s->birthdate.tm_year+1900
     );
 }
 
-int student_t::student_equals(student_t *s2)
+int student_equals(student_t *s1, student_t *s2)
 {
-  return (this->id == s2->id); // comparing every attribute to see if both students are equal
+  return (s1->id == s2->id); // comparing every attribute to see if both students are equal
 }

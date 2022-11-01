@@ -44,7 +44,7 @@ void query_result_t::log_query()
     {
       for (size_t i = 0; i < this->lsize; i++)
       {
-        this->students[i].student_to_str(buffer);
+        student_to_str(&this->students[i], buffer);
         fwrite(buffer, sizeof(char), strlen(buffer), f);
         fwrite("\n", sizeof(char), 1, f);
       }
@@ -99,7 +99,6 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
 
 void query_result_t::query_select(database_t *db, char *query, char *saveptr)
 {
-  student_t *s = new student_t;
   this->status = QUERY_FAILURE;
   char *fieldFilter = new char[64](), *value = new char[64];
   char value_str[64] = "0", date_str[64] = "0";
@@ -112,43 +111,42 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    *s = db->data[i];
     if (strcmp(fieldFilter, "id") == 0)
     {
-      sprintf(value_str, "%u", s->id); // convert id (unsigned) to char* for comparison
+      sprintf(value_str, "%u", db->data[i].id); // convert id (unsigned) to char* for comparison
       if (strcmp(value_str, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
       }
     }
 
     else if (strcmp(fieldFilter, "fname") == 0)
     {
-      if (strcmp(s->fname, value) == 0)
+      if (strcmp(db->data[i].fname, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
       }
     }
     else if (strcmp(fieldFilter, "lname") == 0)
     {
-      if (strcmp(s->lname, value) == 0)
+      if (strcmp(db->data[i].lname, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
       }
     }
     else if (strcmp(fieldFilter, "section") == 0)
     {
-      if (strcmp(s->section, value) == 0)
+      if (strcmp(db->data[i].section, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
       }
     }
     else if (strcmp(fieldFilter, "birthdate") == 0)
     {
-      strftime(date_str, 44, "%d/%m/%Y", &s->birthdate);
+      strftime(date_str, 44, "%d/%m/%Y", &db->data[i].birthdate);
       if (strcmp(date_str, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
       }
     }
     else
@@ -165,7 +163,6 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
   this->log_query();
-  delete s;
 }
 
 void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
