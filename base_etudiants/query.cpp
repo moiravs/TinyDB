@@ -170,7 +170,6 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
 
 void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
 {
-  student_t *s = new student_t;
   this->status = QUERY_FAILURE;
   char *fieldFilter = new char[64](), *value = new char[64];
   char value_str[64] = "0", date_str[64] = "0";
@@ -246,7 +245,6 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
   this->log_query();
-  delete s;
 }
 
 void query_result_t::query_update(database_t *db, char *query, char *saveptr)
