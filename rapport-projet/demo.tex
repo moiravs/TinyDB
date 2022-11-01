@@ -30,7 +30,7 @@ prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nou
 
 Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
 dans une array (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides.
-Seulement, si l'utilisateur introduit un id=20000000, alors le stockage de la data base sera très grand, pour très peu d'étudiants.
+Seulement, si l'utilisateur introduit un id très grand, alors le stockage de la data base sera très grand, pour très peu d'étudiants.
 Nous avons donc décidé de partir sur une recherche dichotomique et de trier les étudiants par id(utilisation de la librairie binarysearch)
 
 \section{Fin d'une query}
@@ -41,11 +41,18 @@ Lorsque qu'un processus termine sa query, il écrit dans une pipe. Le processus 
 la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
 même si il ne lit rien dans la pipe. Lors d'une transaction, on limite OperationInProgress à 1.
 
+\section{Gestion de signaux}
+
+Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons décidé de garder la message queue 
+et d'attendre que la message queue soit terminée, et d'envoyer un signal KILL, qui arrête la boucle du programme.
+
+
 \section{Classes}
 
 Nous avons mis la database\_t et le query\_result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
 nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\_result\_init, pour que le code
 crée directement le query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
+Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query result t.
 \section{Améliorations possibles}
     \subsection{std::map}
     Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. \newline
