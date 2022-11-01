@@ -197,7 +197,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
 
     else if (strcmp(fieldFilter, "fname") == 0)
     {
-      if (strcmp(s->fname, value) == 0)
+      if (strcmp(db->data[i].fname, value) == 0)
       {
         this->query_result_add(*s);
         db->db_delete(i);
@@ -206,7 +206,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
     }
     else if (strcmp(fieldFilter, "lname") == 0)
     {
-      if (strcmp(s->lname, value) == 0)
+      if (strcmp(db->data[i].lname, value) == 0)
       {
         this->query_result_add(*s);
         db->db_delete(i);
@@ -215,7 +215,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
     }
     else if (strcmp(fieldFilter, "section") == 0)
     {
-      if (strcmp(s->section, value) == 0)
+      if (strcmp(db->data[i].section, value) == 0)
       {
         this->query_result_add(*s);
         db->db_delete(i);
