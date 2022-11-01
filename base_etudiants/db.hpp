@@ -15,36 +15,40 @@ public:
 
 public:
   /**
-   * Initialise a database_t structure.
-   * Typical use:
-   * ```
-   * database_t db;
-   * db_init(&db);
-   * ```
-   **/
+   * @brief  Initialise a database
+   * @retval None
+   */
   void db_init();
   /**
-   *  Add a student to the database.
-   **/
+   * @brief  Add a student to the database.
+   * @note
+   * @param  s: Student to add
+   * @retval None
+   */
   void db_add(student_t s);
-
   /**
-   * Increase size of the database
-   **/
+   * @brief  Increase size of the database
+   * @retval None
+   */
+
   void db_upsize();
   /**
-   * Save the content of a database_t in the specified file.
-   **/
+   * @brief
+   * @param  *path: Path of the database to load
+   * @retval None
+   */
   void db_save(const char *path);
-
   /**
-   * Load the content of a database of students.
-   **/
+   * @brief Load the content of a database of students.
+   * @param  *path: Path of the database to load
+   * @retval None
+   */
   void db_load(const char *path);
-
   /**
-   * Delete a student from the database
-   **/
+   * @brief  Delete a student from the database
+   * @param  indice: Index of the student to delete
+   * @retval None
+   */
   void db_delete(size_t indice);
 };
 

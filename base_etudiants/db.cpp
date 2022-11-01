@@ -35,6 +35,7 @@ void database_t::db_save(const char *path)
 }
 
 void database_t::db_load(const char *path)
+
 {
     FILE *file = fopen(path, "rb");
     if (!file)
