@@ -168,8 +168,8 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
       if (strcmp(s->fname, value) == 0)
       {
         this->query_result_add(*s);
-          db->db_delete(i);
-          i--;
+        db->db_delete(i);
+        i--;
       }
     }
     else if (strcmp(fieldFilter, "lname") == 0)
@@ -177,8 +177,8 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
       if (strcmp(s->lname, value) == 0)
       {
         this->query_result_add(*s);
-          db->db_delete(i);
-          i--;
+        db->db_delete(i);
+        i--;
       }
     }
     else if (strcmp(fieldFilter, "section") == 0)
@@ -186,8 +186,8 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
       if (strcmp(s->section, value) == 0)
       {
         this->query_result_add(*s);
-          db->db_delete(i);
-          i--;
+        db->db_delete(i);
+        i--;
       }
     }
     else if (strcmp(fieldFilter, "birthdate") == 0)
@@ -196,8 +196,8 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
       if (strcmp(date_str, value) == 0)
       {
         this->query_result_add(*s);
-          db->db_delete(i);
-          i--;
+        db->db_delete(i);
+        i--;
       }
     }
     else
@@ -223,9 +223,9 @@ void query_result_t::query_update(database_t *db, char *query, char *saveptr)
   char *fieldFilter = new char[64](), *valueFilter = new char[64](), *fieldToUpdate = new char[64](), *updateValue = new char[64];
   if (!parse_update(saveptr, fieldFilter, valueFilter, fieldToUpdate, updateValue))
   {
-    puts("Invalid Arguments : update <filtre>=<valeur> set <champ_modifie>=<valeur_modifiee>");
+    puts("Invalid Arguments : update <filtre>=<valeur> set <champ_modifie>=<valeur_modifiee>"); // check if valid query
     return;
-  } // check if valid query
+  }
 
   for (size_t i = 0; i < db->lsize; i++)
   {
