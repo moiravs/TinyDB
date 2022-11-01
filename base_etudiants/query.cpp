@@ -136,7 +136,6 @@ void query_result_t::query_select_and_delete(database_t *db, char *query, char *
     else if (strcmp(fieldFilter, "birthdate") == 0)
     {
       strftime(date_str, 44, "%d/%m/%Y", &s->birthdate);
-      std::cout << date_str << std::endl;
       if (strcmp(date_str, value) == 0)
       {
         this->query_result_add(*s);
