@@ -40,10 +40,14 @@ prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nou
 \indent{}
 \par
 Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
-dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides.
+dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides, et on 
+aurait pu rapidement savoir si un étudiant est déjà présent dans le tableau ou non.
 Seulement, si l'utilisateur introduit un id très grand, le stockage de la data base sera très grand, pour un seul étudiant.
 Nous avons donc essayé d'implémenter une boucle for, qui vérifiait si l'id de l'étudiant n'était pas encore présent en itérant dans toute la base de données.
-Cela prenait beaucoup trop de temps, et nous avons donc décidé de partir sur une recherche dichotomique et de trier les étudiants par id.
+Cela prenait beaucoup trop de temps. Nous avons donc décidé d'avoir un tableau trié d'étudiants. Pour cela, lorsque nous ajoutons un étudiant,
+nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. Si il est plus petit que lui, nous l'ajoutons juste derrière. Sinon, 
+nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste derrière lui
+et décale toute la database afin de s'insérer en plein milieu.
 \par
 \section{Fin d'une query}
 \indent{}

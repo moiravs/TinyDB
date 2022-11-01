@@ -90,38 +90,6 @@ void database_t::db_add(student_t student)
     }
 
     memcpy(&this->data[position + 1], &student, 256); // at end of db
-
-    /*
-  if (this->lsize > 0){
-      bool found = false;
-      //std::cout << "found " << found << " and !found " << !found << std::endl;
-      size_t i = this->lsize-1;
-      //std::cout << this->lsize << std::endl;
-      while (i >= 0 && student.id < this->data[i].id && found){
-          std::cout << "going through here" << std::endl;
-          if (student.id == this->data[i].id){
-              std::cout << "ID already in the database." << std::endl;
-              found = true;
-          }
-          i--;
-      }
-
-      if (found){  // if didn't find the id
-          this->lsize++;
-          this->db_upsize();
-          for (size_t index = i+1; index < this->lsize-1; index++){
-              this->data[index] = this->data[index + 1];
-          }
-          memcpy(&this->data[i], &student, 256); // at end of db
-
-      }
-  }
-
-  else {
-      this->lsize++;
-      this->db_upsize();
-      memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db
-  }*/
 }
 
 void database_t::db_delete(size_t indice)
