@@ -129,7 +129,6 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
   }
 
   this->status = QUERY_SUCCESS;
-
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
