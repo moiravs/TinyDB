@@ -73,11 +73,17 @@ crée directement le query\_result\_t, sans devoir appeller l'initialisation à 
 Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query result t.
 et nous n'aurions donc pas su mettre les attributs en privés.
 
+
 \section{Améliorations possibles}
     \subsection{std::map}
     \indent{}
 \par
     Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. \newline
     Selon nous, cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. \newline En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
+    \subsection{Threads}
+    \indent{}
+    \par
+    Au lieu d'utiliser des processus, nous aurions pu utiliser des threads. Seulement, si le processus main crashe,
+    alors tous les threads crashent aussi. L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.
 
 \end{document}
