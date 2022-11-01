@@ -26,32 +26,54 @@ public:
 
 public:
   /**
-   * Constructor - Initialise a query_result_t structure.
-   **/
+   * @brief  Constructor - Initialise a query_result_t structure.
+   * @note
+   * @param  *query: query that was submitted
+   */
   query_result_t(const char *query);
+
   /**
-   * Add a student to a query result.
-   **/
+   * @brief  Add a student to a query result.
+   * @param  s: student to add
+   * @retval None
+   */
   void query_result_add(student_t s);
   /**
-   * Makes the list containing the students of a query bigger
-   **/
+   * @brief  Makes the list containing the students of a query bigger
+   * @retval None
+   */
   void query_list_upsize();
   /**
-   * Handles the insert query
-   **/
+   * @brief   Handles the insert query
+   * @param  *db: database to change
+   * @param  *query: Query that was submitted
+   * @param  *saveptr: Pointer to the rest of the query
+   * @retval None
+   */
   void query_insert(database_t *db, char *query, char *saveptr);
   /**
-   * Handles the update query
+   * @brief   Handles the update query
+   * @param  *db: database to change
+   * @param  *query: Query that was submitted
+   * @param  *saveptr: Pointer to the rest of the query
+   * @retval None
    */
   void query_update(database_t *db, char *query, char *saveptr);
   /**
-   * Handles the select query
-   **/
+   * @brief   Handles the select query
+   * @param  *db: database to change
+   * @param  *query: Query that was submitted
+   * @param  *saveptr: Pointer to the rest of the query
+   * @retval None
+   */
   void query_select(database_t *db, char *query, char *saveptr);
   /**
-   * Handles the delete query
-   **/
+   * @brief   Handles the delete query
+   * @param  *db: database to change
+   * @param  *query: Query that was submitted
+   * @param  *saveptr: Pointer to the rest of the query
+   * @retval None
+   */
   void query_delete(database_t *db, char *query, char *saveptr);
 };
 
