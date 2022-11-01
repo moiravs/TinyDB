@@ -183,13 +183,12 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    *s = db->data[i];
     if (strcmp(fieldFilter, "id") == 0)
     {
-      sprintf(value_str, "%u", s->id); // convert id (unsigned) to char* for comparison
+      sprintf(value_str, "%u", db->data[i].id); // convert id (unsigned) to char* for comparison
       if (strcmp(value_str, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
         db->db_delete(i);
         i--;
       }
@@ -199,7 +198,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
     {
       if (strcmp(db->data[i].fname, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
         db->db_delete(i);
         i--;
       }
@@ -208,7 +207,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
     {
       if (strcmp(db->data[i].lname, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
         db->db_delete(i);
         i--;
       }
@@ -217,17 +216,17 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
     {
       if (strcmp(db->data[i].section, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
         db->db_delete(i);
         i--;
       }
     }
     else if (strcmp(fieldFilter, "birthdate") == 0)
     {
-      strftime(date_str, 44, "%d/%m/%Y", &s->birthdate);
+      strftime(date_str, 44, "%d/%m/%Y", &db->data[i].birthdate);
       if (strcmp(date_str, value) == 0)
       {
-        this->query_result_add(*s);
+        this->query_result_add(db->data[i]);
         db->db_delete(i);
         i--;
       }
