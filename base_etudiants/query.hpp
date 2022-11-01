@@ -15,7 +15,7 @@ typedef enum
  */
 class query_result_t
 {
-public:
+private:
   student_t *students;           /** A list of students **/
   size_t lsize;                  /** Logical size **/
   size_t psize;                  /** Physical size **/
@@ -31,7 +31,10 @@ public:
    * @param  *query: query that was submitted
    */
   query_result_t(const char *query);
-
+  /**
+   * @brief the result of a query.
+   **/
+  void log_query();
   /**
    * @brief  Add a student to a query result.
    * @param  s: student to add

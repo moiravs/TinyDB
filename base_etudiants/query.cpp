@@ -24,6 +24,38 @@ query_result_t::query_result_t(const char *query)
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
 }
+void query_result_t::log_query()
+{
+  char buffer[512];
+  if (this->status == QUERY_SUCCESS)
+  {
+    char filename[512];
+    char type[256];
+    strcpy(type, this->query);
+    type[6] = '\0';
+    sprintf(filename, "logs/%ld-%s.txt", this->start_ns, type);
+    printf("%s\n", filename);
+    FILE *f = fopen(filename, "w");
+    float duration = (float)(this->end_ns - this->start_ns) / 1.0e6;
+    sprintf(buffer, "Query \"%s\" completed in %fms with %ld results.\n", this->query, duration, this->lsize);
+    fwrite(buffer, sizeof(char), strlen(buffer), f);
+
+    if (this->lsize > 0)
+    {
+      for (size_t i = 0; i < this->lsize; i++)
+      {
+        this->students[i].student_to_str(buffer);
+        fwrite(buffer, sizeof(char), strlen(buffer), f);
+        fwrite("\n", sizeof(char), 1, f);
+      }
+    }
+    fclose(f);
+  }
+  else if (this->status == UNRECOGNISED_FIELD)
+  {
+    fprintf(stderr, "Unrecognized field in query %s\n", this->query);
+  }
+}
 
 void query_result_t::query_result_add(student_t s)
 {
@@ -61,7 +93,7 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
-  log_query(this);
+  this->log_query();
   delete s;
 }
 
@@ -132,7 +164,7 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
-  log_query(this);
+  this->log_query();
   delete s;
 }
 
@@ -214,7 +246,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
-  log_query(this);
+  this->log_query();
   delete s;
 }
 
@@ -402,5 +434,5 @@ void query_result_t::query_update(database_t *db, char *query, char *saveptr)
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
-  log_query(this);
+  this->log_query();
 }

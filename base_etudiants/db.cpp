@@ -26,7 +26,6 @@ void database_t::db_save(const char *path)
         exit(1);
     }
     fclose(f);
-    std::cout << "db save finisihed" << std::endl;
 }
 
 void database_t::db_load(const char *path)

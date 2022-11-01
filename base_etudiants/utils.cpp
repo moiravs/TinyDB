@@ -34,36 +34,3 @@ size_t safe_write(int fd, const void *buffer, size_t nbytes)
   }
   return (size_t)bytes_written;
 }
-
-void log_query(query_result_t *result)
-{
-  char buffer[512];
-  if (result->status == QUERY_SUCCESS)
-  {
-    char filename[512];
-    char type[256];
-    strcpy(type, result->query);
-    type[6] = '\0';
-    sprintf(filename, "logs/%ld-%s.txt", result->start_ns, type);
-    printf("%s\n", filename);
-    FILE *f = fopen(filename, "w");
-    float duration = (float)(result->end_ns - result->start_ns) / 1.0e6;
-    sprintf(buffer, "Query \"%s\" completed in %fms with %ld results.\n", result->query, duration, result->lsize);
-    fwrite(buffer, sizeof(char), strlen(buffer), f);
-
-    if (result->lsize > 0)
-    {
-      for (size_t i = 0; i < result->lsize; i++)
-      {
-        result->students[i].student_to_str(buffer);
-        fwrite(buffer, sizeof(char), strlen(buffer), f);
-        fwrite("\n", sizeof(char), 1, f);
-      }
-    }
-    fclose(f);
-  }
-  else if (result->status == UNRECOGNISED_FIELD)
-  {
-    fprintf(stderr, "Unrecognized field in query %s\n", result->query);
-  }
-}
