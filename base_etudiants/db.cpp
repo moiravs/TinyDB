@@ -77,6 +77,7 @@ void database_t::db_add(student_t student)
     this->lsize += 1;
     this->db_upsize();
     memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db*/
+    /*
     if (this->lsize > 0){
         bool found = false;
         //std::cout << "found " << found << " and !found " << !found << std::endl;
@@ -105,8 +106,8 @@ void database_t::db_add(student_t student)
     else {
         this->lsize++;
         this->db_upsize();
-        memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db*/
-    }
+        memcpy(&this->data[this->lsize - 1], &student, 256); // at end of db
+    }*/
 }
 
 void database_t::db_delete(size_t indice)
