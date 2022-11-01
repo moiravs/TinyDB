@@ -13,11 +13,9 @@ void process_select() {
     read(fdSelect[0], query, 256); // reads 256 bytes into memory area indicated by query
     if (strcmp(query, "01") != 0)  // if query changed
     {
-        char *querymod = new char[256]; // create a new modifiable string
+        char *querymod = new char[256], *queryKey = new char[6](),* saveptr; // create a new modifiable string
         memcpy(querymod, query, 256);   // save query to querymod
-        char *saveptr;
         char success[256] = "SUCCESS";
-        const char *queryKey = new char[6]();         // variable that'll hold the first keyword of the query (delete, insert, ...)
         queryKey = strtok_r(querymod, " ", &saveptr); // write the first word to queryKey
 
         if (strcmp(queryKey, "KILL") == 0)
@@ -48,12 +46,9 @@ void process_insert()
         std::cout << query << std::endl;
         if (strcmp(query, "01") != 0)
         {
-            char *querymod = new char[256];
-            char *saveptr;
+            char *querymod = new char[256], *queryKey = new char[6](), *saveptr; // create a new modifiable string
             memcpy(querymod, query, 256);
-            
             char success[256] = "SUCCESS";
-            const char *queryKey = new char[6]();
             queryKey = strtok_r(querymod, " ", &saveptr);
             if (strcmp(queryKey, "KILL") == 0)
             {
@@ -79,14 +74,11 @@ void process_delete()
     {
         close(fdDelete[1]);
         read(fdDelete[0], query, 256);
-        if (strcmp(query, "01") != 0)
+        if (strcmp(query, "\n") != 0)
         {
-
-            char *querymod = new char[256];
+            char *querymod = new char[256], *queryKey = new char[6](), *saveptr; // create a new modifiable string
             memcpy(querymod, query, 256);
-            char *saveptr;
             char success[256] = "SUCCESS";
-            const char *queryKey = new char[6]();
             queryKey = strtok_r(querymod, " ", &saveptr);
             if (strcmp(queryKey, "KILL") == 0)
             {
@@ -115,12 +107,9 @@ void process_update()
         read(fdUpdate[0], query, 256);
         if (strcmp(query, "01") != 0)
         {
-
-            char *querymod = new char[256];
+            char *querymod = new char[256], *queryKey = new char[6](), *saveptr; // create a new modifiable string
             memcpy(querymod, query, 256);
-            char *saveptr;
             char success[256] = "SUCCESS";
-            const char *queryKey = new char[6]();
             queryKey = strtok_r(querymod, " ", &saveptr);
             if (strcmp(queryKey, "KILL") == 0)
             {
