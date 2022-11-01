@@ -6,16 +6,11 @@ Description du projet *TinyDB* :
 */
 
 #include "db.hpp"
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
-#include <algorithm>
 #include <unistd.h>
-#include <string>
 #include <iostream>
 #include "student.hpp"
 #include <sys/mman.h>
-#include <iterator>
 
 void database_t::db_save(const char *path)
 {
