@@ -1,6 +1,6 @@
 
-FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE 
-COMPILER=g++-12
+FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE -Werror
+COMPILER=g++
 
 main: process.o main.cpp student.o parsing.o db.o query.o utils.o 
 	${COMPILER} -pthread -o tinydb process.o main.cpp parsing.o student.o db.o query.o utils.o  ${FLAGS}
