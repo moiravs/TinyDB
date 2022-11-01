@@ -258,7 +258,7 @@ int main(int argc, char const *argv[])
         else if (strcmp(queryKey, "delete") == 0)
         {
           query_result_t queryResult{query};
-          queryResult.query_select_and_delete(db,query, saveptr, "delete");
+          queryResult.query_select_and_delete(db, query, saveptr, "delete");
           close(fdResponse[0]);
           write(fdResponse[1], success, 256);
         }
@@ -286,6 +286,12 @@ int main(int argc, char const *argv[])
         std::cout << operationInProgress << " operations in progress: no wait" << std::endl;
       }
       query[strcspn(query, "\n")] = 0;
+      char *querymod = new char[256];
+      memcpy(querymod, query, 256);
+      char *saveptr;
+      const char *queryKey = new char[6]();
+      queryKey = strtok_r(querymod, " ", &saveptr);
+
       if (strcmp(query, "transaction") == 0)
       {
         close(fdResponse[1]);
@@ -303,17 +309,33 @@ int main(int argc, char const *argv[])
         }
         transaction ^= transaction;
       }
-      else
+      else if (strcmp(queryKey, "select")==0)
       {
         operationInProgress++;
         close(fdSelect[0]);
         write(fdSelect[1], query, 256);
+      }
+      else if (strcmp(queryKey, "insert")==0)
+      {
+        operationInProgress++;
         close(fdInsert[0]);
         write(fdInsert[1], query, 256);
+      }
+      else if (strcmp(queryKey, "update")==0)
+      {
+        operationInProgress++;
         close(fdUpdate[0]);
         write(fdUpdate[1], query, 256);
+      }
+      else if (strcmp(queryKey, "delete")==0)
+      {
+        operationInProgress++;
         close(fdDelete[0]);
         write(fdDelete[1], query, 256);
+      }
+      else
+      {
+        puts("Bad query");
       }
 
       if (transaction == true)
