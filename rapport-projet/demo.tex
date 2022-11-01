@@ -13,38 +13,51 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{fullpage}
-\title{Rapport d'OS}
-\author{Andrius Ezerskis \& Moïra Vanderslagmolen \& Hasan Yildirim}
+
+
+
 \begin{document}
+\begin{titlepage}
+    
+
+\author{Andrius Ezerskis \& Moïra Vanderslagmolen \& Hasan Yildirim}
+\title{Rapport d'OS}
+
+\maketitle
+\end{titlepage}
 
 \section{Introduction}
 
 \section{Stockage de la base de données}
-
+\indent{}
 Afin de stocker les données de milliers d'étudiants, plusieurs choix se sont offerts à nous. 
 Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en python, dont les
 clés ont été l'identifiant de l'élève et les valeurs la struct student. Seulement, cela
-prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons 
+prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons donc décidé de faire un tableau.
 
-\subsection{Checker l'identifiant}
+\section{Checker l'identifiant}
 
 Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
-dans une array (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides.
-Seulement, si l'utilisateur introduit un id très grand, alors le stockage de la data base sera très grand, pour très peu d'étudiants.
-Nous avons donc décidé de partir sur une recherche dichotomique et de trier les étudiants par id(utilisation de la librairie binarysearch)
+dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides.
+Seulement, si l'utilisateur introduit un id très grand, le stockage de la data base sera très grand, pour un seul étudiant.
+Nous avons donc essayé d'implémenter une boucle for, qui vérifiait si l'id de l'étudiant n'était pas encore présent en itérant dans toute la base de données.
+Cela prenait beaucoup trop de temps, et nous avons donc décidé de partir sur une recherche dichotomique et de trier les étudiants par id.
 
 \section{Fin d'une query}
 
 Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
 une query à un processus, nous incrémentons une variable globale OperationInProgress qui indique le nombre d'opérations en cours.
-Lorsque qu'un processus termine sa query, il écrit dans une pipe. Le processus principal va lire cette pipe et va décrémenter
+Lorsque qu'un processus termine sa query, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
 la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
 même si il ne lit rien dans la pipe. Lors d'une transaction, on limite OperationInProgress à 1.
 
 \section{Gestion de signaux}
 
-Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons décidé de garder la message queue 
-et d'attendre que la message queue soit terminée, et d'envoyer un signal KILL, qui arrête la boucle du programme.
+Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
+la fin d'une requête, mais ce n'était pas optimal.
+Nous avons repris la message queue qui traite les query, et dans 
+cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
+et le kill arrêtera la boucle et exit le programme.
 
 
 \section{Classes}
@@ -53,6 +66,8 @@ Nous avons mis la database\_t et le query\_result\_t dans une classe, afin de re
 nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\_result\_init, pour que le code
 crée directement le query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
 Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query result t.
+et nous n'aurions donc pas su mettre les attributs en privés.
+
 \section{Améliorations possibles}
     \subsection{std::map}
     Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. \newline
