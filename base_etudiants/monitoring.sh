@@ -39,12 +39,14 @@ elif [ "${1}" == "sync" ]; then
     done
 
 elif [ "${1}" == "status" ]; then
-    echo "status"
+
     proc="tinydb"
     pids=$(pgrep "$proc")
     if [[ -n $pids ]]; then
         printf "%s\n\nThere are currently %d processes running under the application '%s'\n" \
             "$pids" "$(wc -l <<< "$pids")" "$proc"
+    else
+        echo "No tinydb process running"
     fi
 
 elif [ "${1}" == "shutdown" ]; then
@@ -55,6 +57,8 @@ elif [ "${1}" == "shutdown" ]; then
         do
             echo $pid
             read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || kill -SIGKILL $pid   
+            parentpid=$(ps -o ppid= $pid)
+            kill -SIGCHLD $parentpid
         done
 
     else
@@ -69,8 +73,6 @@ elif [ "${1}" == "shutdown" ]; then
             kill -USR1 $pid;
         elif [ $res != 0 ] && [ $pid = $2 ]; then 
             echo This is not the main process, choose another pid > /dev/stderr;
-        else
-            echo "$pid - No such process of tinydb"
         fi
         ((i++));
         done

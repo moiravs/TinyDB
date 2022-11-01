@@ -51,31 +51,39 @@ void close_application(bool force)
 
   puts("Committing database changes to the disk...");
   db->db_save(db_path);
-  char kill[256] = "KILL";
+  char kill_message[256] = "KILL";
 
   if (!force)
   {
 
     close(fdSelect[0]);
-    write(fdSelect[1], kill, 256);
+    write(fdSelect[1], kill_message, 256);
     close(fdUpdate[0]);
-    write(fdUpdate[1], kill, 256);
+    write(fdUpdate[1], kill_message, 256);
     close(fdDelete[0]);
-    write(fdDelete[1], kill, 256);
+    write(fdDelete[1], kill_message, 256);
     close(fdInsert[0]);
-    write(fdInsert[1], kill, 256);
+    write(fdInsert[1], kill_message, 256);
     int wstatus;
     waitpid(child_delete, &wstatus, 0);
     waitpid(child_select, &wstatus, 0);
     waitpid(child_insert, &wstatus, 0);
     waitpid(child_update, &wstatus, 0);
   }
+  else
+  {
+    kill(child_delete, SIGKILL);
+    kill(child_insert, SIGKILL);
+    kill(child_select, SIGKILL);
+    kill(child_update, SIGKILL);
+  }
 
   puts("Done");
 }
 void signal_handling(int signum)
 {
-  close_application(signum != 2);
+  close_application(signum != 2 or signum != 10);
+
   kill(getpid(), SIGKILL);
 }
 
@@ -186,25 +194,25 @@ int main(int argc, char const *argv[])
         }
         transaction ^= transaction;
       }
-      else if (strcmp(queryKey, "select")==0)
+      else if (strcmp(queryKey, "select") == 0)
       {
         operationInProgress++;
         close(fdSelect[0]);
         write(fdSelect[1], query, 256);
       }
-      else if (strcmp(queryKey, "insert")==0)
+      else if (strcmp(queryKey, "insert") == 0)
       {
         operationInProgress++;
         close(fdInsert[0]);
         write(fdInsert[1], query, 256);
       }
-      else if (strcmp(queryKey, "update")==0)
+      else if (strcmp(queryKey, "update") == 0)
       {
         operationInProgress++;
         close(fdUpdate[0]);
         write(fdUpdate[1], query, 256);
       }
-      else if (strcmp(queryKey, "delete")==0)
+      else if (strcmp(queryKey, "delete") == 0)
       {
         operationInProgress++;
         close(fdDelete[0]);

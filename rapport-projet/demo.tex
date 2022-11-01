@@ -70,6 +70,7 @@ et le kill arrêtera la boucle et exit le programme.
 Nous avons mis la database\_t et le query\_result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
 nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\_result\_init, pour que le code
 crée directement le query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
+Dans query result t, nous avons aussi ajouté log query, pour pouvoir mettre les attributs en privés.
 Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query result t.
 et nous n'aurions donc pas su mettre les attributs en privés.
 

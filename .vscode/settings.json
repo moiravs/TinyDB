@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "*.cpp": "cpp",
         "array": "cpp",
         "*.tcc": "cpp",
         "cctype": "cpp",
@@ -41,7 +42,10 @@
         "memory": "cpp",
         "mutex": "cpp",
         "ratio": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "numbers": "cpp"
     },
     "python.testing.pytestArgs": [
         "base_etudiants"

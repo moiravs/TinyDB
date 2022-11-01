@@ -1,5 +1,5 @@
 
-FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE  -Werror
+FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE 
 COMPILER=g++-12
 
 main: process.o main.cpp student.o parsing.o db.o query.o utils.o 
