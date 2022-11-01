@@ -1,3 +1,10 @@
+/*
+Projet 1 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
+Cursus : BA2-INFO
+Description du projet *TinyDB* :
+  Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
+*/
 #include <iostream>
 #include "query.hpp"
 #include "process.hpp"
