@@ -21,3 +21,4 @@ base_etudiants/monitoring
 base_etudiants/tests/data/test_db.bin
 base_etudiants/logs
 base_etudiants/testwithout.bin
+base_etudiants/process.o

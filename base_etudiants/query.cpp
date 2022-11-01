@@ -117,6 +117,7 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
       if (strcmp(value_str, value) == 0)
       {
         this->query_result_add(db->data[i]);
+        break;
       }
     }
 
@@ -187,6 +188,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
         this->query_result_add(db->data[i]);
         db->db_delete(i);
         i--;
+        break;
       }
     }
 
@@ -297,6 +299,7 @@ void query_result_t::query_update(database_t *db, char *query, char *saveptr)
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);              // transform the updated string to tm struct
       }
+      break;
     }
     else if ((strcmp(fieldFilter, "fname") == 0) && (strcmp(db->data[i].fname, valueFilter) == 0))
     {
