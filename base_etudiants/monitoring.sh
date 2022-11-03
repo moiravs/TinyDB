@@ -77,7 +77,20 @@ elif [ "${1}" == "shutdown" ]; then
         ((i++));
         done
     fi
+
+
+elif [ "${1}" == "help" ]; then 
+    echo "List of commands for launching the program"
+    echo -e " \t " "./tinydb <path_to_database> < [<queries_file>]"
+    echo -e " \t " "./monitoring run [<path_to_database>] [-f <queries_file>]"
+    echo 
+    echo "List of query commands"
+    echo -e " \t " "select <field>=<value> -> selects all the students whose field and value correspond to the query"
+    echo -e " \t " "insert <fname> <lname> <id> <section> <birthdate> -> inserts a new student"
+    echo -e " \t " "delete <field>=<value> -> deletes all the students whose field and value correspond to the query"
+    echo -e " \t " "update <field>=<value> set <modified_field>=<modified_value> -> updates the <modified_field> of all students whose field and value correspond to the query"
+    echo -e " \t " "transaction"
+
 else 
     echo "Unknown parameter"
 fi
-
