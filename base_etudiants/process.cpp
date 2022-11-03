@@ -67,7 +67,8 @@ void close_application(bool force)
 void signal_handling(int signum)
 {
     close_application(signum != 2);
-    kill(getpid(), SIGKILL); // kill the main process
+    if (signum != SIGUSR1){
+    kill(getpid(), SIGKILL);} // kill the main process}
 }
 
 void process_select()

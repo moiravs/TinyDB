@@ -20,7 +20,7 @@ if [ "${1}" == "run" ]; then
     fi
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
-    ./tinydb "$file" & echo $!;
+    ./tinydb "$file"
 
 elif [ "${1}" == "sync" ]; then
     i=0;
@@ -29,9 +29,8 @@ elif [ "${1}" == "sync" ]; then
     echo "$pids";
     for pid in $pids
     do
-        res=$((i%5));
-        if [[ $res = 0 ]];
-        then
+        parent=$(pstree "$pid");
+        if [[ $parent != "tinydb" ]]; then
             echo "Sync process $pid ...";
             kill -USR1 $pid;
         fi
@@ -55,9 +54,10 @@ elif [ "${1}" == "shutdown" ]; then
         pids=$(pgrep "$proc")
         for pid in $pids
         do
+            echo "/n"
             echo $pid
             parent=$(pstree "$pid");
-            read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || kill -SIGKILL $pid   
+            read -p "Kill Pid? (Y/N): " confirm && [[ $confirm == [nN] || $confirm == [nN][oO] ]] || kill -SIGKILL $pid   
         done
 
     else
