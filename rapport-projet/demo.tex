@@ -41,6 +41,81 @@ Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en pyt
 clés ont été l'identifiant de l'élève et les valeurs la struct student. Seulement, cela
 prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons donc décidé de faire un tableau.
 \par
+BigTouristHere
+#7988
+
+lil belugi. — Aujourd’hui à 22:20
+latex?
+big belugoooo. — Aujourd’hui à 22:21
+j'ai pull et mtn je dois commit ? tf
+j'ai rien changé
+Image
+lil belugi. — Aujourd’hui à 22:21
+oui c'est normal
+ta fait un merge
+big belugoooo. — Aujourd’hui à 22:21
+ahhh
+dcp je commit ou je discard changes
+lil belugi. — Aujourd’hui à 22:21
+andrius
+big belugoooo. — Aujourd’hui à 22:21
+normalement ya un message d'erreur c'est pour ça que je comprenais pas 😂
+lil belugi. — Aujourd’hui à 22:22
+commit jcrois c enes qui a fait
+par pur hasard
+j'ai regardé comment on envoyait un msg d'un child à un parent
+big belugoooo. — Aujourd’hui à 22:22
+ui ?
+lil belugi. — Aujourd’hui à 22:22
+jsuis tombée sur du javascript
+big belugoooo. — Aujourd’hui à 22:22
+😂
+lil belugi. — Aujourd’hui à 22:23
+tout a l'air... si simple
+big belugoooo. — Aujourd’hui à 22:23
+montre
+lil belugi. — Aujourd’hui à 22:24
+PTN pardon
+j'ai des petits soucis avec les screen
+MMM JE VAIS DEVENIR FOLLE
+Image
+lil belugi. — Aujourd’hui à 22:25
+en gros qd je copie une image
+il me copie son path
+😐
+c'est un chouilla relou
+big belugoooo. — Aujourd’hui à 22:27
+c'est l'équivalent de tes 100 lignes de code nn ?
+genre avec les pipes etc 😂
+lil belugi. — Aujourd’hui à 22:27
+tg
+je t'emmerde😭 😭
+AHHH
+I hate c++
+big belugoooo. — Aujourd’hui à 22:30
+😂
+jsuis en train de retaper le latex
+big belugoooo. — Aujourd’hui à 22:34
+mais naaan
+c'est mignon C++
+j'ai encore oublié comment compiler le latex
+lil belugi. — Aujourd’hui à 22:37
+xddd
+juste open pdf
+att j'ai un peu changé quelques trucs dans le rapport
+big belugoooo. — Aujourd’hui à 22:38
+moi aussi 🙂
+lil belugi. — Aujourd’hui à 22:38
+je sais la facon dont j'écrit est giga moche mais jveux juste pas oublier les idées que j'avais
+lil belugi. — Aujourd’hui à 22:38
+fuck
+att
+ta les trucs de enes toi nan?
+big belugoooo. — Aujourd’hui à 22:39
+idk
+lil belugi. — Aujourd’hui à 22:39
+moi j'avais pas pull jvoulais pas avoir de merge
+je te passe ce que jai changé
 \section{Checker l'identifiant}
 \indent{}
 \par
@@ -53,15 +128,22 @@ Cela prenait beaucoup trop de temps. Nous avons donc décidé d'avoir un tableau
 nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. Si il est plus petit que lui, nous l'ajoutons juste derrière. Sinon, 
 nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste derrière lui
 et décale toute la database afin de s'insérer en plein milieu.
+Lors de l'update, nous avons remarqué que l'utilisateur maladroit pouvait par exemple écrire update fname=Mario set id=88.
+Pour s'assurer que cela n'arrive pas, nous vérifions si l'id n'est pas déjà présent dans la database dans la fonction update.
+Nous copions l'étudiant duquel on veut changer l'id, nous changeons l'id du nouvel étudiant et nous l'ajoutons à la database. Si l'id 
+n'est déjà présent, nous ajoutons le nouvel étudiant grâce à la fonction db add, qui trie les étudiants en les ajoutant.
+Nous arrêtons immédiatement la boucle dans si l'id est déjà présent ou non pour des soucis de performance(deux étudiants ne peuvent pas avoir le même id, 
+donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id). 
 \par
 \section{Fin d'une query}
+
 \indent{}
 \par
 Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
-une query à un processus, nous incrémentons une variable globale operation_in_progress qui indique le nombre d'opérations en cours.
+une query à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
 Lorsque qu'un processus termine sa query, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
 la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
-même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation_in_progress à 1.
+même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
 
 \section{Gestion de signaux}
 \indent{}
@@ -71,6 +153,52 @@ la fin d'une requête, mais ce n'était pas optimal.
 Nous avons repris la message queue qui traite les query, et dans 
 cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
 et le kill arrêtera la boucle et exit le programme.
+Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
+beaucoup de processus zombies. Pour régler ce souci, nous avons tout simplement ignoré le signal SIGCHLD.
+Réduire
+message.txt
+4 Ko
+tu peux rajouter ça et push?
+
+\section{Checker l'identifiant}
+\indent{}
+\par
+Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
+dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides, et on 
+aurait pu rapidement savoir si un étudiant est déjà présent dans le tableau ou non.
+Seulement, si l'utilisateur introduit un id très grand, le stockage de la data base sera très grand, pour un seul étudiant.
+Nous avons donc essayé d'implémenter une boucle for, qui vérifiait si l'id de l'étudiant n'était pas encore présent en itérant dans toute la base de données.
+Cela prenait beaucoup trop de temps. Nous avons donc décidé d'avoir un tableau trié d'étudiants. Pour cela, lorsque nous ajoutons un étudiant,
+nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. Si il est plus petit que lui, nous l'ajoutons juste derrière. Sinon, 
+nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste derrière lui
+et décale toute la database afin de s'insérer en plein milieu.
+Lors de l'update, nous avons remarqué que l'utilisateur maladroit pouvait par exemple écrire update fname=Mario set id=88.
+Pour s'assurer que cela n'arrive pas, nous vérifions si l'id n'est pas déjà présent dans la database dans la fonction update.
+Nous copions l'étudiant duquel on veut changer l'id, nous changeons l'id du nouvel étudiant et nous l'ajoutons à la database. Si l'id 
+n'est déjà présent, nous ajoutons le nouvel étudiant grâce à la fonction db add, qui trie les étudiants en les ajoutant.
+Nous arrêtons immédiatement la boucle dans si l'id est déjà présent ou non pour des soucis de performance(deux étudiants ne peuvent pas avoir le même id, 
+donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id). 
+\par
+\section{Fin d'une query}
+
+\indent{}
+\par
+Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
+une query à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
+Lorsque qu'un processus termine sa query, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
+la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
+même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
+
+\section{Gestion de signaux}
+\indent{}
+\par
+Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
+la fin d'une requête, mais ce n'était pas optimal.
+Nous avons repris la message queue qui traite les query, et dans 
+cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
+et le kill arrêtera la boucle et exit le programme.
+Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
+beaucoup de processus zombies. Pour régler ce souci, nous avons tout simplement ignoré le signal SIGCHLD.
 
 
 \section{Classes}
@@ -97,17 +225,19 @@ et nous n'aurions donc pas su mettre les attributs en privés.
     alors tous les threads crashent aussi. L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.\\
 \section{Process vs Thread}
 \par
-Tout d'abord nous allons définir ce qui est un processus ensuite le thread et finalement les avantages de processus.\\
+Tout d'abord, nous allons définir ce qu'est un processus et un thread, et finalement les avantages des processus.\\
 
-Donc un processus est l'exécution d'un programme qui permet d'effectuer les actions appropriées spécifiées dans un programme. Il peut être défini comme une unité d'exécution où s'exécute un programme. Le système d'exploitation vous aide à créer, planifier et terminer les processus utilisés par l'unité centrale. Les autres processus créés par le processus principal sont appelés processus enfants.
+Donc, un processus est l'exécution d'un programme qui permet d'effectuer les actions appropriées spécifiées dans un programme. Il peut être défini comme une unité d'exécution où s'exécute un programme. Le système d'exploitation vous aide à créer, planifier et terminer les processus utilisés par l'unité centrale. Les autres processus créés par le processus principal sont appelés processus enfants.
 
-Puis Un thread est une unité d'exécution qui fait partie d'un processus. Un processus peut avoir plusieurs threads, tous exécutés en même temps. Il s'agit d'une unité d'exécution dans la programmation concurrente. Un thread est léger et peut être géré indépendamment par un planificateur. Il vous aide à améliorer les performances de l'application en utilisant le parallélisme.
+Ensuite, un thread est une unité d'exécution qui fait partie d'un processus. Un processus peut avoir plusieurs threads, tous exécutés en même temps. Il s'agit d'une unité d'exécution dans la programmation concurrente. Un thread est léger et peut être géré indépendamment par un planificateur. Il vous aide à améliorer les performances de l'application en utilisant le parallélisme.
 
-Donc nous avons utilisé le processus pour réaliser notre projet. Car  l'option recommandée était le processus. Les avantages du processus qui nous ont aidés à réaliser ce projet sont les suivants ;\\
--La création de chaque processus nécessite des appels système distincts pour chaque processus.\\
--Il s'agit d'une entité d'exécution isolée qui ne partage pas les données et les informations.\\
--Les processus utilisent le mécanisme IPC(Inter-Process Communication) pour la communication qui augmente considérablement le nombre d'appels système.\\
--La gestion des processus nécessite plus d'appels système.\\
--Un processus a sa pile, son tas de mémoire avec la mémoire, et sa carte de données.\\
+Nous avons utilisé des processus pour réaliser notre projet, comme précisé dans les consignes. Les avantages des processus qui nous ont aidés à réaliser ce projet sont les suivants :\\
+\begin{itemize}
+    \item La création de chaque processus nécessite des appels système distincts pour chaque processus.\\
+    \item Il s'agit d'une entité d'exécution isolée qui ne partage pas les données et les informations.\\
+    \item Les processus utilisent le mécanisme IPC(Inter-Process Communication) pour la communication qui augmente considérablement le nombre d'appels système.\\
+    \item La gestion des processus nécessite plus d'appels système.\\
+    \item Un processus a sa pile, son tas de mémoire avec la mémoire, et sa carte de données.\\
+\end{itemize}
 \par
 \end{document}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.10.29)  3 NOV 2022 22:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Arch Linux) (preloaded format=pdflatex 2022.10.29)  3 NOV 2022 22:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -236,138 +236,172 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:61: Missing $ inserted.
-<inserted text> 
-                $
-l.61 ...rémentons une variable globale operation_
-                                                  in_progress qui indique le...
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:45: You can't use `macro parameter character #' in horizontal mode.
+l.45 #
+      7988
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 61.
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:62: LaTeX Error: Unicode character 😂 (U+1F602)
+               not set up for use with LaTeX.
 
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:61: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.61 ...n_in_progress qui indique le nombre d'opé
-                                                  rations en cours.
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
-
-
-LaTeX Warning: Command \' invalid in math mode on input line 62.
-
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:62: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.62 ...ue qu'un processus termine sa query, il é
-                                                  crit dans sa pipe "SUCCESS...
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.62 ... c'est pour ça que je comprenais pas 😂
+                                                  
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
 
-LaTeX Warning: Command \' invalid in math mode on input line 62.
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:72: LaTeX Error: Unicode character 😂 (U+1F602)
+               not set up for use with LaTeX.
 
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:62: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.62 ...sus principal va lire cette pipe et va dé
-                                                  crémenter
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
-
-
-LaTeX Warning: Command \' invalid in math mode on input line 62.
-
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:62: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.62 ...principal va lire cette pipe et va décré
-                                                  menter
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.72 😂
+         
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 63.
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:85: LaTeX Error: Unicode character 😐 (U+1F610)
+               not set up for use with LaTeX.
 
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:63: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.63 la variable globale au fur et à
-                                      mesure. Le pipe est non-bloquant, ce q...
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
-
-
-LaTeX Warning: Command \^ invalid in math mode on input line 64.
-
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:64: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.64 mê
-        me si il ne lit rien dans la pipe. Lors d'une transaction, on limite...
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.85 😐
+         
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
 
-LaTeX Warning: Command \` invalid in math mode on input line 64.
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:89: LaTeX Error: Unicode character 😂 (U+1F602)
+               not set up for use with LaTeX.
 
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:64: Please use \mathaccent for accents in math mode.
-\add@accent ... \let \ignorespaces \relax \accent 
-                                                  #1 #2\egroup \ifmmode \els...
-l.64 ...action, on limite operation_in_progress à
-                                                   1.
-I'm changing \accent to \mathaccent here; wish me luck.
-(Accents are not the same in formulas as they are in text.)
-
-/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:65: Missing $ inserted.
-<inserted text> 
-                $
-l.65 
-     
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.89 genre avec les pipes etc 😂
+                                  
+You may provide a definition with
+\DeclareUnicodeCharacter 
 
 
-Overfull \hbox (887.39609pt too wide) in paragraph at lines 60--65
-\OT1/cmr/m/n/10 en-voie une query ^^Ra un pro-ces-sus, nous incr^^Sementons une vari-able glob-ale operation$[]\OML/cmm/m/it/10 n[]rogressquiindiquelenombred[]op[]rationsencours:Lorsquequ[]unprocessusterminesaquery; il[]critdanssapipe\OT1/cmr/m/n/10 "\OML/cmm/m/it/10 SUCCESS\OT1/cmr/m/n/10 "\OML/cmm/m/it/10 :Leprocessusprincipalvalirecettepipeetvad[]cr[]menterlavariableglobaleaufuret[]mesure:Lepipeestnon \OMS/cmsy/m/n/10 ^^@
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:92: LaTeX Error: Unicode character 😭 (U+1F62D)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.92 je t'emmerde😭
+                      😭
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:92: LaTeX Error: Unicode character 😭 (U+1F62D)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.92 je t'emmerde😭 😭
+                          
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:96: LaTeX Error: Unicode character 😂 (U+1F602)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.96 😂
+         
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+/home/andri/Documents/ULBnotes 2/OS/Projets/Projet 1/Projet-OS-BA2/rapport-projet/demo.tex:107: LaTeX Error: Unicode character 🙂 (U+1F642)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.107 moi aussi 🙂
+                    
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+[1] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 224--226
+
+ []
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 228--229
+
  []
 
 
-Overfull \hbox (180.17004pt too wide) in paragraph at lines 60--65
-\OML/cmm/m/it/10 bloquant; cequipermetauprocessusprincipaldecontinuerm[]mesiilnelitriendanslapipe:Lorsd[]unetransaction; onlimiteoperation[]n[]rogress[]\OT1/cmr/m/n/10 1\OML/cmm/m/it/10 :$ 
- []
-
-[1]
-Underfull \hbox (badness 10000) in paragraph at lines 96--98
+Underfull \hbox (badness 10000) in paragraph at lines 234--235
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--101
+Underfull \hbox (badness 10000) in paragraph at lines 236--237
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--112
+Underfull \hbox (badness 10000) in paragraph at lines 237--238
 
  []
 
-[2] [3] (./demo.aux) ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 238--239
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 240--241
+
+ []
+
+[4] (./demo.aux) ) 
 Here is how much of TeX's memory you used:
- 5260 strings out of 478238
- 80548 string characters out of 5850455
- 378410 words of memory out of 5000000
- 23429 multiletter control sequences out of 15000+600000
- 476814 words of font info for 58 fonts, out of 8000000 for 9000
+ 5258 strings out of 478238
+ 80514 string characters out of 5850455
+ 380410 words of memory out of 5000000
+ 23428 multiletter control sequences out of 15000+600000
+ 475450 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  58i,7n,63p,689b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on demo.pdf (4 pages, 106627 bytes).
+{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on demo.pdf (5 pages, 83325 bytes).
 PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 46 PDF objects out of 1000 (max. 8388607)
+ 28 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
