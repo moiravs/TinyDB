@@ -11,6 +11,7 @@ Description du projet *TinyDB* :
 #include <iostream>
 #include "student.hpp"
 #include <sys/mman.h>
+#include <cstring>
 
 void database_t::db_save(const char *path)
 {

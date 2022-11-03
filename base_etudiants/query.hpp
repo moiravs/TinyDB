@@ -40,6 +40,7 @@ public:
    * @param  s: student to add
    * @retval None
    */
+  bool is_student_ok(student_t *s,  char * field_filter, char * value);
   void query_result_add(student_t s);
   /**
    * @brief  Makes the list containing the students of a query bigger

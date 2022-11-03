@@ -7,11 +7,6 @@ Description du projet *TinyDB* :
 
 #include "student.hpp"
 #include <iostream>
-#include <ctype.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
-#include <stdbool.h>
 
 void student_to_str(student_t *s, char *buffer)
 {

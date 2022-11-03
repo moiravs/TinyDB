@@ -10,6 +10,7 @@ Description du projet *TinyDB* :
 #include "utils.hpp"
 #include <iostream>
 #include <time.h>
+#include <string.h>
 
 query_result_t::query_result_t(const char *query)
 {
@@ -59,7 +60,6 @@ void query_result_t::query_result_add(student_t s)
   this->query_list_upsize();
   this->students[this->lsize] = s; // at end of list
   this->lsize += 1;
-  this->status = QUERY_SUCCESS;
 }
 
 void query_result_t::query_list_upsize()
@@ -98,7 +98,6 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
 {
   this->status = QUERY_FAILURE;
   char *field_filter = new char[64](), *value = new char[64];
-  char value_str[64] = "0", date_str[64] = "0";
   if (!parse_selectors(p_end_of_query, field_filter, value))
   {
     puts("Invalid Arguments : select <champ>=<valeur>");
@@ -108,51 +107,9 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    if (strcmp(field_filter, "id") == 0)
-    {
-      sprintf(value_str, "%u", db->data[i].id); // convert id (unsigned) to char* for comparison
-      if (strcmp(value_str, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-        break;
-      }
-    }
-
-    else if (strcmp(field_filter, "fname") == 0)
-    {
-      if (strcmp(db->data[i].fname, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else if (strcmp(field_filter, "lname") == 0)
-    {
-      if (strcmp(db->data[i].lname, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else if (strcmp(field_filter, "section") == 0)
-    {
-      if (strcmp(db->data[i].section, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else if (strcmp(field_filter, "birthdate") == 0)
-    {
-      strftime(date_str, 44, "%d/%m/%Y", &db->data[i].birthdate);
-      if (strcmp(date_str, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else
-    {
-      std::cout << "An error has occurred during the select query : bad filter." << std::endl;
-      this->status = UNRECOGNISED_FIELD;
-      return;
-    }
+    student_t *s = &db->data[i];
+    if (is_student_ok(s, field_filter, value))
+      this->query_result_add(db->data[i]);
     i++;
   }
 
@@ -163,11 +120,51 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
   this->log_query();
 }
 
+bool query_result_t::is_student_ok(student_t *s, char * field_filter, char * value)
+{
+  char value_str[64] = "0", date_str[64] = "0";
+  if (strcmp(field_filter, "id") == 0)
+  {
+    sprintf(value_str, "%u", s->id); // convert id (unsigned) to char* for comparison
+    if (strcmp(value_str, value) == 0)
+      return true;
+  }
+  else if (strcmp(field_filter, "fname") == 0)
+  {
+    if (strcmp(s->fname, value) == 0)
+      return true;
+  }
+  else if (strcmp(field_filter, "lname") == 0)
+  {
+    if (strcmp(s->lname, value) == 0)
+      return true;
+  }
+  else if (strcmp(field_filter, "section") == 0)
+  {
+    if (strcmp(s->section, value) == 0)
+      return true;
+  }
+  else if (strcmp(field_filter, "birthdate") == 0)
+  {
+    strftime(date_str, 44, "%d/%m/%Y", &s->birthdate);
+    if (strcmp(date_str, value) == 0)
+      return true;
+  }
+  else
+  {
+    std::cout << "An error has occurred during the query : bad filter." << std::endl;
+    this->status = UNRECOGNISED_FIELD;
+    this->log_query();
+    return false;
+  }
+  return false;
+}
+
 void query_result_t::query_delete(database_t *db, char *query, char *p_end_of_query)
 {
   this->status = QUERY_FAILURE;
   char *field_filter = new char[64](), *value = new char[64];
-  char value_str[64] = "0", date_str[64] = "0";
+
   if (!parse_selectors(p_end_of_query, field_filter, value))
   {
     puts("Invalid Arguments : delete <champ>=<valeur>");
@@ -177,66 +174,16 @@ void query_result_t::query_delete(database_t *db, char *query, char *p_end_of_qu
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    if (strcmp(field_filter, "id") == 0)
+    student_t *s = &db->data[i];
+    if (is_student_ok(s, field_filter, value))
     {
-      sprintf(value_str, "%u", db->data[i].id); // convert id (unsigned) to char* for comparison
-      if (strcmp(value_str, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-        db->db_delete(i);
-        i--;
-        break;
-      }
-    }
-
-    else if (strcmp(field_filter, "fname") == 0)
-    {
-      if (strcmp(db->data[i].fname, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-        db->db_delete(i);
-        i--;
-      }
-    }
-    else if (strcmp(field_filter, "lname") == 0)
-    {
-      if (strcmp(db->data[i].lname, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-        db->db_delete(i);
-        i--;
-      }
-    }
-    else if (strcmp(field_filter, "section") == 0)
-    {
-      if (strcmp(db->data[i].section, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-        db->db_delete(i);
-        i--;
-      }
-    }
-    else if (strcmp(field_filter, "birthdate") == 0)
-    {
-      strftime(date_str, 44, "%d/%m/%Y", &db->data[i].birthdate);
-      if (strcmp(date_str, value) == 0)
-      {
-        this->query_result_add(db->data[i]);
-        db->db_delete(i);
-        i--;
-      }
-    }
-    else
-    {
-      std::cout << "An error has occurred during the delete query : bad filter." << std::endl;
-      this->status = UNRECOGNISED_FIELD;
-      return;
+      this->query_result_add(db->data[i]);
+      db->db_delete(i);
+      i--;
     }
     i++;
   }
-
   this->status = QUERY_SUCCESS;
-
   struct timespec after;
   clock_gettime(CLOCK_REALTIME, &after);
   this->end_ns = after.tv_nsec + 1e9 * after.tv_sec;
@@ -251,9 +198,9 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
     puts("Invalid Arguments : update <filtre>=<valeur> set <champ_modifie>=<valeur_modifiee>"); // check if valid query
     return;
   }
-
   for (size_t i = 0; i < db->lsize; i++)
   {
+    student_t *s = &db->data[i];
     char date_str[512] = "0";
     char id[64];
     if (strcmp(field_filter, "id") == 0)
@@ -264,8 +211,7 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
     {
       strftime(date_str, 512, "%d/%m/%Y", &db->data[i].birthdate); // store birthdate struct as a string
     }
-    if ((strcmp(field_filter, "id") == 0) && (strcmp(id, value_filter) == 0))
-    {
+    if (is_student_ok(s, field_filter, value_filter)){
       if (strcmp(field_to_update, "id") == 0)
       {
         strcpy(id, update_value);
@@ -296,131 +242,11 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
         db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);              // transform the updated string to tm struct
       }
-      break;
-    }
-    else if ((strcmp(field_filter, "fname") == 0) && (strcmp(db->data[i].fname, value_filter) == 0))
-    {
-      if (strcmp(field_to_update, "id") == 0)
-      {
-        strcpy(id, update_value);                         // copy id in the variable update_value
-        long temp = atol(id);                             // conversion to long int
-        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "fname") == 0)
-      {
-        strcpy(db->data[i].fname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "lname") == 0)
-      {
-        strcpy(db->data[i].lname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "section") == 0)
-      {
-        strcpy(db->data[i].section, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "birthdate") == 0)
-      {
-        strcpy(date_str, update_value);
-        strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else if ((strcmp(field_filter, "lname") == 0) && (strcmp(db->data[i].lname, value_filter) == 0))
-    {
-      if (strcmp(field_to_update, "id") == 0)
-      {
-        strcpy(id, update_value);
-        long temp = atol(id);                             // conversion to long int
-        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "fname") == 0)
-      {
-        strcpy(db->data[i].fname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "lname") == 0)
-      {
-        strcpy(db->data[i].lname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "section") == 0)
-      {
-        strcpy(db->data[i].section, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "birthdate") == 0)
-      {
-        strcpy(date_str, update_value);
-        strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else if ((strcmp(field_filter, "section") == 0) && (strcmp(db->data[i].section, value_filter) == 0))
-    {
-      if (strcmp(field_to_update, "id") == 0)
-      {
-        strcpy(id, update_value);
-        long temp = atol(id);                             // conversion to long int
-        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "fname") == 0)
-      {
-        strcpy(db->data[i].fname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "lname") == 0)
-      {
-        strcpy(db->data[i].lname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "section") == 0)
-      {
-        strcpy(db->data[i].section, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "birthdate") == 0)
-      {
-        strcpy(date_str, update_value);
-        strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
-        this->query_result_add(db->data[i]);
-      }
-    }
-    else if ((strcmp(field_filter, "birthdate") == 0) && (strcmp(date_str, value_filter) == 0))
-    {
-      strftime(date_str, 32, "%d/%m/%Y", &db->data[i].birthdate);
-      if (strcmp(field_to_update, "id") == 0)
-      {
-        strcpy(id, update_value);
-        long temp = atol(id);                             // conversion to long int
-        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "fname") == 0)
-      {
-        strcpy(db->data[i].fname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "lname") == 0)
-      {
-        strcpy(db->data[i].lname, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "section") == 0)
-      {
-        strcpy(db->data[i].section, update_value);
-        this->query_result_add(db->data[i]);
-      }
-      else if (strcmp(field_to_update, "birthdate") == 0)
-      {
-        strcpy(date_str, update_value);
-        strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
-        this->query_result_add(db->data[i]);
+      else {
+        puts("The field to update in the update query doesn't exist. Choose between id, fname, lname, section and birthdate");
+        this->status = UNRECOGNISED_FIELD;
+        this->log_query();
+        return;
       }
     }
   }
