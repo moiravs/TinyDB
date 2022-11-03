@@ -41,26 +41,6 @@ Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en pyt
 clés ont été l'identifiant de l'élève et les valeurs la struct student. Seulement, cela
 prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons donc décidé de faire un tableau.
 \par
-
-\section{Checker l'identifiant}
-\indent{}
-\par
-Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
-dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides, et on 
-aurait pu rapidement savoir si un étudiant est déjà présent dans le tableau ou non.
-Seulement, si l'utilisateur introduit un id très grand, le stockage de la data base sera très grand, pour un seul étudiant.
-Nous avons donc essayé d'implémenter une boucle for, qui vérifiait si l'id de l'étudiant n'était pas encore présent en itérant dans toute la base de données.
-Cela prenait beaucoup trop de temps. Nous avons donc décidé d'avoir un tableau trié d'étudiants. Pour cela, lorsque nous ajoutons un étudiant,
-nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. Si il est plus petit que lui, nous l'ajoutons juste derrière. Sinon, 
-nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste derrière lui
-et décale toute la database afin de s'insérer en plein milieu.
-Lors de l'update, nous avons remarqué que l'utilisateur maladroit pouvait par exemple écrire update fname=Mario set id=88.
-Pour s'assurer que cela n'arrive pas, nous vérifions si l'id n'est pas déjà présent dans la database dans la fonction update.
-Nous copions l'étudiant duquel on veut changer l'id, nous changeons l'id du nouvel étudiant et nous l'ajoutons à la database. Si l'id 
-n'est déjà présent, nous ajoutons le nouvel étudiant grâce à la fonction db add, qui trie les étudiants en les ajoutant.
-Nous arrêtons immédiatement la boucle dans si l'id est déjà présent ou non pour des soucis de performance(deux étudiants ne peuvent pas avoir le même id, 
-donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id). 
-\par
 \section{Fin d'une query}
 
 \indent{}
@@ -102,26 +82,7 @@ n'est déjà présent, nous ajoutons le nouvel étudiant grâce à la fonction d
 Nous arrêtons immédiatement la boucle dans si l'id est déjà présent ou non pour des soucis de performance(deux étudiants ne peuvent pas avoir le même id, 
 donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id). 
 \par
-\section{Fin d'une query}
 
-\indent{}
-\par
-Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
-une query à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
-Lorsque qu'un processus termine sa query, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
-la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
-même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
-
-\section{Gestion de signaux}
-\indent{}
-\par
-Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
-la fin d'une requête, mais ce n'était pas optimal.
-Nous avons repris la message queue qui traite les query, et dans 
-cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
-et le kill arrêtera la boucle et exit le programme.
-Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
-beaucoup de processus zombies. Pour régler ce souci, nous avons tout simplement ignoré le signal SIGCHLD.
 
 
 \section{Classes}
