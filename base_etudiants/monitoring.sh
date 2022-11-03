@@ -85,11 +85,15 @@ elif [ "${1}" == "help" ]; then
     echo -e " \t " "./monitoring run [<path_to_database>] [-f <queries_file>]"
     echo 
     echo "List of query commands"
-    echo -e " \t " "select <field>=<value> -> selects all the students whose field and value correspond to the query"
-    echo -e " \t " "insert <fname> <lname> <id> <section> <birthdate> -> inserts a new student"
-    echo -e " \t " "delete <field>=<value> -> deletes all the students whose field and value correspond to the query"
-    echo -e " \t " "update <field>=<value> set <modified_field>=<modified_value> -> updates the <modified_field> of all students whose field and value correspond to the query"
+    echo -e " \t " "select <field>=<value> -> Selects all the students whose field and value correspond to the query."
+    echo -e " \t " "insert <fname> <lname> <id> <section> <birthdate> -> Inserts a new student."
+    echo -e " \t " "delete <field>=<value> -> Deletes all the students whose field and value correspond to the query."
+    echo -e " \t " "update <field>=<value> set <modified_field>=<modified_value> -> Updates the <modified_field> of all students whose field and value correspond to the query."
     echo -e " \t " "transaction"
+    echo "List of monitoring commands"
+    echo -e " \t " "./monitoring status -> Prints out the PIDs of all the running databases."
+    echo -e " \t " "./monitoring sync -> Sends a signal to all the program's instances to save data on the disc."
+    echo -e " \t " "./monitoring shutdown [<pid>] -> If the pid is the main process, then the command stops it. If no pid is given, the program asks for confirmation for every main process running."
 
 else 
     echo "Unknown parameter"

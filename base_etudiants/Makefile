@@ -9,7 +9,7 @@ run:
 	make main && ./tinydb
 
 monitoring:
-	bash monitoring.sh 
+	bash monitoring.sh
 
 process.o:process.cpp process.hpp
 	${COMPILER} -c process.cpp ${FLAGS}
