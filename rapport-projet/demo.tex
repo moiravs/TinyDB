@@ -94,6 +94,20 @@ et nous n'aurions donc pas su mettre les attributs en privés.
     \indent{}
     \par
     Au lieu d'utiliser des processus, nous aurions pu utiliser des threads. Seulement, si le processus main crashe,
-    alors tous les threads crashent aussi. L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.
+    alors tous les threads crashent aussi. L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.\\
+\section{Process vs Thread}
+\par
+Tout d'abord nous allons définir ce qui est un processus ensuite le thread et finalement les avantages de processus.\\
 
+Donc un processus est l'exécution d'un programme qui permet d'effectuer les actions appropriées spécifiées dans un programme. Il peut être défini comme une unité d'exécution où s'exécute un programme. Le système d'exploitation vous aide à créer, planifier et terminer les processus utilisés par l'unité centrale. Les autres processus créés par le processus principal sont appelés processus enfants.
+
+Puis Un thread est une unité d'exécution qui fait partie d'un processus. Un processus peut avoir plusieurs threads, tous exécutés en même temps. Il s'agit d'une unité d'exécution dans la programmation concurrente. Un thread est léger et peut être géré indépendamment par un planificateur. Il vous aide à améliorer les performances de l'application en utilisant le parallélisme.
+
+Donc nous avons utilisé le processus pour réaliser notre projet. Car  l'option recommandée était le processus. Les avantages du processus qui nous ont aidés à réaliser ce projet sont les suivants ;\\
+-La création de chaque processus nécessite des appels système distincts pour chaque processus.\\
+-Il s'agit d'une entité d'exécution isolée qui ne partage pas les données et les informations.\\
+-Les processus utilisent le mécanisme IPC(Inter-Process Communication) pour la communication qui augmente considérablement le nombre d'appels système.\\
+-La gestion des processus nécessite plus d'appels système.\\
+-Un processus a sa pile, son tas de mémoire avec la mémoire, et sa carte de données.\\
+\par
 \end{document}
