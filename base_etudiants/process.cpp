@@ -82,12 +82,12 @@ void process_select()
     bool killed = false;
     while (!killed)
     {
-        close(fd_select[1]);                                                    // close the writing end of the pipe
-        read(fd_select[0], query, 256);                                         // reads 256 bytes into memory area indicated by query
-        char *query_copy = new char[256], *query_key = new char[6](), *saveptr; // create a new modifiable string
-        memcpy(query_copy, query, 256);                                         // save query to query_copy
+        close(fd_select[1]);                                                           // close the writing end of the pipe
+        read(fd_select[0], query, 256);                                                // reads 256 bytes into memory area indicated by query
+        char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
+        memcpy(query_copy, query, 256);                                                // save query to query_copy
         char success[256] = "SUCCESS";
-        query_key = strtok_r(query_copy, " ", &saveptr); // write the first word to query_key
+        query_key = strtok_r(query_copy, " ", &p_end_of_query); // write the first word to query_key
 
         if (strcmp(query_key, "KILL") == 0)
         {
@@ -96,7 +96,7 @@ void process_select()
         else if (strcmp(query_key, "select") == 0)
         {
             query_result_t query_result(query);
-            query_result.query_select(db, query, saveptr);
+            query_result.query_select(db, query, p_end_of_query);
 
             close(fd_response[0]);
             write(fd_response[1], success, 256);
@@ -114,10 +114,10 @@ void process_insert()
     {
         close(fd_insert[1]);
         read(fd_insert[0], query, 256);
-        char *query_copy = new char[256], *query_key = new char[6](), *saveptr; // create a new modifiable string
+        char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);
         char success[256] = "SUCCESS";
-        query_key = strtok_r(query_copy, " ", &saveptr);
+        query_key = strtok_r(query_copy, " ", &p_end_of_query);
         if (strcmp(query_key, "KILL") == 0)
         {
             killed = true;
@@ -125,7 +125,7 @@ void process_insert()
         else if (strcmp(query_key, "insert") == 0)
         {
             query_result_t query_result{query};
-            query_result.query_insert(db, query, saveptr);
+            query_result.query_insert(db, query, p_end_of_query);
             close(fd_response[0]);
             write(fd_response[1], success, 256);
         }
@@ -141,10 +141,10 @@ void process_delete()
     {
         close(fd_delete[1]);
         read(fd_delete[0], query, 256);
-        char *query_copy = new char[256], *query_key = new char[6](), *saveptr; // create a new modifiable string
+        char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);
         char success[256] = "SUCCESS";
-        query_key = strtok_r(query_copy, " ", &saveptr);
+        query_key = strtok_r(query_copy, " ", &p_end_of_query);
         if (strcmp(query_key, "KILL") == 0)
         {
             killed = true;
@@ -153,7 +153,7 @@ void process_delete()
         else if (strcmp(query_key, "delete") == 0)
         {
             query_result_t query_result{query};
-            query_result.query_delete(db, query, saveptr);
+            query_result.query_delete(db, query, p_end_of_query);
             close(fd_response[0]);
             write(fd_response[1], success, 256);
         }
@@ -169,10 +169,10 @@ void process_update()
     {
         close(fd_update[1]);
         read(fd_update[0], query, 256);
-        char *query_copy = new char[256], *query_key = new char[6](), *saveptr; // create a new modifiable string
+        char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);
         char success[256] = "SUCCESS";
-        query_key = strtok_r(query_copy, " ", &saveptr);
+        query_key = strtok_r(query_copy, " ", &p_end_of_query);
         if (strcmp(query_key, "KILL") == 0)
         {
             killed = true;
@@ -181,7 +181,7 @@ void process_update()
         else if (strcmp(query_key, "update") == 0)
         {
             query_result_t query_result{query};
-            query_result.query_update(db, query, saveptr);
+            query_result.query_update(db, query, p_end_of_query);
             close(fd_response[0]);
             write(fd_response[1], success, 256);
         }
@@ -243,10 +243,10 @@ void main_process()
             std::cout << operation_in_progress << " operations in progress: no wait" << std::endl;
         }
         query[strcspn(query, "\n")] = 0;
-        char *query_copy = new char[256], *saveptr;
+        char *query_copy = new char[256], *p_end_of_query;
         memcpy(query_copy, query, 256);
         const char *query_key = new char[6]();
-        query_key = strtok_r(query_copy, " ", &saveptr);
+        query_key = strtok_r(query_copy, " ", &p_end_of_query);
 
         if (strcmp(query, "transaction") == 0)
         {

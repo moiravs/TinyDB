@@ -50,34 +50,34 @@ public:
    * @brief   Handles the insert query
    * @param  *db: database to change
    * @param  *query: Query that was submitted
-   * @param  *saveptr: Pointer to the rest of the query
+   * @param  *p_end_of_query: Pointer to the rest of the query
    * @retval None
    */
-  void query_insert(database_t *db, char *query, char *saveptr);
+  void query_insert(database_t *db, char *query, char *p_end_of_query);
   /**
    * @brief   Handles the update query
    * @param  *db: database to change
    * @param  *query: Query that was submitted
-   * @param  *saveptr: Pointer to the rest of the query
+   * @param  *p_end_of_query: Pointer to the rest of the query
    * @retval None
    */
-  void query_update(database_t *db, char *query, char *saveptr);
+  void query_update(database_t *db, char *query, char *p_end_of_query);
   /**
    * @brief   Handles the select query
    * @param  *db: database to change
    * @param  *query: Query that was submitted
-   * @param  *saveptr: Pointer to the rest of the query
+   * @param  *p_end_of_query: Pointer to the rest of the query
    * @retval None
    */
-  void query_select(database_t *db, char *query, char *saveptr);
+  void query_select(database_t *db, char *query, char *p_end_of_query);
   /**
    * @brief   Handles the delete query
    * @param  *db: database to change
    * @param  *query: Query that was submitted
-   * @param  *saveptr: Pointer to the rest of the query
+   * @param  *p_end_of_query: Pointer to the rest of the query
    * @retval None
    */
-  void query_delete(database_t *db, char *query, char *saveptr);
+  void query_delete(database_t *db, char *query, char *p_end_of_query);
 };
 
 #endif

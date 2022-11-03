@@ -75,10 +75,10 @@ void query_result_t::query_list_upsize()
   }
 }
 
-void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
+void query_result_t::query_insert(database_t *db, char *query, char *p_end_of_query)
 {
   student_t *s = new student_t;
-  if (!parse_insert(saveptr, s->fname, s->lname, &s->id, s->section, &s->birthdate)) // if not valid insert query
+  if (!parse_insert(p_end_of_query, s->fname, s->lname, &s->id, s->section, &s->birthdate)) // if not valid insert query
   {
     std::cout << "Invalid Arguments : insert <fname> <lname> <id> <section> <birthdate>" << std::endl;
     return;
@@ -94,12 +94,12 @@ void query_result_t::query_insert(database_t *db, char *query, char *saveptr)
   delete s;
 }
 
-void query_result_t::query_select(database_t *db, char *query, char *saveptr)
+void query_result_t::query_select(database_t *db, char *query, char *p_end_of_query)
 {
   this->status = QUERY_FAILURE;
   char *field_filter = new char[64](), *value = new char[64];
   char value_str[64] = "0", date_str[64] = "0";
-  if (!parse_selectors(saveptr, field_filter, value))
+  if (!parse_selectors(p_end_of_query, field_filter, value))
   {
     puts("Invalid Arguments : select <champ>=<valeur>");
     return;
@@ -163,12 +163,12 @@ void query_result_t::query_select(database_t *db, char *query, char *saveptr)
   this->log_query();
 }
 
-void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
+void query_result_t::query_delete(database_t *db, char *query, char *p_end_of_query)
 {
   this->status = QUERY_FAILURE;
   char *field_filter = new char[64](), *value = new char[64];
   char value_str[64] = "0", date_str[64] = "0";
-  if (!parse_selectors(saveptr, field_filter, value))
+  if (!parse_selectors(p_end_of_query, field_filter, value))
   {
     puts("Invalid Arguments : delete <champ>=<valeur>");
     return;
@@ -243,10 +243,10 @@ void query_result_t::query_delete(database_t *db, char *query, char *saveptr)
   this->log_query();
 }
 
-void query_result_t::query_update(database_t *db, char *query, char *saveptr)
+void query_result_t::query_update(database_t *db, char *query, char *p_end_of_query)
 {
   char *field_filter = new char[64](), *value_filter = new char[64](), *field_to_update = new char[64](), *update_value = new char[64];
-  if (!parse_update(saveptr, field_filter, value_filter, field_to_update, update_value))
+  if (!parse_update(p_end_of_query, field_filter, value_filter, field_to_update, update_value))
   {
     puts("Invalid Arguments : update <filtre>=<valeur> set <champ_modifie>=<valeur_modifiee>"); // check if valid query
     return;
