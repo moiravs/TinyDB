@@ -121,7 +121,7 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
 
 bool query_result_t::is_student_ok(student_t *s, char * field_filter, char * value)
 {
-  char value_str[64] = "0", date_str[64] = "0";
+  char value_str[64] = "0", date_str_one[64] = "0", date_str_two[64] = "0";
   if (strcmp(field_filter, "id") == 0)
   {
     sprintf(value_str, "%u", s->id); // convert id (unsigned) to char* for comparison
@@ -145,9 +145,9 @@ bool query_result_t::is_student_ok(student_t *s, char * field_filter, char * val
   }
   else if (strcmp(field_filter, "birthdate") == 0)
   {
-    strftime(date_str, 44, "%d/%m/%Y", &s->birthdate);
-    if (strcmp(date_str, value) == 0)
-      return true;
+    strftime(date_str_one, 44, "%d/%m/%Y", &s->birthdate); // accept format with leading zeros
+    snprintf(date_str_two, 44, "%d/%d/%d",s->birthdate.tm_mday,s->birthdate.tm_mon + 1, s->birthdate.tm_year + 1900); // accept date format with non-leading zeros
+    if ((strcmp(date_str_one, value) == 0)||(strcmp(date_str_two, value) == 0)) return true;
   }
   else
   {
