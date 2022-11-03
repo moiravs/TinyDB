@@ -1,5 +1,5 @@
 #!/bin/bash
-    
+
 if [ "${1}" == "run" ]; then
     for (( i=1; i<=$#; i++));
     do
@@ -56,9 +56,8 @@ elif [ "${1}" == "shutdown" ]; then
         for pid in $pids
         do
             echo $pid
+            parent=$(pstree "$pid");
             read -p "Continue? (Y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || kill -SIGKILL $pid   
-            parentpid=$(ps -o ppid= $pid)
-            kill -SIGCHLD $parentpid
         done
 
     else
@@ -67,11 +66,11 @@ elif [ "${1}" == "shutdown" ]; then
         pids=$(pgrep "$proc")
         for pid in $pids
         do
-        res=$((i%5));
-        if [ $res = 0 ] && [ $pid = $2 ]; then
+        parent=$(pstree "$pid");
+        if [[ $parent != "tinydb" ]] && [ $pid = $2 ]; then
             echo "Shutdown $pid ...";
-            kill -USR1 $pid;
-        elif [ $res != 0 ] && [ $pid = $2 ]; then 
+            kill -INT $pid;
+        elif [[ $parent == "tinydb" ]] && [ $pid = $2 ]; then 
             echo This is not the main process, choose another pid > /dev/stderr;
         fi
         ((i++));

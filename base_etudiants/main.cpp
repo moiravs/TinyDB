@@ -39,6 +39,7 @@ int main(int argc, char const *argv[])
   // no blocking pipe for response
   fcntl(fd_response[0], F_SETFL, fcntl(fd_response[0], F_GETFL) | O_NONBLOCK);
 
+  signal(SIGCHLD, SIG_IGN);
   signal(SIGINT, signal_handling);  // handles the signal Ctrl + C and terminates program
   signal(SIGUSR1, signal_handling); // handles abnormal program termination
   main_process();

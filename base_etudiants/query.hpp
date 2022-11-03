@@ -27,7 +27,6 @@ private:
 public:
   /**
    * @brief  Constructor - Initialise a query_result_t structure.
-   * @note
    * @param  *query: query that was submitted
    */
   query_result_t(const char *query);
@@ -40,7 +39,6 @@ public:
    * @param  s: student to add
    * @retval None
    */
-  bool is_student_ok(student_t *s,  char * field_filter, char * value);
   void query_result_add(student_t s);
   /**
    * @brief  Makes the list containing the students of a query bigger
@@ -79,6 +77,14 @@ public:
    * @retval None
    */
   void query_delete(database_t *db, char *query, char *p_end_of_query);
+  /**
+   * @brief  Check if a student has the same value as the field filter
+   * @param  *s: the student
+   * @param  *field_filter: The field 
+   * @param  *value: The value
+   * @retval True if the student has the value of field_filter, False if it hasn't
+   */
+  bool is_student_ok(student_t *s, char *field_filter, char *value);
 };
 
 #endif

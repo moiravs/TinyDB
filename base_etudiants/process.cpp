@@ -46,6 +46,7 @@ void close_application(bool force)
 
     if (!force)
     {
+        puts("Killing children");
         char kill_message[256] = "KILL";
         close(fd_select[0]);
         safe_write(fd_select[1], kill_message, 256);
@@ -65,7 +66,7 @@ void close_application(bool force)
 }
 void signal_handling(int signum)
 {
-    close_application(signum != 2 or signum !=10);
+    close_application(signum != 2);
     kill(getpid(), SIGKILL); // kill the main process
 }
 
