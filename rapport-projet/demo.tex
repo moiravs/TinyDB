@@ -53,10 +53,10 @@ et décale toute la database afin de s'insérer en plein milieu.
 \indent{}
 \par
 Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
-une query à un processus, nous incrémentons une variable globale OperationInProgress qui indique le nombre d'opérations en cours.
+une query à un processus, nous incrémentons une variable globale operation_in_progress qui indique le nombre d'opérations en cours.
 Lorsque qu'un processus termine sa query, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
 la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
-même si il ne lit rien dans la pipe. Lors d'une transaction, on limite OperationInProgress à 1.
+même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation_in_progress à 1.
 
 \section{Gestion de signaux}
 \indent{}

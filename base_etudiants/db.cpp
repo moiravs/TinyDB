@@ -49,13 +49,13 @@ void database_t::db_upsize()
 {
     if (this->lsize > (this->psize / sizeof(student_t))) // if we reached the end of the allocated size for this
     {
-        size_t oldPsize = this->psize;
+        size_t old_psize = this->psize;
         this->psize *= 2;
-        student_t *newStudent;
-        newStudent = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
-        memcpy(newStudent, this->data, oldPsize);                                                                     // copy this to newly allocated memory
-        munmap(this->data, oldPsize);                                                                                 // deallocate old memory
-        this->data = newStudent;
+        student_t *new_student;
+        new_student = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
+        memcpy(new_student, this->data, old_psize);                                                                    // copy this to newly allocated memory
+        munmap(this->data, old_psize);                                                                                 // deallocate old memory
+        this->data = new_student;
     }
 }
 
@@ -79,17 +79,15 @@ void database_t::db_add(student_t student)
         std::cout << "ID already in the database." << std::endl;
         return;
     }
-
-    // décaler tout après
     this->lsize++;
     this->db_upsize();
 
-    if ((this->lsize - position - 2) > 0)
+    if ((this->lsize - position - 2) > 0) //move all the students after the new student we inserted
     {
         memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
     }
 
-    memcpy(&this->data[position + 1], &student, 256); // at end of db
+    memcpy(&this->data[position + 1], &student, 256); // insert at end of db if there is no student after new student inserted
 }
 
 void database_t::db_delete(size_t indice)

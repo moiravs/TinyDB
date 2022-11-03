@@ -9,7 +9,7 @@ Description du projet *TinyDB* :
 
 extern database_t *db;
 extern const char *db_path;
-extern int fdInsert[2], fdSelect[2], fdUpdate[2], fdDelete[2], fdResponse[2];
+extern int fd_insert[2], fd_select[2], fd_update[2], fd_delete[2], fd_response[2];
 
 /**
  * @brief  Process who treats the select query
@@ -31,3 +31,9 @@ void process_delete();
  * @retval None
  */
 void process_update();
+
+void close_application(bool force);
+
+void signal_handling(int signum);
+
+void main_process();

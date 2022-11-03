@@ -6,14 +6,11 @@
 /**
  * Database structure type.
  */
-class database_t
+struct database_t
 {
-public:
   student_t *data; /** The list of students **/
   size_t lsize;    /** The logical size of the list **/
   size_t psize;    /** The physical size of the list **/
-
-public:
   /**
    * @brief  Initialise a database
    * @retval None
