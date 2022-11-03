@@ -79,8 +79,8 @@ elif [ "${1}" == "shutdown" ]; then
     fi
 
 
-elif [ "${1}" == "help" ]; then 
-    echo "List of commands for launching the program"
+elif [ "${1}" == "-h" ] || [ "${1}" == "--help" ] ; then 
+    echo "List of commands to launch the program"
     echo -e " \t " "./tinydb <path_to_database> < [<queries_file>]"
     echo -e " \t " "./monitoring run [<path_to_database>] [-f <queries_file>]"
     echo 
@@ -97,4 +97,5 @@ elif [ "${1}" == "help" ]; then
 
 else 
     echo "Unknown parameter"
+    echo "Use --help or -h for more information"
 fi
