@@ -43,11 +43,10 @@ void close_application(bool force)
 
     puts("Committing database changes to the disk...");
     db->db_save(db_path);
-    char kill_message[256] = "KILL";
 
     if (!force)
     {
-
+        char kill_message[256] = "KILL";
         close(fd_select[0]);
         safe_write(fd_select[1], kill_message, 256);
         close(fd_update[0]);
@@ -57,30 +56,22 @@ void close_application(bool force)
         close(fd_insert[0]);
         safe_write(fd_insert[1], kill_message, 256);
         int wstatus;
-        waitpid(child_delete, &wstatus, 0);
+        waitpid(child_delete, &wstatus, 0); //waits for the children to exit
         waitpid(child_select, &wstatus, 0);
         waitpid(child_insert, &wstatus, 0);
         waitpid(child_update, &wstatus, 0);
     }
-    else
-    {
-        kill(child_delete, SIGKILL);
-        kill(child_insert, SIGKILL);
-        kill(child_select, SIGKILL);
-        kill(child_update, SIGKILL);
-    }
-
     puts("Done");
 }
 void signal_handling(int signum)
 {
-    close_application(signum != 2 or signum != 10);
-
-    kill(getpid(), SIGKILL);
+    close_application(signum != 2 or signum !=10);
+    kill(getpid(), SIGKILL); // kill the main process
 }
 
 void process_select()
 {
+    signal(SIGINT, SIG_IGN);
     char query[256];
     bool killed = false;
     while (!killed)
@@ -110,8 +101,8 @@ void process_select()
 
 void process_insert()
 {
+    signal(SIGINT, SIG_IGN);
     char query[256];
-
     bool killed = false;
     while (!killed)
     {
@@ -137,8 +128,8 @@ void process_insert()
 }
 void process_delete()
 {
+    signal(SIGINT, SIG_IGN);
     char query[256];
-
     bool killed = false;
     while (!killed)
     {
@@ -166,6 +157,7 @@ void process_delete()
 }
 void process_update()
 {
+    signal(SIGINT, SIG_IGN);
     char query[256];
     bool killed = false;
     while (!killed)
