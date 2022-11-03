@@ -11,6 +11,7 @@ Description du projet *TinyDB* :
 #include <unistd.h>
 #include <sys/wait.h>
 #include "utils.hpp"
+#include <cstring>
 
 int operation_in_progress = 0;
 pid_t child_select = -1;
