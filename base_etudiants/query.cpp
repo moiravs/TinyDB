@@ -198,7 +198,6 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
   }
   for (size_t i = 0; i < db->lsize; i++)
   {
-    char date_str[512] = "0";
     char id[64];
     if (strcmp(field_filter, "id") == 0)
     {
@@ -233,7 +232,7 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
       }
       else if (strcmp(field_to_update, "birthdate") == 0)
       {
-        strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
+        strptime(update_value, "%d/%m/%Y", &db->data[i].birthdate);
         this->query_result_add(db->data[i]);              // transform the updated string to tm struct
       }
       else {
