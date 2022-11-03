@@ -70,7 +70,7 @@ void database_t::db_init()
                                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 }
 
-void database_t::db_add(student_t student)
+bool database_t::db_add(student_t student)
 {
     signed int position = this->lsize - 1;
     while ((position >= 0) && (student.id < this->data[position].id))
@@ -80,7 +80,7 @@ void database_t::db_add(student_t student)
     if ((position >= 0) && (student.id == this->data[position].id))
     {
         std::cout << "ID already in the database." << std::endl;
-        return;
+        return false;
     }
     this->lsize++;
     this->db_upsize();
@@ -89,8 +89,8 @@ void database_t::db_add(student_t student)
     {
         memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
     }
-
     memcpy(&this->data[position + 1], &student, 256); // insert at end of db if there is no student after new student inserted
+    return true;
 }
 
 void database_t::db_delete(size_t indice)

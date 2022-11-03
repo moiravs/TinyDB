@@ -119,7 +119,7 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
   this->log_query();
 }
 
-bool query_result_t::is_student_ok(student_t *s, char * field_filter, char * value)
+bool query_result_t::is_student_ok(student_t *s, char *field_filter, char *value)
 {
   char value_str[64] = "0", date_str_one[64] = "0", date_str_two[64] = "0";
   if (strcmp(field_filter, "id") == 0)
@@ -145,9 +145,10 @@ bool query_result_t::is_student_ok(student_t *s, char * field_filter, char * val
   }
   else if (strcmp(field_filter, "birthdate") == 0)
   {
-    strftime(date_str_one, 44, "%d/%m/%Y", &s->birthdate); // accept format with leading zeros
-    snprintf(date_str_two, 44, "%d/%d/%d",s->birthdate.tm_mday,s->birthdate.tm_mon + 1, s->birthdate.tm_year + 1900); // accept date format with non-leading zeros
-    if ((strcmp(date_str_one, value) == 0)||(strcmp(date_str_two, value) == 0)) return true;
+    strftime(date_str_one, 44, "%d/%m/%Y", &s->birthdate);                                                              // accept format with leading zeros
+    snprintf(date_str_two, 44, "%d/%d/%d", s->birthdate.tm_mday, s->birthdate.tm_mon + 1, s->birthdate.tm_year + 1900); // accept date format with non-leading zeros
+    if ((strcmp(date_str_one, value) == 0) || (strcmp(date_str_two, value) == 0))
+      return true;
   }
   else
   {
@@ -198,22 +199,28 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
   }
   for (size_t i = 0; i < db->lsize; i++)
   {
-    char id[64];
-    if (strcmp(field_filter, "id") == 0)
-    {
-      sprintf(id, "%u", db->data[i].id);
-    }
-    else if (strcmp(field_to_update, "birthdate") == 0)
-    {
-    }
     if (is_student_ok(&db->data[i], field_filter, value_filter))
     {
       if (strcmp(field_to_update, "id") == 0)
       {
-        strcpy(id, update_value);
-        long temp = atol(id);                             // conversion to long int
-        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
-        this->query_result_add(db->data[i]);
+        student_t *s = new student_t;
+        memcpy(s->fname, db->data[i].fname, 64);           // copie l'étudiant db->data[i]
+        memcpy(s->section, db->data[i].section, 64);       // copie l'étudiant db->data[i]
+        memcpy(s->lname, db->data[i].lname, 64);           // copie l'étudiant db->data[i]
+        memcpy(&s->birthdate, &db->data[i].birthdate, 44); // copie l'étudiant db->data[i]
+        int temp = (atoi(update_value));
+        memcpy(&s->id, &temp, 4); // change l'id du nouvel étudiant créé
+        db->db_delete(i);
+        if (db->db_add(*s)) // si l'id n'est pas présent
+        {
+          this->query_result_add(*s);
+        }
+        else // si l'id est déjà dans la database
+        {
+          db->db_add(db->data[i]); // on remet l'ancien student
+          puts("ID already in the database, update query stops here");
+          break;
+        }
       }
       else if (strcmp(field_to_update, "fname") == 0)
       {
@@ -233,9 +240,10 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
       else if (strcmp(field_to_update, "birthdate") == 0)
       {
         strptime(update_value, "%d/%m/%Y", &db->data[i].birthdate);
-        this->query_result_add(db->data[i]);              // transform the updated string to tm struct
+        this->query_result_add(db->data[i]); // transform the updated string to tm struct
       }
-      else {
+      else
+      {
         puts("The field to update in the update query doesn't exist. Choose between id, fname, lname, section and birthdate");
         this->status = UNRECOGNISED_FIELD;
         this->log_query();

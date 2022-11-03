@@ -22,7 +22,7 @@ struct database_t
    * @param  s: Student to add
    * @retval None
    */
-  void db_add(student_t s);
+  bool db_add(student_t s);
   /**
    * @brief  Increase size of the database
    * @retval None
