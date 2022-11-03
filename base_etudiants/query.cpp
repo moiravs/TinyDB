@@ -107,8 +107,7 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    student_t *s = &db->data[i];
-    if (is_student_ok(s, field_filter, value))
+    if (is_student_ok(&db->data[i], field_filter, value))
       this->query_result_add(db->data[i]);
     i++;
   }
@@ -174,8 +173,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *p_end_of_qu
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    student_t *s = &db->data[i];
-    if (is_student_ok(s, field_filter, value))
+    if (is_student_ok(&db->data[i], field_filter, value))
     {
       this->query_result_add(db->data[i]);
       db->db_delete(i);
@@ -200,7 +198,6 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
   }
   for (size_t i = 0; i < db->lsize; i++)
   {
-    student_t *s = &db->data[i];
     char date_str[512] = "0";
     char id[64];
     if (strcmp(field_filter, "id") == 0)
@@ -209,9 +206,9 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
     }
     else if (strcmp(field_to_update, "birthdate") == 0)
     {
-      strftime(date_str, 512, "%d/%m/%Y", &db->data[i].birthdate); // store birthdate struct as a string
     }
-    if (is_student_ok(s, field_filter, value_filter)){
+    if (is_student_ok(&db->data[i], field_filter, value_filter))
+    {
       if (strcmp(field_to_update, "id") == 0)
       {
         strcpy(id, update_value);
@@ -236,10 +233,7 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
       }
       else if (strcmp(field_to_update, "birthdate") == 0)
       {
-        strcpy(date_str, update_value);
         strptime(date_str, "%d/%m/%Y", &db->data[i].birthdate);
-        long temp = atol(id);                             // conversion to long int
-        db->data[i].id = static_cast<unsigned int>(temp); // conversion to unsigned
         this->query_result_add(db->data[i]);              // transform the updated string to tm struct
       }
       else {
