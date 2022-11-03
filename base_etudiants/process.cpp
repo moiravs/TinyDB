@@ -10,6 +10,8 @@ Description du projet *TinyDB* :
 #include "process.hpp"
 #include <unistd.h>
 #include <sys/wait.h>
+#include "utils.hpp"
+
 int operation_in_progress = 0;
 pid_t child_select = -1;
 pid_t child_insert = -1;
@@ -46,13 +48,13 @@ void close_application(bool force)
     {
 
         close(fd_select[0]);
-        write(fd_select[1], kill_message, 256);
+        safe_write(fd_select[1], kill_message, 256);
         close(fd_update[0]);
-        write(fd_update[1], kill_message, 256);
+        safe_write(fd_update[1], kill_message, 256);
         close(fd_delete[0]);
-        write(fd_delete[1], kill_message, 256);
+        safe_write(fd_delete[1], kill_message, 256);
         close(fd_insert[0]);
-        write(fd_insert[1], kill_message, 256);
+        safe_write(fd_insert[1], kill_message, 256);
         int wstatus;
         waitpid(child_delete, &wstatus, 0);
         waitpid(child_select, &wstatus, 0);
@@ -83,7 +85,7 @@ void process_select()
     while (!killed)
     {
         close(fd_select[1]);                                                           // close the writing end of the pipe
-        read(fd_select[0], query, 256);                                                // reads 256 bytes into memory area indicated by query
+        safe_read(fd_select[0], query, 256);                                           // reads 256 bytes into memory area indicated by query
         char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);                                                // save query to query_copy
         char success[256] = "SUCCESS";
@@ -99,7 +101,7 @@ void process_select()
             query_result.query_select(db, query, p_end_of_query);
 
             close(fd_response[0]);
-            write(fd_response[1], success, 256);
+            safe_write(fd_response[1], success, 256);
         }
     }
     exit(0);
@@ -113,7 +115,7 @@ void process_insert()
     while (!killed)
     {
         close(fd_insert[1]);
-        read(fd_insert[0], query, 256);
+        safe_read(fd_insert[0], query, 256);
         char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);
         char success[256] = "SUCCESS";
@@ -127,7 +129,7 @@ void process_insert()
             query_result_t query_result{query};
             query_result.query_insert(db, query, p_end_of_query);
             close(fd_response[0]);
-            write(fd_response[1], success, 256);
+            safe_write(fd_response[1], success, 256);
         }
     }
     exit(0);
@@ -140,7 +142,7 @@ void process_delete()
     while (!killed)
     {
         close(fd_delete[1]);
-        read(fd_delete[0], query, 256);
+        safe_read(fd_delete[0], query, 256);
         char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);
         char success[256] = "SUCCESS";
@@ -155,7 +157,7 @@ void process_delete()
             query_result_t query_result{query};
             query_result.query_delete(db, query, p_end_of_query);
             close(fd_response[0]);
-            write(fd_response[1], success, 256);
+            safe_write(fd_response[1], success, 256);
         }
     }
 
@@ -168,7 +170,7 @@ void process_update()
     while (!killed)
     {
         close(fd_update[1]);
-        read(fd_update[0], query, 256);
+        safe_read(fd_update[0], query, 256);
         char *query_copy = new char[256], *query_key = new char[6](), *p_end_of_query; // create a new modifiable string
         memcpy(query_copy, query, 256);
         char success[256] = "SUCCESS";
@@ -183,7 +185,7 @@ void process_update()
             query_result_t query_result{query};
             query_result.query_update(db, query, p_end_of_query);
             close(fd_response[0]);
-            write(fd_response[1], success, 256);
+            safe_write(fd_response[1], success, 256);
         }
     }
     exit(0);
@@ -254,9 +256,7 @@ void main_process()
             while (operation_in_progress > 0)
             {
                 while (read(fd_response[0], status, 256) > 0)
-                {
                     operation_in_progress--;
-                }
                 if (operation_in_progress > 0)
                 {
                     std::cout << operation_in_progress << " operations in progress: Wait" << std::endl;
@@ -269,25 +269,25 @@ void main_process()
         {
             operation_in_progress++;
             close(fd_select[0]);
-            write(fd_select[1], query, 256);
+            safe_write(fd_select[1], query, 256);
         }
         else if (strcmp(query_key, "insert") == 0)
         {
             operation_in_progress++;
             close(fd_insert[0]);
-            write(fd_insert[1], query, 256);
+            safe_write(fd_insert[1], query, 256);
         }
         else if (strcmp(query_key, "update") == 0)
         {
             operation_in_progress++;
             close(fd_update[0]);
-            write(fd_update[1], query, 256);
+            safe_write(fd_update[1], query, 256);
         }
         else if (strcmp(query_key, "delete") == 0)
         {
             operation_in_progress++;
             close(fd_delete[0]);
-            write(fd_delete[1], query, 256);
+            safe_write(fd_delete[1], query, 256);
         }
         else
         {

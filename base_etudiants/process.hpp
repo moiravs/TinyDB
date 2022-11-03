@@ -31,9 +31,20 @@ void process_delete();
  * @retval None
  */
 void process_update();
-
+/**
+ * @brief  Close tinydb
+ * @param  force: False if we need to wait for the queries to terminate
+ * @retval None
+ */
 void close_application(bool force);
-
+/**
+ * @brief  Signal Handler
+ * @param  signum: Signal Number
+ * @retval None
+ */
 void signal_handling(int signum);
-
+/**
+ * @brief  Main Process - Creates children and handles the query
+ * @retval None
+ */
 void main_process();

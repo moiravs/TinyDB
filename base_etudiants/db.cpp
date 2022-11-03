@@ -31,6 +31,7 @@ void database_t::db_save(const char *path)
 void database_t::db_load(const char *path)
 
 {
+    std::cout << "Loading your tiny tiny database..." << std::endl;
     FILE *file = fopen(path, "rb");
     if (!file)
     {
@@ -43,6 +44,7 @@ void database_t::db_load(const char *path)
         this->db_add(student);
     }
     fclose(file);
+    std::cout << "Done !" << std::endl;
 }
 
 void database_t::db_upsize()

@@ -24,9 +24,4 @@ struct student_t
  **/
 void student_to_str(student_t *s, char *buffer);
 
-/**
- * @brief Return whether two students are equal or not.
- **/
-int student_equals(student_t *s1, student_t *s2);
-
 #endif

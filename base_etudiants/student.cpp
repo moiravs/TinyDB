@@ -21,8 +21,3 @@ void student_to_str(student_t *s, char *buffer)
     s->birthdate.tm_year+1900
     );
 }
-
-int student_equals(student_t *s1, student_t *s2)
-{
-  return (s1->id == s2->id); // comparing every attribute to see if both students are equal
-}
