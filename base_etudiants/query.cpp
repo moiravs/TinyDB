@@ -214,6 +214,8 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
         if (db->db_add(*s)) // si l'id n'est pas présent
         {
           this->query_result_add(*s);
+          puts("Two students can't have the same ID, update query stops here");
+          break;
         }
         else // si l'id est déjà dans la database
         {
