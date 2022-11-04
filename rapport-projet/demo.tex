@@ -38,7 +38,9 @@ Nous avons demandé ce projet pour gérer la création d'une nouvelle base de do
 \par
 Afin de stocker les données de milliers d'étudiants, plusieurs choix se sont offerts à nous. 
 Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en python, dont les
-clés ont été l'identifiant de l'élève et les valeurs la struct student. Seulement, cela
+clés ont été l'identifiant de l'élève et les valeurs la struct student. 
+Cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
+Seulement, cela
 prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons ensuite pensé à utiliser des pointeurs, chaque étudiant
 ayant son next.student et son precedent.student. Le problème de cette implémentation était que la structure de l'étudiant faisait exactement 256 bytes.
 Ajouter un next.student et un precedent.student auraient augmenté la taille de student, ce qui n'allait pas avec le fichier students.bin.
@@ -56,6 +58,7 @@ Lorsque qu'un processus termine sa requête, il écrit dans sa pipe "SUCCESS". L
 la variable globale au fur et à mesure. Le problème majeur de cette implémentation est que le pipe est bloquant, c'est à dire que le processus
 va s'arrêter jusqu'à ce qu'un message soit écrit dans sa pipe. Nous avons donc rendu le pipe non-bloquant, ce qui permet au processus principal de continuer
 même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
+\par
 
 \section{Gestion de signaux et fin de processus}
 \indent{}
@@ -67,7 +70,7 @@ cette message queue, le processus principal écrit un message, "kill". Les proce
 et le kill arrêtera la boucle et exit le programme.
 Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
 beaucoup de processus zombies. Pour régler ce souci, nous avons tout simplement ignoré le signal SIGCHLD.
-
+\par
 
 \section{Checker l'identifiant}
 \indent{}
@@ -90,38 +93,30 @@ donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id).
 \par
 
 
-
-
 \section{Classes}
 \indent{}
 \par
-Nous avons mis la database\_t et le requête\_result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
-nous avons implémenté un constructeur dans requête\_result\_t, au lieu du requête\_result\_init, pour que le code
-crée directement le requête\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
+Nous avons mis la database t et le requête result t dans une classe, afin de rendre le code plus lisible. Par conséquent,
+nous avons implémenté un constructeur dans requête result t, au lieu du requête result init, pour que le code
+crée directement le requête result t, sans devoir appeller l'initialisation à chaque création d'objet.
 Dans requête result t, nous avons aussi ajouté log requête, pour pouvoir mettre les attributs en privés.
-Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe requête result t.
+Nous n'avons pas mis student t en classe, parce que les attributs d'un student sont souvent accédés par la classe requête result t.
 et nous n'aurions donc pas su mettre les attributs en privés.
+\par
 
-
-\section{Améliorations possibles}
-\subsection{std::map}
+\section{Gestion en mémoire partagée}
 \indent{}
 \par
-Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. 
-Selon nous, cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
-\par 
-\subsection{Threads}
-\indent{}
+Nous avons d'abord seulement partagé la mémoire avec db->data, mais nous avons vite remarqué que les processus
+ne partagaient pas la même database. Nous avons donc partagé la mémoire aussi avec database, à l'aide de mmap.
 \par
-Au lieu d'utiliser des processus, nous aurions pu utiliser des threads.\\
-Seulement, si le processus main crashe, alors tous les threads crashent aussi. \\
-
-L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.\\
 
 \section{Process vs Thread}
 \indent{}
 \par
-
+Au lieu d'utiliser des processus, nous aurions pu utiliser des threads.
+Seulement, si le processus main crashe, alors tous les threads crashent aussi. 
+L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.
 Tout d'abord, nous allons définir ce qu'est un processus et un thread, et finalement les avantages des processus.
 
 Donc, un processus est l'exécution d'un programme qui permet d'effectuer les actions appropriées spécifiées dans un programme. Il peut être défini comme une unité d'exécution où s'exécute un programme. Le système d'exploitation vous aide à créer, planifier et terminer les processus utilisés par l'unité centrale. Les autres processus créés par le processus principal sont appelés processus enfants.
