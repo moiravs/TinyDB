@@ -31,10 +31,10 @@
 
 \section{Introduction}
 \par
-Pour le cours de système d'exploitation, nous avons du créer une base de données. 
-L'utilisateur peut effectuer plusieurs requêtes. Il peut supprimer, rajouter, choisir
+Pour le cours de système d'exploitation, nous avons dû créer une base de données. 
+L'utilisateur peut effectuer plusieurs requêtes: il peut supprimer, rajouter, choisir
 et mettre à jour des étudiants. Lors de l'implémentation de ce projet, nous avons eu quelques difficultés
-auquelles nous avons proposé plusieurs solutions. Dans les prochaines parties, nous décrirons donc
+auxquelles nous avons proposé plusieurs solutions. Dans les prochaines parties, nous décrirons donc
 nos choix d'implémentation et leur raisons, ainsi que les problèmes survenus.
 \par
 
@@ -43,16 +43,15 @@ nos choix d'implémentation et leur raisons, ainsi que les problèmes survenus.
 \indent{}
 \par
 Afin de stocker les données de milliers d'étudiants, plusieurs choix se sont offerts à nous. 
-Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en python, dont les
-clés ont été l'identifiant de l'élève et les valeurs la struct student. 
+Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en Python, dont les
+clés auraient été l'identifiant de l'élève et les valeurs la struct student\_t. 
 Cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
-Seulement, cela
-prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. 
+Seulement, cela prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. 
 \par
 \indent{}
 \par
 Nous avons ensuite pensé à utiliser des pointeurs, chaque étudiant
-ayant son next.student et son precedent.student. Le problème de cette implémentation était que la structure de l'étudiant faisait exactement 256 bytes.
+ayant son student.next et son student.precedent. Le problème de cette implémentation était que la structure de l'étudiant faisait exactement 256 bytes.
 Ajouter un next.student et un precedent.student auraient augmenté la taille de student, ce qui n'allait pas avec le fichier students.bin.
 Nous avons donc décidé de faire un tableau d'étudiants, que nous avons triés pour des raisons que nous allons voir après.
 \par
@@ -61,17 +60,17 @@ Nous avons donc décidé de faire un tableau d'étudiants, que nous avons triés
 \indent{}
 \par
 
-Pour signaler la fin d'une requête, Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
+Pour signaler la fin d'une requête, nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
 la fin d'une requête, mais ce n'était pas optimal. Nous avons donc implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
-une requête à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
+une requête à un processus, nous incrémentons une variable globale operation\_in\_progress qui indique le nombre d'opérations en cours.
 Lorsque qu'un processus termine sa requête, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
 la variable globale au fur et à mesure. 
 \par
 \indent{}
 \par
-Le problème majeur de cette implémentation est que le pipe est bloquant, c'est à dire que le processus
+Le problème majeur de cette implémentation est que la pipe est bloquante, c'est à dire que le processus
 va s'arrêter jusqu'à ce qu'un message soit écrit dans sa pipe. Nous avons donc rendu le pipe non-bloquant, ce qui permet au processus principal de continuer
-même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
+même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation\_in\_progress à 1.
 \par
 
 \section{Gestion de signaux et fin de processus}
@@ -79,8 +78,8 @@ même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operatio
 \par
 Plusieurs choix se sont offerts à nous afin de terminer un programme.
 Nous avons repris la message queue qui traite les requête, et dans 
-cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
-et le kill arrêtera la boucle et exit le programme.
+cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leurs requêtes,
+et le kill arrêtera la boucle et mettra fin au programme.
 Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
 beaucoup de processus zombies. Pour régler ce souci, nous avons tout simplement ignoré le signal SIGCHLD.
 \par
@@ -90,8 +89,8 @@ beaucoup de processus zombies. Pour régler ce souci, nous avons tout simplement
 \par
 Pour voir si l'identifiant est déjà présent dans la base de données, nous avons pensé à mettre chaque étudiant
 dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides, et on 
-aurait pu rapidement savoir si un étudiant est déjà présent dans le tableau ou non.
-Seulement, si l'utilisateur introduit un id très grand, le stockage de la data base sera très grand, pour un seul étudiant.
+aurait pu rapidement savoir si un étudiant est déjà présent dans la base de données ou non.
+Seulement, si l'utilisateur introduit un id très grand, le stockage de la base de données serait très grand, pour un seul étudiant.
 \par
 \indent{}
 \par
@@ -101,8 +100,8 @@ Cela prenait beaucoup trop de temps.
 \indent{}
 \par
 Nous avons donc décidé d'avoir un tableau trié d'étudiants. Pour cela, lorsque nous ajoutons un étudiant,
-nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. Si il est plus petit que lui, nous l'ajoutons juste derrière. Sinon, 
-nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste derrière lui
+nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. S'il est plus petit que lui, nous l'ajoutons juste après. Sinon, 
+nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant à insérer aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste après lui
 et décale toute la database afin de s'insérer en plein milieu.
 \par
 \indent{}
@@ -110,8 +109,8 @@ et décale toute la database afin de s'insérer en plein milieu.
 Lors de l'update, nous avons remarqué que l'utilisateur maladroit pouvait par exemple écrire update fname=Mario set id=88.
 Pour s'assurer que cela n'arrive pas, nous vérifions si l'id n'est pas déjà présent dans la database dans la fonction update.
 Nous copions l'étudiant duquel on veut changer l'id, nous changeons l'id du nouvel étudiant et nous l'ajoutons à la database. Si l'id 
-n'est déjà présent, nous ajoutons le nouvel étudiant grâce à la fonction db add, qui trie les étudiants en les ajoutant.
-Nous arrêtons immédiatement la boucle dans si l'id est déjà présent ou non pour des soucis de performance(deux étudiants ne peuvent pas avoir le même id, 
+n'est pas déjà présent, nous ajoutons le nouvel étudiant grâce à la fonction db\_add, qui trie les étudiants avant de les ajouter.
+Nous arrêtons immédiatement la boucle dans db\_add si l'id est déjà présent ou non pour des soucis de performance (deux étudiants ne peuvent pas avoir le même id, 
 donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id). 
 \par
 
@@ -119,11 +118,11 @@ donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id).
 \section{Classes}
 \indent{}
 \par
-Nous avons mis la database t et le requête result t dans une classe, afin de rendre le code plus lisible. Par conséquent,
-nous avons implémenté un constructeur dans requête result t, au lieu du requête result init, pour que le code
-crée directement le requête result t, sans devoir appeller l'initialisation à chaque création d'objet.
-Dans requête result t, nous avons aussi ajouté log requête, pour pouvoir mettre les attributs en privés.
-Nous n'avons pas mis student t en classe, parce que les attributs d'un student sont souvent accédés par la classe requête result t.
+Nous avons mis la database\_t et l'objet requête result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
+nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\_result\_init, pour que le code
+crée directement la requête query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
+Dans query\_result\_t, nous avons aussi ajouté log\_query, pour pouvoir mettre les attributs en privé.
+Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query\_result\_t
 et nous n'aurions donc pas su mettre les attributs en privés.
 \par
 
@@ -131,13 +130,18 @@ et nous n'aurions donc pas su mettre les attributs en privés.
 \indent{}
 \par
 Nous avons d'abord seulement partagé la mémoire avec db->data, mais nous avons vite remarqué que les processus
-ne partagaient pas la même database. Nous avons donc partagé la mémoire aussi avec database, à l'aide de mmap.
+ne partagaient pas la même database. Nous avons donc partagé la mémoire aussi avec l'objet database, à l'aide de mmap.
 \par
-
+\newpage
 \section{Monitoring}
 \indent{}
 \par
-Nous avons rajouté une fonction --help ou -h au monitoring.
-
+Nous avons implémenté les fonctions demandées dans la section monitoring, comme sync ou bien encore run.
+L'utilisateur peut donc s'assurer du bon fonctionnement de la base de données et gérer celle-ci comme il le veut. Lorsqu'il veut mettre fin à l'exécution d'une des instances de TinyDB pour aller boire son café, il peut juste écrire \./monitoring shutdown pid
+pour terminer l'exécution d'une instance de PID pid.\newline
+Nous avons également rajouté une fonction --help ou -h au monitoring. 
+Cela permet à l'utilisateur de comprendre les commandes disponibles et de les exécuter sans pour autant être familier avec le projet.
 \par
+
+\section{Conclusion}
 \end{document}
