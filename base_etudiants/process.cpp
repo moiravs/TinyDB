@@ -162,9 +162,7 @@ void process_update()
         char success[256] = "SUCCESS";
         query_key = strtok_r(query_copy, " ", &p_end_of_query);
         if (strcmp(query_key, "KILL") == 0)
-        {
             killed = true;
-        }
 
         else if (strcmp(query_key, "update") == 0)
         {
@@ -272,9 +270,7 @@ void main_process()
             safe_write(fd_delete[1], query, 256);
         }
         else
-        {
             puts("Bad query");
-        }
 
         if (transaction == true)
         {
@@ -283,9 +279,7 @@ void main_process()
             {
                 std::cout << operation_in_progress << " operations in progress: Wait" << std::endl;
                 if (read(fd_response[0], status, 256) > 0)
-                {
                     operation_in_progress--;
-                }
                 sleep(1);
             }
         }
