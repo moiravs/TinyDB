@@ -13,6 +13,9 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{fullpage}
+\nocite{*}
+
+
 
 \setlength\parindent{24pt}
 
@@ -28,8 +31,11 @@
 
 \section{Introduction}
 \par
-Il y a peu de temps, notre université a décidé qu'il était temps de changer notre base de données des étudiants afin d'améliorer l'accessibilité et le confort du système, ce qui permettra de fournir plus d'informations et une meilleure entrée à nos camarades étudiants. La base de données précédente ne répondait plus aux besoins depuis que le nombre d'étudiants a considérablement augmenté ces dernières années. Il était donc nécessaire que notre université s'occupe de ce problème de croissance de la base de données.
-Nous avons demandé ce projet pour gérer la création d'une nouvelle base de données. Notre groupe est composé de 3 étudiants qui ont joué des rôles différents dans ce projet mais en coopération. L'ancienne base de données donnait beaucoup d'échecs. Les répétitions de noms, les informations manquantes sur les étudiants, ou les comptes supprimés étaient les quelques exemples parmi tant d'autres survenus pendant l'utilisation active de la base de données. Notre projet a été divisé en 8 parties différentes. Les parties suivantes sont les parties de notre projet.
+Pour le cours de système d'exploitation, nous avons du créer une base de données. 
+L'utilisateur peut effectuer plusieurs requêtes. Il peut supprimer, rajouter, choisir
+et mettre à jour des étudiants. Lors de l'implémentation de ce projet, nous avons eu quelques difficultés
+auquelles nous avons proposé plusieurs solutions. Dans les prochaines parties, nous décrirons donc
+nos choix d'implémentation et leur raisons, ainsi que les problèmes survenus.
 \par
 
 
@@ -41,7 +47,11 @@ Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en pyt
 clés ont été l'identifiant de l'élève et les valeurs la struct student. 
 Cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
 Seulement, cela
-prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons ensuite pensé à utiliser des pointeurs, chaque étudiant
+prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. 
+\par
+\indent{}
+\par
+Nous avons ensuite pensé à utiliser des pointeurs, chaque étudiant
 ayant son next.student et son precedent.student. Le problème de cette implémentation était que la structure de l'étudiant faisait exactement 256 bytes.
 Ajouter un next.student et un precedent.student auraient augmenté la taille de student, ce qui n'allait pas avec le fichier students.bin.
 Nous avons donc décidé de faire un tableau d'étudiants, que nous avons triés pour des raisons que nous allons voir après.
@@ -52,10 +62,14 @@ Nous avons donc décidé de faire un tableau d'étudiants, que nous avons triés
 \par
 
 Pour signaler la fin d'une requête, Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
-la fin d'une requête, mais ce n'était pas optimal. Nous avons implémenté donc implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
+la fin d'une requête, mais ce n'était pas optimal. Nous avons donc implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
 une requête à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
 Lorsque qu'un processus termine sa requête, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
-la variable globale au fur et à mesure. Le problème majeur de cette implémentation est que le pipe est bloquant, c'est à dire que le processus
+la variable globale au fur et à mesure. 
+\par
+\indent{}
+\par
+Le problème majeur de cette implémentation est que le pipe est bloquant, c'est à dire que le processus
 va s'arrêter jusqu'à ce qu'un message soit écrit dans sa pipe. Nous avons donc rendu le pipe non-bloquant, ce qui permet au processus principal de continuer
 même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
 \par
@@ -63,8 +77,7 @@ même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operatio
 \section{Gestion de signaux et fin de processus}
 \indent{}
 \par
-Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
-la fin d'une requête, mais ce n'était pas optimal.
+Plusieurs choix se sont offerts à nous afin de terminer un programme.
 Nous avons repris la message queue qui traite les requête, et dans 
 cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
 et le kill arrêtera la boucle et exit le programme.
@@ -79,11 +92,21 @@ Pour voir si l'identifiant est déjà présent dans la base de données, nous av
 dans son emplacement "correspondant" dans le tableau (étudiant id=500 va à l'emplacement db[500]). La recherche par id et le delete auraient été rapides, et on 
 aurait pu rapidement savoir si un étudiant est déjà présent dans le tableau ou non.
 Seulement, si l'utilisateur introduit un id très grand, le stockage de la data base sera très grand, pour un seul étudiant.
+\par
+\indent{}
+\par
 Nous avons donc essayé d'implémenter une boucle for, qui vérifiait si l'id de l'étudiant n'était pas encore présent en itérant dans toute la base de données.
-Cela prenait beaucoup trop de temps. Nous avons donc décidé d'avoir un tableau trié d'étudiants. Pour cela, lorsque nous ajoutons un étudiant,
+Cela prenait beaucoup trop de temps. 
+\par
+\indent{}
+\par
+Nous avons donc décidé d'avoir un tableau trié d'étudiants. Pour cela, lorsque nous ajoutons un étudiant,
 nous vérifions si l'étudiant à l'emplacement du tableau -1 est plus petit que lui. Si il est plus petit que lui, nous l'ajoutons juste derrière. Sinon, 
 nous décrémentons la variable au fur et à mesure, jusqu'à ce que l'étudiant aie un étudiant + petit que lui. Lorsqu'il trouve cet étudiant, il s'insère juste derrière lui
 et décale toute la database afin de s'insérer en plein milieu.
+\par
+\indent{}
+\par
 Lors de l'update, nous avons remarqué que l'utilisateur maladroit pouvait par exemple écrire update fname=Mario set id=88.
 Pour s'assurer que cela n'arrive pas, nous vérifions si l'id n'est pas déjà présent dans la database dans la fonction update.
 Nous copions l'étudiant duquel on veut changer l'id, nous changeons l'id du nouvel étudiant et nous l'ajoutons à la database. Si l'id 
@@ -111,25 +134,10 @@ Nous avons d'abord seulement partagé la mémoire avec db->data, mais nous avons
 ne partagaient pas la même database. Nous avons donc partagé la mémoire aussi avec database, à l'aide de mmap.
 \par
 
-\section{Process vs Thread}
+\section{Monitoring}
 \indent{}
 \par
-Au lieu d'utiliser des processus, nous aurions pu utiliser des threads.
-Seulement, si le processus main crashe, alors tous les threads crashent aussi. 
-L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.
-Tout d'abord, nous allons définir ce qu'est un processus et un thread, et finalement les avantages des processus.
+Nous avons rajouté une fonction --help ou -h au monitoring.
 
-Donc, un processus est l'exécution d'un programme qui permet d'effectuer les actions appropriées spécifiées dans un programme. Il peut être défini comme une unité d'exécution où s'exécute un programme. Le système d'exploitation vous aide à créer, planifier et terminer les processus utilisés par l'unité centrale. Les autres processus créés par le processus principal sont appelés processus enfants.
-
-Ensuite, un thread est une unité d'exécution qui fait partie d'un processus. Un processus peut avoir plusieurs threads, tous exécutés en même temps. Il s'agit d'une unité d'exécution dans la programmation concurrente. Un thread est léger et peut être géré indépendamment par un planificateur. Il vous aide à améliorer les performances de l'application en utilisant le parallélisme.
-
-Nous avons utilisé des processus pour réaliser notre projet, comme précisé dans les consignes. Les avantages des processus qui nous ont aidés à réaliser ce projet sont les suivants :\\
-\begin{itemize}
-    \item La création de chaque processus nécessite des appels système distincts pour chaque processus.\\
-    \item Il s'agit d'une entité d'exécution isolée qui ne partage pas les données et les informations.\\
-    \item Les processus utilisent le mécanisme IPC(Inter-Process Communication) pour la communication qui augmente considérablement le nombre d'appels système.\\
-    \item La gestion des processus nécessite plus d'appels système.\\
-    \item Un processus a sa pile, son tas de mémoire avec la mémoire, et sa carte de données.\\
-\end{itemize}
 \par
 \end{document}
