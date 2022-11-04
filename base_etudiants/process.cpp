@@ -19,6 +19,7 @@ pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
 
+
 void close_application(bool force)
 {
     char *status = new char[256];
@@ -30,9 +31,7 @@ void close_application(bool force)
         while (operation_in_progress > 0)
         {
             while (read(fd_response[0], status, 256) > 0)
-            {
                 operation_in_progress--;
-            }
             if (operation_in_progress > 0)
             {
                 std::cout << operation_in_progress << " operations in progress: Wait" << std::endl;
@@ -86,14 +85,11 @@ void process_select()
         query_key = strtok_r(query_copy, " ", &p_end_of_query); // write the first word to query_key
 
         if (strcmp(query_key, "KILL") == 0)
-        {
             killed = true;
-        }
         else if (strcmp(query_key, "select") == 0)
         {
             query_result_t query_result(query);
             query_result.query_select(db, query, p_end_of_query);
-
             close(fd_response[0]);
             safe_write(fd_response[1], success, 256);
         }
@@ -115,9 +111,7 @@ void process_insert()
         char success[256] = "SUCCESS";
         query_key = strtok_r(query_copy, " ", &p_end_of_query);
         if (strcmp(query_key, "KILL") == 0)
-        {
             killed = true;
-        }
         else if (strcmp(query_key, "insert") == 0)
         {
             query_result_t query_result{query};
@@ -142,10 +136,7 @@ void process_delete()
         char success[256] = "SUCCESS";
         query_key = strtok_r(query_copy, " ", &p_end_of_query);
         if (strcmp(query_key, "KILL") == 0)
-        {
             killed = true;
-        }
-
         else if (strcmp(query_key, "delete") == 0)
         {
             query_result_t query_result{query};
@@ -232,13 +223,9 @@ void main_process()
     {
         close(fd_response[1]);
         while (read(fd_response[0], status, 256) > 0)
-        {
             operation_in_progress--;
-        }
         if (operation_in_progress > 0)
-        {
             std::cout << operation_in_progress << " operations in progress: no wait" << std::endl;
-        }
         query[strcspn(query, "\n")] = 0;
         char *query_copy = new char[256], *p_end_of_query;
         memcpy(query_copy, query, 256);

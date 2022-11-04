@@ -39,24 +39,30 @@ Nous avons demandé ce projet pour gérer la création d'une nouvelle base de do
 Afin de stocker les données de milliers d'étudiants, plusieurs choix se sont offerts à nous. 
 Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en python, dont les
 clés ont été l'identifiant de l'élève et les valeurs la struct student. Seulement, cela
-prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons donc décidé de faire un tableau.
+prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. Nous avons ensuite pensé à utiliser des pointeurs, chaque étudiant
+ayant son next.student et son precedent.student. Le problème de cette implémentation était que la structure de l'étudiant faisait exactement 256 bytes.
+Ajouter un next.student et un precedent.student auraient augmenté la taille de student, ce qui n'allait pas avec le fichier students.bin.
+Nous avons donc décidé de faire un tableau d'étudiants, que nous avons triés pour des raisons que nous allons voir après.
 \par
-\section{Fin d'une query}
+\section{Fin d'une requête}
 
 \indent{}
 \par
-Pour signaler la fin d'une query, nous avons implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
-une query à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
-Lorsque qu'un processus termine sa query, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
-la variable globale au fur et à mesure. Le pipe est non-bloquant, ce qui permet au processus principal de continuer
+
+Pour signaler la fin d'une requête, Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
+la fin d'une requête, mais ce n'était pas optimal. Nous avons implémenté donc implémenté une message queue grâce à une pipe. Lorsqu'on envoie 
+une requête à un processus, nous incrémentons une variable globale operation in progress qui indique le nombre d'opérations en cours.
+Lorsque qu'un processus termine sa requête, il écrit dans sa pipe "SUCCESS". Le processus principal va lire cette pipe et va décrémenter
+la variable globale au fur et à mesure. Le problème majeur de cette implémentation est que le pipe est bloquant, c'est à dire que le processus
+va s'arrêter jusqu'à ce qu'un message soit écrit dans sa pipe. Nous avons donc rendu le pipe non-bloquant, ce qui permet au processus principal de continuer
 même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation in progress à 1.
 
-\section{Gestion de signaux}
+\section{Gestion de signaux et fin de processus}
 \indent{}
 \par
 Plusieurs choix se sont offerts à nous afin de terminer un programme. Nous avons d'abord pensé à 4 pipes qui indiquent au programme principal 
 la fin d'une requête, mais ce n'était pas optimal.
-Nous avons repris la message queue qui traite les query, et dans 
+Nous avons repris la message queue qui traite les requête, et dans 
 cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leur requêtes,
 et le kill arrêtera la boucle et exit le programme.
 Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
@@ -85,31 +91,38 @@ donc tous les étudiants s'appelant Mario ne peuvent pas avoir le nouvel id).
 
 
 
+
 \section{Classes}
 \indent{}
 \par
-Nous avons mis la database\_t et le query\_result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
-nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\_result\_init, pour que le code
-crée directement le query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
-Dans query result t, nous avons aussi ajouté log query, pour pouvoir mettre les attributs en privés.
-Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query result t.
+Nous avons mis la database\_t et le requête\_result\_t dans une classe, afin de rendre le code plus lisible. Par conséquent,
+nous avons implémenté un constructeur dans requête\_result\_t, au lieu du requête\_result\_init, pour que le code
+crée directement le requête\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
+Dans requête result t, nous avons aussi ajouté log requête, pour pouvoir mettre les attributs en privés.
+Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe requête result t.
 et nous n'aurions donc pas su mettre les attributs en privés.
 
 
 \section{Améliorations possibles}
-    \subsection{std::map}
-    \indent{}
+\subsection{std::map}
+\indent{}
 \par
-    Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. \newline
-    Selon nous, cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. \newline En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
-    \subsection{Threads}
-    \indent{}
-    \par
-    Au lieu d'utiliser des processus, nous aurions pu utiliser des threads. Seulement, si le processus main crashe,
-    alors tous les threads crashent aussi. L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.\\
+Nous avions comme idée de stocker, dans un structure de données std::map (équivalent d'un dictionnaire en Python), les identifiants des étudiants en clés ainsi que leur indice de position dans la base de données en valeurs de ces clés. 
+Selon nous, cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
+\par 
+\subsection{Threads}
+\indent{}
+\par
+Au lieu d'utiliser des processus, nous aurions pu utiliser des threads.\\
+Seulement, si le processus main crashe, alors tous les threads crashent aussi. \\
+
+L'avantage des processus est leur indépendance, ce qui les rend plus stable que des threads.\\
+
 \section{Process vs Thread}
+\indent{}
 \par
-Tout d'abord, nous allons définir ce qu'est un processus et un thread, et finalement les avantages des processus.\\
+
+Tout d'abord, nous allons définir ce qu'est un processus et un thread, et finalement les avantages des processus.
 
 Donc, un processus est l'exécution d'un programme qui permet d'effectuer les actions appropriées spécifiées dans un programme. Il peut être défini comme une unité d'exécution où s'exécute un programme. Le système d'exploitation vous aide à créer, planifier et terminer les processus utilisés par l'unité centrale. Les autres processus créés par le processus principal sont appelés processus enfants.
 

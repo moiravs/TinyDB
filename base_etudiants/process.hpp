@@ -10,41 +10,40 @@ Description du projet *TinyDB* :
 extern database_t *db;
 extern const char *db_path;
 extern int fd_insert[2], fd_select[2], fd_update[2], fd_delete[2], fd_response[2];
-
-/**
- * @brief  Process who treats the select query
- * @retval None
- */
-void process_select();
-/**
- * @brief  Process who treats the insert query
- * @retval None
- */
-void process_insert();
-/**
- * @brief  Process who treats the delete query
- * @retval None
- */
-void process_delete();
-/**
- * @brief  Process who treats the update query
- * @retval None
- */
-void process_update();
-/**
- * @brief  Close tinydb
- * @param  force: False if we need to wait for the queries to terminate
- * @retval None
- */
-void close_application(bool force);
-/**
- * @brief  Signal Handler
- * @param  signum: Signal Number
- * @retval None
- */
-void signal_handling(int signum);
-/**
- * @brief  Main Process - Creates children and handles the query
- * @retval None
- */
-void main_process();
+  /**
+   * @brief  Process who treats the select query
+   * @retval None
+   */
+  void process_select();
+  /**
+   * @brief  Process who treats the insert query
+   * @retval None
+   */
+  void process_insert();
+  /**
+   * @brief  Process who treats the delete query
+   * @retval None
+   */
+  void process_delete();
+  /**
+   * @brief  Process who treats the update query
+   * @retval None
+   */
+  void process_update();
+  /**
+   * @brief  Close tinydb
+   * @param  force: False if we need to wait for the queries to terminate
+   * @retval None
+   */
+  void close_application(bool force);
+  /**
+   * @brief  Signal Handler
+   * @param  signum: Signal Number
+   * @retval None
+   */
+  void signal_handling(int signum);
+  /**
+   * @brief  Main Process - Creates children and handles the query
+   * @retval None
+   */
+  void main_process();
