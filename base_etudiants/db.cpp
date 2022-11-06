@@ -5,33 +5,107 @@ Description du projet *TinyDB* :
   Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 
-#include "db.hpp"
 #include <time.h>
 #include <unistd.h>
 #include <iostream>
-#include "student.hpp"
 #include <sys/mman.h>
 #include <cstring>
+#include <fcntl.h>
 
-void database_t::db_save(const char *path)
+#include "db.hpp"
+#include "student.hpp"
+
+student_t *local_data_map = 0;
+
+void database_t::db_init()
 {
-    FILE *f = fopen(path, "wb");
-    if (!f)
+    this->lsize = 0;
+    this->psize = 2 * sizeof(student_t);
+
+    int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
+    ftruncate(smfd, this->psize);
+    this->data = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
+                                   MAP_SHARED, smfd, 0);
+
+    if (this->data == MAP_FAILED)
     {
-        perror("Could not open the DB file");
-        exit(1);
+        std::cout << "Mapped failed\n";
+        exit(-1);
     }
-    if (fwrite(this->data, sizeof(student_t), this->lsize, f) < 0)
+}
+
+void database_t::db_map_memory()
+{
+    if (this->data != local_data_map)
     {
-        perror("Could not write in the DB file");
-        exit(1);
+        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
+
+        if (mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
+                 MAP_SHARED, smfd, 0) == MAP_FAILED)
+        {
+            std::cout << "Re Mapped failed\n";
+            exit(-1);
+        }
+        local_data_map = this->data;
     }
-    fclose(f);
+}
+
+student_t *database_t::get_record(int i)
+{
+    this->db_map_memory();
+
+    return &this->data[i];
+}
+
+void database_t::db_upsize()
+{
+
+    if (this->lsize > (this->psize / sizeof(student_t))) // if we reached the end of the allocated size for this
+    {
+        std::cout << "Try upsize\n";
+
+        student_t *new_student;
+
+        size_t old_psize = this->psize;
+        this->psize *= 2;
+        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
+        ftruncate(smfd, this->psize);
+        new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE);
+
+        if (new_student == MAP_FAILED)
+        {
+            std::cout << "Mapped failed when upsize\n";
+            exit(-1);
+        }
+
+        if (new_student != this->data)
+        {
+            std::cout << "New mem name" << new_student[0].fname << " ---------------";
+            // std::cout << "New mem" << &new_student[0] << " ---------------";
+            //  strcpy(new_student[0].fname, "zozo");
+
+            std::cout << "New mem name" << new_student[0].fname << std::endl;
+            strcpy(new_student[this->lsize - 1].fname, "totozozo");
+            std::cout << "New mem name" << new_student[this->lsize - 1].fname << std::endl;
+
+            //    munmap(shm_new, this->data);
+        }
+
+        // new_student = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE, MAP_SHARED, this->smfd, 0); // establishes a mapping between an adress space of a process and a memory object
+        // memcpy(new_student, this->data, old_psize);                                                            // copy this to newly allocated memory
+        //  munmap(this->data, old_psize);                                                                         // deallocate old memory
+        this->data = new_student;
+
+        // msync(this->data, this->psize, MS_SYNC);
+        msync(this, sizeof(this), MS_SYNC);
+
+        std::cout << "Upsize success\n";
+    }
 }
 
 void database_t::db_load(const char *path)
-
 {
+
     std::cout << "Loading your tiny tiny database..." << std::endl;
     FILE *file = fopen(path, "rb");
     if (!file)
@@ -48,30 +122,28 @@ void database_t::db_load(const char *path)
     std::cout << "Done !" << std::endl;
 }
 
-void database_t::db_upsize()
+void database_t::db_save(const char *path)
 {
-    if (this->lsize > (this->psize / sizeof(student_t))) // if we reached the end of the allocated size for this
-    {
-        size_t old_psize = this->psize;
-        this->psize *= 2;
-        student_t *new_student;
-        new_student = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0); // establishes a mapping between an adress space of a process and a memory object
-        memcpy(new_student, this->data, old_psize);                                                                    // copy this to newly allocated memory
-        munmap(this->data, old_psize);                                                                                 // deallocate old memory
-        this->data = new_student;
-    }
-}
+    this->db_map_memory();
 
-void database_t::db_init()
-{
-    this->lsize = 0;
-    this->psize = sizeof(student_t) * 2000000;
-    this->data = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
-                                   MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    FILE *f = fopen(path, "wb");
+    if (!f)
+    {
+        perror("Could not open the DB file");
+        exit(1);
+    }
+    if (fwrite(this->data, sizeof(student_t), this->lsize, f) < 0)
+    {
+        perror("Could not write in the DB file");
+        exit(1);
+    }
+    fclose(f);
 }
 
 bool database_t::db_add(student_t student)
 {
+    this->db_map_memory();
+
     signed int position = this->lsize - 1;
     while ((position >= 0) && (student.id < this->data[position].id))
     {
@@ -85,7 +157,7 @@ bool database_t::db_add(student_t student)
     this->lsize++;
     this->db_upsize();
 
-    if ((this->lsize - position - 2) > 0) //move all the students after the new student we inserted
+    if ((this->lsize - position - 2) > 0) // move all the students after the new student we inserted
     {
         memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
     }
@@ -95,6 +167,8 @@ bool database_t::db_add(student_t student)
 
 void database_t::db_delete(size_t indice)
 {
+    this->db_map_memory();
+
     if (indice >= this->lsize)
     {
         perror("db_delete()");

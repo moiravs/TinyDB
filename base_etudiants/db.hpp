@@ -11,11 +11,21 @@ struct database_t
   student_t *data; /** The list of students **/
   size_t lsize;    /** The logical size of the list **/
   size_t psize;    /** The physical size of the list **/
+  int smfd;
+
   /**
    * @brief  Initialise a database
    * @retval None
    */
-  void db_init();
+  void
+  db_init();
+  /**
+   * @brief  Initialise a database
+   * @retval None
+   */
+  void
+  db_init_mem();
+
   /**
    * @brief  Add a student to the database.
    * @note
@@ -27,14 +37,23 @@ struct database_t
    * @brief  Increase size of the database
    * @retval None
    */
+  /**
+   * @brief  Getter to get db->data[i]
+   * @retval None
+   */
+  student_t *get_record(int i);
 
   void db_upsize();
+
+  void db_map_memory();
+
   /**
    * @brief
    * @param  *path: Path of the database to load
    * @retval None
    */
-  void db_save(const char *path);
+  void
+  db_save(const char *path);
   /**
    * @brief Load the content of a database of students.
    * @param  *path: Path of the database to load

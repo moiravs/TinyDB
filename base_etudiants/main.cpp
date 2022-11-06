@@ -19,7 +19,6 @@ database_t *db;
 const char *db_path;
 int fd_insert[2], fd_select[2], fd_update[2], fd_delete[2], fd_response[2]; // children write in the fd response pipe when they finished their query
 
-
 int main(int argc, char const *argv[])
 {
   db_path = argv[1];
@@ -27,6 +26,7 @@ int main(int argc, char const *argv[])
   db = (database_t *)mmap(NULL, (sizeof(database_t)), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
   db->db_init();
   db->db_load(db_path);
+
   // fd : file descriptor (fd0 : standard input (stdin), fd_insert : standard output (stdout), fd2 : standard error (stderr))
   // pipe(fd) : creates both the reading and writing ends of the pipe
   // fd[0] : standard input, fd[1] : standard output

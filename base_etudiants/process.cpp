@@ -19,7 +19,6 @@ pid_t child_insert = -1;
 pid_t child_delete = -1;
 pid_t child_update = -1;
 
-
 void close_application(bool force)
 {
     char *status = new char[256];
@@ -56,7 +55,7 @@ void close_application(bool force)
         close(fd_insert[0]);
         safe_write(fd_insert[1], kill_message, 256);
         int wstatus;
-        waitpid(child_delete, &wstatus, 0); //waits for the children to exit
+        waitpid(child_delete, &wstatus, 0); // waits for the children to exit
         waitpid(child_select, &wstatus, 0);
         waitpid(child_insert, &wstatus, 0);
         waitpid(child_update, &wstatus, 0);
@@ -66,8 +65,10 @@ void close_application(bool force)
 void signal_handling(int signum)
 {
     close_application(signum != 2);
-    if (signum != SIGUSR1){
-    kill(getpid(), SIGKILL);} // kill the main process}
+    if (signum != SIGUSR1)
+    {
+        kill(getpid(), SIGKILL);
+    } // kill the main process}
 }
 
 void process_select()
@@ -88,6 +89,7 @@ void process_select()
             killed = true;
         else if (strcmp(query_key, "select") == 0)
         {
+
             query_result_t query_result(query);
             query_result.query_select(db, query, p_end_of_query);
             close(fd_response[0]);
@@ -102,6 +104,7 @@ void process_insert()
     signal(SIGINT, SIG_IGN);
     char query[256];
     bool killed = false;
+
     while (!killed)
     {
         close(fd_insert[1]);
@@ -224,12 +227,17 @@ void main_process()
             operation_in_progress--;
         if (operation_in_progress > 0)
             std::cout << operation_in_progress << " operations in progress: no wait" << std::endl;
+
+        /* empty string */
+        if (strcspn(query, "\n") == 0)
+        {
+            continue;
+        }
         query[strcspn(query, "\n")] = 0;
         char *query_copy = new char[256], *p_end_of_query;
         memcpy(query_copy, query, 256);
         const char *query_key = new char[6]();
         query_key = strtok_r(query_copy, " ", &p_end_of_query);
-
         if (strcmp(query, "transaction") == 0)
         {
             close(fd_response[1]);

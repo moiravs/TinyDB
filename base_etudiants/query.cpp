@@ -107,8 +107,9 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    if (is_student_ok(&db->data[i], field_filter, value))
-      this->query_result_add(db->data[i]);
+    student_t *record = db->get_record(i);
+    if (is_student_ok(record, field_filter, value))
+      this->query_result_add(*record);
     i++;
   }
 
@@ -174,9 +175,10 @@ void query_result_t::query_delete(database_t *db, char *query, char *p_end_of_qu
   size_t i = 0;
   while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
   {
-    if (is_student_ok(&db->data[i], field_filter, value))
+    student_t *record = db->get_record(i);
+    if (is_student_ok(record, field_filter, value))
     {
-      this->query_result_add(db->data[i]);
+      this->query_result_add(*record);
       db->db_delete(i);
       i--;
     }
@@ -199,15 +201,17 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
   }
   for (size_t i = 0; i < db->lsize; i++)
   {
-    if (is_student_ok(&db->data[i], field_filter, value_filter))
+    student_t *record = db->get_record(i);
+
+    if (is_student_ok(record, field_filter, value_filter))
     {
       if (strcmp(field_to_update, "id") == 0)
       {
         student_t *s = new student_t;
-        memcpy(s->fname, db->data[i].fname, 64);           // copie l'étudiant db->data[i]
-        memcpy(s->section, db->data[i].section, 64);       // copie l'étudiant db->data[i]
-        memcpy(s->lname, db->data[i].lname, 64);           // copie l'étudiant db->data[i]
-        memcpy(&s->birthdate, &db->data[i].birthdate, 44); // copie l'étudiant db->data[i]
+        memcpy(s->fname, &record->fname, 64);          // copie l'étudiant record
+        memcpy(s->section, &record->section, 64);      // copie l'étudiant record
+        memcpy(s->lname, &record->lname, 64);          // copie l'étudiant record
+        memcpy(&s->birthdate, &record->birthdate, 44); // copie l'étudiant record
         int temp = (atoi(update_value));
         memcpy(&s->id, &temp, 4); // change l'id du nouvel étudiant créé
         db->db_delete(i);
@@ -219,30 +223,30 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
         }
         else // si l'id est déjà dans la database
         {
-          db->db_add(db->data[i]); // on remet l'ancien student
+          db->db_add(*record); // on remet l'ancien student
           puts("ID already in the database, update query stops here");
           break;
         }
       }
       else if (strcmp(field_to_update, "fname") == 0)
       {
-        strcpy(db->data[i].fname, update_value);
-        this->query_result_add(db->data[i]);
+        strcpy(record->fname, update_value);
+        this->query_result_add(*record);
       }
       else if (strcmp(field_to_update, "lname") == 0)
       {
-        strcpy(db->data[i].lname, update_value);
-        this->query_result_add(db->data[i]);
+        strcpy(record->lname, update_value);
+        this->query_result_add(*record);
       }
       else if (strcmp(field_to_update, "section") == 0)
       {
-        strcpy(db->data[i].section, update_value);
-        this->query_result_add(db->data[i]);
+        strcpy(record->section, update_value);
+        this->query_result_add(*record);
       }
       else if (strcmp(field_to_update, "birthdate") == 0)
       {
-        strptime(update_value, "%d/%m/%Y", &db->data[i].birthdate);
-        this->query_result_add(db->data[i]); // transform the updated string to tm struct
+        strptime(update_value, "%d/%m/%Y", &record->birthdate);
+        this->query_result_add(*record); // transform the updated string to tm struct
       }
       else
       {
