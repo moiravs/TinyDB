@@ -11,7 +11,7 @@ if [ "${1}" == "run" ]; then
     file="${2:-students.bin}"
     if [ "${file}" == "-f" ]; 
     then
-        file="students.bin"
+        file="data/students.bin"
     fi
     if [[ ! -f "${file}" ]]
     then 
