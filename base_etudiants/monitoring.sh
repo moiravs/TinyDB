@@ -1,6 +1,7 @@
 #!/bin/bash
 set -m
-fichier_requetes=""
+#fichier_requetes=""
+#file=""
 if [ "${1}" == "run" ]; then
     for (( i=1; i<=$#; i++));
     do
@@ -14,11 +15,17 @@ if [ "${1}" == "run" ]; then
     then
         file="data/students.bin"
     fi
+    if [[ ! -f "$fichier_requetes" ]]
+    then    
+        >&2 echo "Queries file doesn't exist"
+        exit 1
+    fi
     if [[ ! -f "${file}" ]]
     then 
-        echo "${1}" 1>&2
+        >&2 echo "File created, file didn't exist"
         touch $file
     fi
+
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
     if [ "${fichier_requetes}" != "" ]
@@ -26,6 +33,7 @@ if [ "${1}" == "run" ]; then
         ./tinydb "$file" < "$fichier_requetes" &
     else
         ./tinydb "$file"
+    
 fi
 
 
