@@ -1,4 +1,5 @@
 #!/bin/bash
+set -m
 
 if [ "${1}" == "run" ]; then
     for (( i=1; i<=$#; i++));
@@ -20,7 +21,14 @@ if [ "${1}" == "run" ]; then
     fi
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
-    ./tinydb "$file"
+    if ["${fichier_requetes}"]
+    then
+        echo "me here"
+        ./tinydb "$file" < "$fichier_requetes" &
+    else
+        ./tinydb "$file"
+fi
+
 
 elif [ "${1}" == "sync" ]; then
     i=0;
