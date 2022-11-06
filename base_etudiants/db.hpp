@@ -8,30 +8,31 @@
  */
 class database_t
 {
-  private:
+private:
   student_t *data; /** The list of students **/
   size_t lsize;    /** The logical size of the list **/
   size_t psize;    /** The physical size of the list **/
   int smfd;
 
-  public:
+public:
   /**
    * @brief  Initialise a database
    * @retval None
    */
-  void
-  db_init();
+  void db_init();
   /**
    * @brief  Initialise a database
    * @retval None
    */
-  void
-  db_init_mem();
+  void db_init_mem();
 
+  /**
+   * @brief  Getter of lsize
+   * @retval Logical size of database_t
+   */
   size_t get_lsize();
   /**
    * @brief  Add a student to the database.
-   * @note
    * @param  s: Student to add
    * @retval None
    */
@@ -40,23 +41,23 @@ class database_t
    * @brief  Increase size of the database
    * @retval None
    */
+  void db_upsize();
   /**
    * @brief  Getter to get db->data[i]
-   * @retval None
+   * @retval A pointer to db->data[i]
    */
   student_t *get_record(int i);
-
-  void db_upsize();
-
-  void db_map_memory();
-
   /**
-   * @brief
+   * @brief Map a file with a memory area
+   * @retval None
+   */
+  void db_map_memory();
+  /**
+   * @brief Save the contents of the database_t
    * @param  *path: Path of the database to load
    * @retval None
    */
-  void
-  db_save(const char *path);
+  void db_save(const char *path);
   /**
    * @brief Load the content of a database of students.
    * @param  *path: Path of the database to load

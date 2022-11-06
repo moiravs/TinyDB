@@ -34,7 +34,8 @@ void database_t::db_init()
     }
 }
 
-size_t database_t::get_lsize(){
+size_t database_t::get_lsize()
+{
     return this->lsize;
 }
 void database_t::db_map_memory()
@@ -42,7 +43,6 @@ void database_t::db_map_memory()
     if (this->data != local_data_map)
     {
         int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
-
         if (mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
                  MAP_SHARED, smfd, 0) == MAP_FAILED)
         {
@@ -56,7 +56,6 @@ void database_t::db_map_memory()
 student_t *database_t::get_record(int i)
 {
     this->db_map_memory();
-
     return &this->data[i];
 }
 
@@ -65,44 +64,19 @@ void database_t::db_upsize()
 
     if (this->lsize > (this->psize / sizeof(student_t))) // if we reached the end of the allocated size for this
     {
-        std::cout << "Try upsize\n";
-
-        student_t *new_student;
-
         size_t old_psize = this->psize;
         this->psize *= 2;
         int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
         ftruncate(smfd, this->psize);
-        new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE);
+        student_t *new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE);
 
         if (new_student == MAP_FAILED)
         {
             std::cout << "Mapped failed when upsize\n";
             exit(-1);
         }
-
-        if (new_student != this->data)
-        {
-            std::cout << "New mem name" << new_student[0].fname << " ---------------";
-            // std::cout << "New mem" << &new_student[0] << " ---------------";
-            //  strcpy(new_student[0].fname, "zozo");
-
-            std::cout << "New mem name" << new_student[0].fname << std::endl;
-            strcpy(new_student[this->lsize - 1].fname, "totozozo");
-            std::cout << "New mem name" << new_student[this->lsize - 1].fname << std::endl;
-
-            //    munmap(shm_new, this->data);
-        }
-
-        // new_student = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE, MAP_SHARED, this->smfd, 0); // establishes a mapping between an adress space of a process and a memory object
-        // memcpy(new_student, this->data, old_psize);                                                            // copy this to newly allocated memory
-        //  munmap(this->data, old_psize);                                                                         // deallocate old memory
         this->data = new_student;
-
-        // msync(this->data, this->psize, MS_SYNC);
         msync(this, sizeof(this), MS_SYNC);
-
-        std::cout << "Upsize success\n";
     }
 }
 
