@@ -44,7 +44,7 @@ void database_t::db_init()
 }
 bool database_t::db_add(student_t student)
 {
-    this->db_map_memory();
+    this->db_map_memory(); // map the memory between processes
 
     signed int position = this->lsize - 1;
     while ((position >= 0) && (student.id < this->data[position].id))
@@ -73,9 +73,9 @@ void database_t::db_upsize()
     {
         size_t old_psize = this->psize;
         this->psize *= 2;
-        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
-        ftruncate(smfd, this->psize);
-        student_t *new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE);
+        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600); //open the file
+        ftruncate(smfd, this->psize); // extend the file size
+        student_t *new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE); //remap the file descriptor
 
         if (new_student == MAP_FAILED)
         {
