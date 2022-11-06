@@ -1,6 +1,6 @@
 #!/bin/bash
 set -m
-
+fichier_requetes=""
 if [ "${1}" == "run" ]; then
     for (( i=1; i<=$#; i++));
     do
@@ -21,9 +21,8 @@ if [ "${1}" == "run" ]; then
     fi
     echo "Fichiers requêtes: $fichier_requetes";
     echo "File : $file";
-    if ["${fichier_requetes}"]
+    if [ "${fichier_requetes}" != "" ]
     then
-        echo "me here"
         ./tinydb "$file" < "$fichier_requetes" &
     else
         ./tinydb "$file"
