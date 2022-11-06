@@ -16,7 +16,6 @@ struct student_t
         struct tm birthdate; /** Birth date **/
 
 };
-
 /**
  * @brief Convert a student to a human-readlable string.
  **/

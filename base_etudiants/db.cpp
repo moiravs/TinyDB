@@ -16,6 +16,15 @@ Description du projet *TinyDB* :
 #include "student.hpp"
 
 student_t *local_data_map = 0;
+size_t database_t::get_lsize()
+{
+    return this->lsize;
+}
+student_t *database_t::get_record(int i)
+{
+    this->db_map_memory();
+    return &this->data[i];
+}
 
 void database_t::db_init()
 {
@@ -33,32 +42,30 @@ void database_t::db_init()
         exit(-1);
     }
 }
-
-size_t database_t::get_lsize()
-{
-    return this->lsize;
-}
-void database_t::db_map_memory()
-{
-    if (this->data != local_data_map)
-    {
-        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
-        if (mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
-                 MAP_SHARED, smfd, 0) == MAP_FAILED)
-        {
-            std::cout << "Re Mapped failed\n";
-            exit(-1);
-        }
-        local_data_map = this->data;
-    }
-}
-
-student_t *database_t::get_record(int i)
+bool database_t::db_add(student_t student)
 {
     this->db_map_memory();
-    return &this->data[i];
-}
 
+    signed int position = this->lsize - 1;
+    while ((position >= 0) && (student.id < this->data[position].id))
+    {
+        position--;
+    }
+    if ((position >= 0) && (student.id == this->data[position].id))
+    {
+        std::cout << "ID already in the database." << std::endl;
+        return false;
+    }
+    this->lsize++;
+    this->db_upsize();
+
+    if ((this->lsize - position - 2) > 0) // move all the students after the new student we inserted
+    {
+        memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
+    }
+    memcpy(&this->data[position + 1], &student, 256); // insert at end of db if there is no student after new student inserted
+    return true;
+}
 void database_t::db_upsize()
 {
 
@@ -77,6 +84,21 @@ void database_t::db_upsize()
         }
         this->data = new_student;
         msync(this, sizeof(this), MS_SYNC);
+    }
+}
+
+void database_t::db_map_memory()
+{
+    if (this->data != local_data_map)
+    {
+        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
+        if (mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
+                 MAP_SHARED, smfd, 0) == MAP_FAILED)
+        {
+            std::cout << "Re Mapped failed\n";
+            exit(-1);
+        }
+        local_data_map = this->data;
     }
 }
 
@@ -115,31 +137,6 @@ void database_t::db_save(const char *path)
         exit(1);
     }
     fclose(f);
-}
-
-bool database_t::db_add(student_t student)
-{
-    this->db_map_memory();
-
-    signed int position = this->lsize - 1;
-    while ((position >= 0) && (student.id < this->data[position].id))
-    {
-        position--;
-    }
-    if ((position >= 0) && (student.id == this->data[position].id))
-    {
-        std::cout << "ID already in the database." << std::endl;
-        return false;
-    }
-    this->lsize++;
-    this->db_upsize();
-
-    if ((this->lsize - position - 2) > 0) // move all the students after the new student we inserted
-    {
-        memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
-    }
-    memcpy(&this->data[position + 1], &student, 256); // insert at end of db if there is no student after new student inserted
-    return true;
 }
 
 void database_t::db_delete(size_t indice)

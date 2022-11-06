@@ -16,21 +16,20 @@ private:
 
 public:
   /**
-   * @brief  Initialise a database
-   * @retval None
-   */
-  void db_init();
-  /**
-   * @brief  Initialise a database
-   * @retval None
-   */
-  void db_init_mem();
-
-  /**
    * @brief  Getter of lsize
    * @retval Logical size of database_t
    */
   size_t get_lsize();
+  /**
+   * @brief  Getter to get db->data[i]
+   * @retval A pointer to db->data[i]
+   */
+  student_t *get_record(int i);
+  /**
+   * @brief  Initialise a database
+   * @retval None
+   */
+  void db_init();
   /**
    * @brief  Add a student to the database.
    * @param  s: Student to add
@@ -42,11 +41,7 @@ public:
    * @retval None
    */
   void db_upsize();
-  /**
-   * @brief  Getter to get db->data[i]
-   * @retval A pointer to db->data[i]
-   */
-  student_t *get_record(int i);
+
   /**
    * @brief Map a file with a memory area
    * @retval None
