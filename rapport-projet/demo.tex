@@ -44,7 +44,7 @@ nos choix d'implémentation et leur raisons, ainsi que les problèmes survenus.
 Afin de stocker les données de milliers d'étudiants, plusieurs choix se sont offerts à nous. 
 Tout d'abord, nous avons utilisé std::map, comparable à un dictionnaire en Python, dont les
 clés auraient été l'identifiant de l'élève et les valeurs la struct student\_t. 
-Cela aurait permis de faciliter et d'améliorer l'efficacité de la vérification de si un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le map pour éviter d'avoir des doublons dans la base de données.
+Cela aurait permis vérifier facilment et rapidement si l'id d'un étudiant est déjà dans la base de données ou non. En effet, lors de l'ajout d'un étudiant, nous aurions juste à vérifier si l'identifiant est présent dans le std::map pour éviter d'avoir des doublons dans la base de données.
 Seulement, cela prenait beaucoup de place en mémoire et nous avons donc délaissé l'idée. 
 \par
 \indent{}
@@ -54,7 +54,7 @@ ayant son student.next et son student.precedent. Le problème de cette implémen
 Ajouter un next.student et un precedent.student auraient augmenté la taille de student, ce qui n'allait pas avec le fichier students.bin.
 Nous avons donc décidé de faire un tableau d'étudiants, que nous avons triés pour des raisons que nous allons voir après.
 \par
-\section{Fin d'une requête}
+\section{Fin d'une requête et transaction}
 
 \indent{}
 \par
@@ -68,15 +68,14 @@ la variable globale au fur et à mesure.
 \indent{}
 \par
 Le problème majeur de cette implémentation est que la pipe est bloquante, c'est à dire que le processus
-va s'arrêter jusqu'à ce qu'un message soit écrit dans sa pipe. Nous avons donc rendu le pipe non-bloquant, ce qui permet au processus principal de continuer
-même si il ne lit rien dans la pipe. Lors d'une transaction, on limite operation\_in\_progress à 1.
+va s'arrêter jusqu'à ce qu'un message soit écrit dans sa pipe. Nous avons donc rendu le pipe non-bloquant, ce qui permet au processus principal de poursuivre son exécution
+même lorsqu'il ne lit rien dans la pipe. Lors d'une transaction, on limite operation\_in\_progress à 1.
 \par
 
 \section{Gestion de signaux et fin de processus}
 \indent{}
 \par
-Plusieurs choix se sont offerts à nous afin de terminer un programme.
-Nous avons repris la message queue qui traite les requête, et dans 
+Pour terminer notre programme, nous avons repris la message queue qui traite les requête, et dans 
 cette message queue, le processus principal écrit un message, "kill". Les processus enfants le liront après avoir terminé leurs requêtes,
 et le kill arrêtera la boucle et mettra fin au programme.
 Seulement, lorsque le processus enfant se termine, le processus parent n'est pas au courant de la mort de l'enfant. Nous avons donc eu 
@@ -122,7 +121,7 @@ nous avons implémenté un constructeur dans query\_result\_t, au lieu du query\
 crée directement la requête query\_result\_t, sans devoir appeller l'initialisation à chaque création d'objet.
 Dans query\_result\_t, nous avons aussi ajouté log\_query, pour pouvoir mettre les attributs en privé.
 Nous n'avons pas mis student\_t en classe, parce que les attributs d'un student sont souvent accédés par la classe query\_result\_t
-et nous n'aurions donc pas su mettre les attributs en privés.
+et que nous n'avons pas beaucoup de méthodes pour student\_t.
 \par
 
 \section{Gestion en mémoire partagée}
@@ -130,6 +129,12 @@ et nous n'aurions donc pas su mettre les attributs en privés.
 \par
 Nous avons d'abord seulement partagé la mémoire avec db->data, mais nous avons vite remarqué que les processus
 ne partagaient pas la même database. Nous avons donc partagé la mémoire aussi avec l'objet database, à l'aide de mmap.
+Malheureusement, lorsque nous effectuions les tests, ils affichaient une erreur. En effet, à chaque fois que le processus enfant
+s'occupant de insert augmentait la mémoire, les autres processus n'y avaient plus accès. Nous avons donc essayé d'augmenter la mémoire 
+uniquement avec le processus principal, ce qui ne fonctionnait toujours pas. Nous avons alors ajouté un file descriptor au mmap.
+Lorsqu'on augmente la taille du fichier et que sa place en mémoire change, le programme nous donnait un segmentation fault.
+Effectivement, les processus enfants ne remappaient pas la nouvelle mémoire crée. Suite à ça, nous avons écrit une nouvelle fonction
+qui remappe chaque processus enfant lors d'un changement avec la mémoire.
 \par
 \newpage
 \section{Monitoring}
@@ -140,10 +145,5 @@ L'utilisateur peut donc s'assurer du bon fonctionnement de la base de données e
 pour terminer l'exécution d'une instance de PID pid.\newline
 Nous avons également rajouté une fonction --help ou -h au monitoring. 
 Cela permet à l'utilisateur de comprendre les commandes disponibles et de les exécuter sans pour autant être familier avec le projet.
-\par
-
-\section{Conclusion }
-\par
-En conclusion, notre projet s'est concentré sur la création d'une nouvelle base de données qui permettrait à notre université d'augmenter les performances de la base de données des étudiants. L'idée était de supprimer les barrières pour l'université et les étudiants, afin d'accéder plus facilement aux informations. Bien sûr, il a fallu beaucoup de travail pour le finaliser et les bonnes décisions prises pour diviser les parties du projet ont rendu notre travail beaucoup plus confortable. Notre base de données est plus facile d'accès et plus fiable que la précédente. Nous avons modifié la base de données de stockage, l'identifiant de contrôle et les classes et avons également inclus les améliorations possibles qui pourraient être apportées dans les années à venir. Par exemple, nous avons changé le format de Check ID en un format plus simple et plus clair.
 \par
 \end{document}
