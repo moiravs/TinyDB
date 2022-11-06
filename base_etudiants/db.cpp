@@ -34,6 +34,9 @@ void database_t::db_init()
     }
 }
 
+size_t database_t::get_lsize(){
+    return this->lsize;
+}
 void database_t::db_map_memory()
 {
     if (this->data != local_data_map)

@@ -105,7 +105,7 @@ void query_result_t::query_select(database_t *db, char *query, char *p_end_of_qu
   }
   std::cout << "Searching for all students whose " << field_filter << " is " << value << std::endl;
   size_t i = 0;
-  while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
+  while (i < db->get_lsize()) // iterating through database to find all students corresponding to the given filter
   {
     student_t *record = db->get_record(i);
     if (is_student_ok(record, field_filter, value))
@@ -173,7 +173,7 @@ void query_result_t::query_delete(database_t *db, char *query, char *p_end_of_qu
   }
   std::cout << "Deleting all students whose " << field_filter << " is " << value << std::endl;
   size_t i = 0;
-  while (i < db->lsize) // iterating through database to find all students corresponding to the given filter
+  while (i < db->get_lsize()) // iterating through database to find all students corresponding to the given filter
   {
     student_t *record = db->get_record(i);
     if (is_student_ok(record, field_filter, value))
@@ -199,7 +199,7 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
     puts("Invalid Arguments : update <filtre>=<valeur> set <champ_modifie>=<valeur_modifiee>"); // check if valid query
     return;
   }
-  for (size_t i = 0; i < db->lsize; i++)
+  for (size_t i = 0; i < db->get_lsize(); i++)
   {
     student_t *record = db->get_record(i);
 

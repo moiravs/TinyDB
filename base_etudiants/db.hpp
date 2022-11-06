@@ -6,13 +6,15 @@
 /**
  * Database structure type.
  */
-struct database_t
+class database_t
 {
+  private:
   student_t *data; /** The list of students **/
   size_t lsize;    /** The logical size of the list **/
   size_t psize;    /** The physical size of the list **/
   int smfd;
 
+  public:
   /**
    * @brief  Initialise a database
    * @retval None
@@ -26,6 +28,7 @@ struct database_t
   void
   db_init_mem();
 
+  size_t get_lsize();
   /**
    * @brief  Add a student to the database.
    * @note
