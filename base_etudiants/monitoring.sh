@@ -7,10 +7,15 @@ if [ "${1}" == "run" ]; then
     do
         j=$((i+1))
         case "${!i}" in
-            -f) fichier_requetes="${!j}";;
+            -f) fichier_requetes="${!j}";
+            if [ -z "$fichier_requetes" ];
+            then 
+                echo "Needs arguments after -f"
+                exit 1
+            fi
         esac    
     done
-    file="${2:-students.bin}"
+    file="${2}"
     if [ "${file}" == "-f" ]; 
     then
         file="data/students.bin"
@@ -33,7 +38,6 @@ if [ "${1}" == "run" ]; then
         ./tinydb "$file" < "$fichier_requetes" &
     else
         ./tinydb "$file"
-    
 fi
 
 
