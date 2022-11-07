@@ -223,7 +223,7 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
         }
         else // if id is in the database
         {
-          db->db_add(*record); // put back the student copied
+          db->db_add(*record); // put back the student
           puts("ID already in the database, update query stops here");
           break;
         }
