@@ -9,6 +9,7 @@ run:
 	make main && ./tinydb
 
 monitoring:
+	chmod u+x monitoring.sh
 	bash monitoring.sh
 
 process.o:process.cpp process.hpp

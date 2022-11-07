@@ -133,7 +133,7 @@ s'occupant de insert augmentait la mémoire, les autres processus n'y avaient pl
 uniquement avec le processus principal, ce qui ne fonctionnait toujours pas. Nous avons alors ajouté un file descriptor au mmap.
 Lorsqu'on augmente la taille du fichier et que sa place en mémoire change, le programme nous donnait un segmentation fault.
 Effectivement, les processus enfants ne remappaient pas la nouvelle mémoire crée. Suite à ça, nous avons écrit une nouvelle fonction
-qui remappe chaque processus enfant lors d'un changement avec la mémoire.
+qui remappe chaque processus enfant lors d'un changement avec la mémoire. Sinon les enfants n'ont pas la permission d'accéder
 \par
 
 \end{document}

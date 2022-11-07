@@ -48,9 +48,7 @@ bool database_t::db_add(student_t student)
 
     signed int position = this->lsize - 1;
     while ((position >= 0) && (student.id < this->data[position].id))
-    {
         position--;
-    }
     if ((position >= 0) && (student.id == this->data[position].id))
     {
         std::cout << "ID already in the database." << std::endl;
@@ -60,9 +58,7 @@ bool database_t::db_add(student_t student)
     this->db_upsize();
 
     if ((this->lsize - position - 2) > 0) // move all the students after the new student we inserted
-    {
         memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
-    }
     memcpy(&this->data[position + 1], &student, 256); // insert at end of db if there is no student after new student inserted
     return true;
 }
@@ -114,9 +110,7 @@ void database_t::db_load(const char *path)
     }
     student_t student;
     while (fread(&student, sizeof(student_t), 1, file))
-    {
         this->db_add(student);
-    }
     fclose(file);
     std::cout << "Done !" << std::endl;
 }
@@ -142,11 +136,8 @@ void database_t::db_save(const char *path)
 void database_t::db_delete(size_t indice)
 {
     this->db_map_memory();
-
     if (indice >= this->lsize)
-    {
         perror("db_delete()");
-    }
     this->lsize--;
     memmove(&this->data[indice], &this->data[indice + 1], (sizeof(student_t) * (this->lsize - indice))); // overriding a student by moving what's after it to the deleted student's location in memory
 }

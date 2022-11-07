@@ -10,7 +10,7 @@ if [ "${1}" == "run" ]; then
             -f) fichier_requetes="${!j}";
             if [ -z "$fichier_requetes" ];
             then 
-                echo "Needs arguments after -f"
+                echo "-f requires an argument"
                 exit 1
             fi
         esac    

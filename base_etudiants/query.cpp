@@ -208,22 +208,22 @@ void query_result_t::query_update(database_t *db, char *query, char *p_end_of_qu
       if (strcmp(field_to_update, "id") == 0)
       {
         student_t *s = new student_t;
-        memcpy(s->fname, &record->fname, 64);          // copie l'étudiant record
-        memcpy(s->section, &record->section, 64);      // copie l'étudiant record
-        memcpy(s->lname, &record->lname, 64);          // copie l'étudiant record
-        memcpy(&s->birthdate, &record->birthdate, 44); // copie l'étudiant record
+        memcpy(s->fname, &record->fname, 64);          // copy the student
+        memcpy(s->section, &record->section, 64);      // copy the student
+        memcpy(s->lname, &record->lname, 64);          // copy the student
+        memcpy(&s->birthdate, &record->birthdate, 44); // copy the student
         int temp = (atoi(update_value));
-        memcpy(&s->id, &temp, 4); // change l'id du nouvel étudiant créé
+        memcpy(&s->id, &temp, 4); // change the id of the new student
         db->db_delete(i);
-        if (db->db_add(*s)) // si l'id n'est pas présent
+        if (db->db_add(*s)) // if the id is not in the database
         {
           this->query_result_add(*s);
           puts("Two students can't have the same ID, update query stops here");
           break;
         }
-        else // si l'id est déjà dans la database
+        else // if id is in the database
         {
-          db->db_add(*record); // on remet l'ancien student
+          db->db_add(*record); // put back the student copied
           puts("ID already in the database, update query stops here");
           break;
         }
