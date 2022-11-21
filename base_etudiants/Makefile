@@ -19,4 +19,3 @@ smalldb: smalldb.cpp ${OBJ}
 clean:
 	-rm *.o
 	-rm *.hpp.gch
-	-rm *.gch
