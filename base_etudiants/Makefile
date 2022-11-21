@@ -3,10 +3,10 @@ FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE -Werror
 COMPILER=g++
 
 main: process.o main.cpp student.o parsing.o db.o query.o utils.o 
-	${COMPILER} -o tinydb process.o main.cpp parsing.o student.o db.o query.o utils.o  ${FLAGS}
+	${COMPILER} -o SmallDB process.o main.cpp parsing.o student.o db.o query.o utils.o  ${FLAGS}
 
 run:
-	make main && ./tinydb
+	make main && ./SmallDB
 
 monitoring:
 	chmod u+x monitoring.sh
@@ -35,5 +35,5 @@ tests: tests/run_tests.py
 
 clean:
 	rm -f *.o
-	rm -f tinydb
+	rm -f SmallDB
 	rm -f logs/*

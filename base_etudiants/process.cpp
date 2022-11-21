@@ -1,8 +1,8 @@
 /*
-Projet 1 du cours *systèmes d'exploitation*, INFO-F201
-Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
+Projet 2 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Milan
 Cursus : BA2-INFO
-Description du projet *TinyDB* :
+Description du projet *SmallDB* :
   Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 #include <iostream>
@@ -218,7 +218,6 @@ void main_process()
         process_delete();
 
     char query[256] = "0";
-    bool transaction = false;
     char *status = new char[256]; // put the response of the fd_response pipe
     while (!std::cin.eof() && std::cin.getline(query, 256))
     {
@@ -238,22 +237,7 @@ void main_process()
         memcpy(query_copy, query, 256);
         const char *query_key = new char[6]();
         query_key = strtok_r(query_copy, " ", &p_end_of_query);
-        if (strcmp(query, "transaction") == 0)
-        {
-            close(fd_response[1]);
-            while (operation_in_progress > 0)
-            {
-                while (read(fd_response[0], status, 256) > 0)
-                    operation_in_progress--;
-                if (operation_in_progress > 0)
-                {
-                    std::cout << operation_in_progress << " operations in progress: Wait" << std::endl;
-                    sleep(1);
-                }
-            }
-            transaction ^= transaction;
-        }
-        else if (strcmp(query_key, "select") == 0)
+        if (strcmp(query_key, "select") == 0)
         {
             operation_in_progress++;
             close(fd_select[0]);
@@ -279,17 +263,5 @@ void main_process()
         }
         else
             puts("Bad query");
-
-        if (transaction == true)
-        {
-            close(fd_response[1]);
-            while (operation_in_progress > 0)
-            {
-                std::cout << operation_in_progress << " operations in progress: Wait" << std::endl;
-                if (read(fd_response[0], status, 256) > 0)
-                    operation_in_progress--;
-                sleep(1);
-            }
-        }
     }
 }

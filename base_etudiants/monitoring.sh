@@ -35,21 +35,21 @@ if [ "${1}" == "run" ]; then
     echo "File : $file";
     if [ "${fichier_requetes}" != "" ]
     then
-        ./tinydb "$file" < "$fichier_requetes" &
+        ./SmallDB "$file" < "$fichier_requetes" &
     else
-        ./tinydb "$file"
+        ./SmallDB "$file"
 fi
 
 
 elif [ "${1}" == "sync" ]; then
     i=0;
-    proc="tinydb"
+    proc="SmallDB"
     pids=$(pgrep "$proc")
     echo "$pids";
     for pid in $pids
     do
         parent=$(pstree "$pid");
-        if [[ $parent != "tinydb" ]]; then
+        if [[ $parent != "SmallDB" ]]; then
             echo "Sync process $pid ...";
             kill -USR1 $pid;
         fi
@@ -58,18 +58,18 @@ elif [ "${1}" == "sync" ]; then
 
 elif [ "${1}" == "status" ]; then
 
-    proc="tinydb"
+    proc="SmallDB"
     pids=$(pgrep "$proc")
     if [[ -n $pids ]]; then
         printf "%s\n\nThere are currently %d processes running under the application '%s'\n" \
             "$pids" "$(wc -l <<< "$pids")" "$proc"
     else
-        echo "No tinydb process running"
+        echo "No SmallDB process running"
     fi
 
 elif [ "${1}" == "shutdown" ]; then
     if [ $# -eq 1 ]; then
-        proc="tinydb"
+        proc="SmallDB"
         pids=$(pgrep "$proc")
         for pid in $pids
         do
@@ -81,15 +81,15 @@ elif [ "${1}" == "shutdown" ]; then
 
     else
         i=0;
-        proc="tinydb"
+        proc="SmallDB"
         pids=$(pgrep "$proc")
         for pid in $pids
         do
         parent=$(pstree "$pid");
-        if [[ $parent != "tinydb" ]] && [ $pid = $2 ]; then
+        if [[ $parent != "SmallDB" ]] && [ $pid = $2 ]; then
             echo "Shutdown $pid ...";
             kill -INT $pid;
-        elif [[ $parent == "tinydb" ]] && [ $pid = $2 ]; then 
+        elif [[ $parent == "SmallDB" ]] && [ $pid = $2 ]; then 
             echo This is not the main process, choose another pid > /dev/stderr;
         fi
         ((i++));
@@ -99,7 +99,7 @@ elif [ "${1}" == "shutdown" ]; then
 
 elif [ "${1}" == "-h" ] || [ "${1}" == "--help" ] ; then 
     echo "List of commands to launch the program"
-    echo -e " \t " "./tinydb <path_to_database> < [<queries_file>]"
+    echo -e " \t " "./SmallDB <path_to_database> < [<queries_file>]"
     echo -e " \t " "./monitoring run [<path_to_database>] [-f <queries_file>]"
     echo 
     echo "List of query commands"

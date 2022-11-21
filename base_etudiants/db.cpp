@@ -1,7 +1,7 @@
 /*
-Projet 1 du cours *systèmes d'exploitation*, INFO-F201
-Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
-Description du projet *TinyDB* :
+Projet 2 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Milan
+Description du projet *SmallDB* :
   Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 
@@ -69,9 +69,9 @@ void database_t::db_upsize()
     {
         size_t old_psize = this->psize;
         this->psize *= 2;
-        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600); //open the file
-        ftruncate(smfd, this->psize); // extend the file size
-        student_t *new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE); //remap the file descriptor
+        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);                                           // open the file
+        ftruncate(smfd, this->psize);                                                                     // extend the file size
+        student_t *new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE); // remap the file descriptor
 
         if (new_student == MAP_FAILED)
         {

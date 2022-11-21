@@ -1,8 +1,8 @@
 /*
-Projet 1 du cours *systèmes d'exploitation*, INFO-F201
-Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Hasan Yildirim
+Projet 2 du cours *systèmes d'exploitation*, INFO-F201
+Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Milan
 Cursus : BA2-INFO
-Description du projet *TinyDB* :
+Description du projet *SmallDB* :
   Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
 */
 

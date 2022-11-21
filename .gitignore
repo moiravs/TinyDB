@@ -2,11 +2,11 @@ base_etudiants/db.o
 base_etudiants/parsing.o
 base_etudiants/query.o
 base_etudiants/student.o
-base_etudiants/tinydb
+base_etudiants/SmallDB
 base_etudiants/main.o
 base_etudiants/utils.o
-base_etudiants/tinydb.exe
-base_etudiants/tinydb.o
+base_etudiants/SmallDB.exe
+base_etudiants/SmallDB.o
 base_etudiants/students.bin
 mes-notes-perso.txt
 base_etudiants/tests/test_delete_multiple.output

@@ -66,7 +66,7 @@ def run_test(test_name, db_filename):
         os.makedirs("logs")
     except:
         pass
-    command = "./tinydb " + db_filename + " < tests/queries/" + \
+    command = "./SmallDB " + db_filename + " < tests/queries/" + \
         test_name + ".txt > tests/test_" + test_name + ".output"
     print("Running test " + test_name + ": \"" + command + "\"")
     if os.system(command) != 0:
