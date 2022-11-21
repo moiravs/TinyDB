@@ -141,3 +141,4 @@ void database_t::db_delete(size_t indice)
     this->lsize--;
     memmove(&this->data[indice], &this->data[indice + 1], (sizeof(student_t) * (this->lsize - indice))); // overriding a student by moving what's after it to the deleted student's location in memory
 }
+
