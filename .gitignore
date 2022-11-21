@@ -11,6 +11,9 @@ base_etudiants/smalldb.exe
 base_etudiants/smalldb
 base_etudiants/*.hpp.gch
 base_etudiants/client.exe
+base_etudiants/client
+base_etudiants/server
+base_etudiants/
 base_etudiants/server.exe
 base_etudiants/monirun
 base_etudiants/monishutdown
