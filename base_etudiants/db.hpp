@@ -13,8 +13,11 @@ private:
   size_t lsize;    /** The logical size of the list **/
   size_t psize;    /** The physical size of the list **/
   int smfd;
+  const char *path;
 
 public:
+  void setPath(const char *path);
+
   /**
    * @brief  Getter of lsize
    * @retval Logical size of database_t
@@ -52,13 +55,13 @@ public:
    * @param  *path: Path of the database to load
    * @retval None
    */
-  void db_save(const char *path);
+  void db_save();
   /**
    * @brief Load the content of a database of students.
    * @param  *path: Path of the database to load
    * @retval None
    */
-  void db_load(const char *path);
+  void db_load();
   /**
    * @brief  Delete a student from the database
    * @param  indice: Index of the student to delete

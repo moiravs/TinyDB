@@ -40,7 +40,7 @@ void close_application(bool force)
     }
 
     puts("Committing database changes to the disk...");
-    db->db_save(db_path);
+    db->db_save();
 
     if (!force)
     {

@@ -16,7 +16,12 @@ Description du projet *SmallDB* :
 #include "student.hpp"
 
 student_t *local_data_map = 0;
-size_t database_t::get_lsize()
+
+void database_t::setPath(const char *path){
+    this->path = path;
+}
+
+    size_t database_t::get_lsize()
 {
     return this->lsize;
 }
@@ -98,7 +103,7 @@ void database_t::db_map_memory()
     }
 }
 
-void database_t::db_load(const char *path)
+void database_t::db_load()
 {
 
     std::cout << "Loading your tiny tiny database..." << std::endl;
@@ -115,7 +120,7 @@ void database_t::db_load(const char *path)
     std::cout << "Done !" << std::endl;
 }
 
-void database_t::db_save(const char *path)
+void database_t::db_save()
 {
     this->db_map_memory();
 
