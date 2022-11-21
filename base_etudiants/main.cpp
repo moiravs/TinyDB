@@ -14,6 +14,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <iostream>
 
 // Permet de définir un gestionnaire de signaux pour SIGPIPE,
 // ce qui évite une fermeture abrupte du programme à la réception
@@ -21,9 +22,21 @@
 // faire avant de terminer le programme)
 #include <signal.h>
 
+void *work(void * new_socket){
+    char buffer[1024];
+    int lu;
+    
+    while ((lu = read((int)new_socket, buffer, 1024)) > 0)
+    {
+        checked_wr(write((int)new_socket, buffer, lu));
+        std::cout << buffer;
+    }
+}
+
+
 int main(int argc, char const *argv[])
 {
-
+    pthread_t cThread;
     database_t *db = new database_t;
     db->path = argv[1];
     db_load(db, db->path);
@@ -44,15 +57,7 @@ int main(int argc, char const *argv[])
 
     size_t addrlen = sizeof(address);
     int new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
-
-    char buffer[1024];
-    int lu;
-
-    while ((lu = read(new_socket, buffer, 1024)) > 0)
-    {
-        checked_wr(write(new_socket, buffer, lu));
-    }
-
+    pthread_create(&cThread, NULL, work, (void*)new_socket);
     close(server_fd);
     close(new_socket);
     return 0;
