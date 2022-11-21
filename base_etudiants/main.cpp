@@ -1,4 +1,5 @@
 #include "common.h"
+#include "db.hpp"
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <cstdio>
@@ -20,10 +21,12 @@
 // faire avant de terminer le programme)
 #include <signal.h>
 
-
-
-int main()
+int main(int argc, char const *argv[])
 {
+
+    database_t *db = new database_t;
+    db->path = argv[1];
+    db_load(db, db->path);
     signal(SIGPIPE, SIG_IGN);
 
     int server_fd = checked(socket(AF_INET, SOCK_STREAM, 0));

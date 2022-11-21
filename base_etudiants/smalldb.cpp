@@ -23,10 +23,6 @@
 
 int main(int argc, char const *argv[])
 {
-
-  // database_t *db = new database_t;
-  // db->path = argv[1];
-  // db_load(db, db->path);
   //  Permet que write() retourne 0 en cas de réception
   //  du signal SIGPIPE.
   signal(SIGPIPE, SIG_IGN);

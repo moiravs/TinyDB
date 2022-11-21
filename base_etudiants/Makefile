@@ -20,8 +20,8 @@ clean:
 	-rm *.o
 	-rm *.hpp.gch
 
-client: smalldb.cpp common.h
-	${CC} -o $@ $^ ${CFLAGS}
+client: smalldb.cpp common.h ${OBJ}
+	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
 
-server: main.cpp common.h
-	${CC} -o $@ $^ ${CFLAGS}
+server: main.cpp common.h ${OBJ}
+	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
