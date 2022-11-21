@@ -6,17 +6,50 @@
 
 #include <unistd.h>
 #include <string.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+// Permet de définir un gestionnaire de signaux pour SIGPIPE,
+// ce qui évite une fermeture abrupte du programme à la réception
+// du signal (utile si vous avez des opérations de nettoyage à
+// faire avant de terminer le programme)
+#include <signal.h>
+
+#include "common.h"
 
 int main()
 {
-    int sock = socket(AF_INET, SOCK_STREAM, 0);
-    struct sockaddr_in serv_addr;
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(8080);
-    // Conversion de string vers IPv4 ou IPv6 en binaire
-    inet_pton(AF_INET, " 127.0.0.1 ", &serv_addr.sin_addr);
-    connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr));
-    char message[] = " Salut à tous";
-    write(sock, message, strlen(message));
-    close(sock);
+    signal(SIGPIPE, SIG_IGN);
+
+    int server_fd = checked(socket(AF_INET, SOCK_STREAM, 0));
+
+    int opt = 1;
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
+
+    struct sockaddr_in address;
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(8080);
+
+    checked(bind(server_fd, (struct sockaddr *)&address, sizeof(address)));
+    checked(listen(server_fd, 3));
+
+    size_t addrlen = sizeof(address);
+    int new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
+
+    char buffer[1024];
+    int lu;
+
+    while ((lu = read(new_socket, buffer, 1024)) > 0)
+    {
+        checked_wr(write(new_socket, buffer, lu));
+    }
+
+    close(server_fd);
+    close(new_socket);
+    return 0;
 }
