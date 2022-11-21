@@ -1,0 +1,21 @@
+#!/bin/bash
+
+USAGE="monitoring run|status|sync|shutdown [pid|chemin_db] [-f fichier_requetes]"
+
+# run [chemin_db] [-f fichier_requetes]
+if [[ "$1" == "run" ]]; then
+   shift
+   ./monirun "$@"
+# run status
+elif [[ "$1" == "status" ]]; then
+   ./monistatus
+# sync
+elif [[ "$1" == "sync" ]]; then
+   ./monisync
+# shutdown pid
+elif [[ "$1" == "shutdown" ]]; then
+   shift
+   ./monishutdown "$@"
+else
+   echo "$USAGE"
+fi

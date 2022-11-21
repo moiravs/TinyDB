@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if (( $# > 0 )); then
+   if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+      echo 'Utilisation : monitoring shutdown [<pid>]' 1>&2
+      echo "'$1' n'est pas un PID valide." 1>&2
+      exit 1
+   fi
+   
+   TARGET_PID=$1
+   FOUND_TARGET=0
+else
+   FOUND_TARGET=1
+fi
+
+for pid in $(pidof tinydb); do
+   children="$(pgrep -P $pid)"
+   if [ -n "$children" ]; then
+      if [ -z "$TARGET_PID" ]; then
+         read -p "Terminer le processus $pid (o/n) ? " REPONSE
+         if [[ "$REPONSE" =~ ^[oO]([uU][iI])?$ ]]; then
+            kill -s SIGINT $pid
+            echo "Le processus $pid a été arrêté."
+         else
+            echo "Le processus $pid a été ignoré."
+         fi
+         
+      elif [[ "$TARGET_PID" -eq "$pid" ]]; then
+         echo "Le processus $pid a été arrêté."
+         kill -s SIGINT $pid
+         FOUND_TARGET=1
+      fi
+   fi
+done
+
+if [[ $FOUND_TARGET -eq 0 ]]; then
+   echo "$TARGET_PID n'est pas un PID d'instance de tinydb." 1>&2
+fi

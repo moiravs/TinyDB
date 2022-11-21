@@ -1,0 +1,90 @@
+#!/bin/bash
+
+set -m # Cette ligne est nécessaire pour pouvoir mettre des jobs à l'avant-plan dans le script.
+
+USAGE='monitoring run [<chemin_vers_la_db>] [-f <fichier_requetes>]'
+DB_PATH='data/students.bin'
+
+BAD_USAGE=1
+INVALID_INPUT_FILE=2
+INVALID_DB_PATH=3
+
+function parse_args () {
+    for param ; do
+        if [ "$param" = '-h' ] || [ "$param" = '--help' ] || [ "$param" = 'help' ] ; then
+            echo "$USAGE" 1>&2
+            exit
+        fi
+    done
+
+    while [ $# -gt 0 ]; do
+
+        case "$1" in
+            -f)
+                if [ $# -lt 2 ] ; then
+                  echo '-f nécessite un argument <fichier_requetes>.' 1>&2
+                  exit $BAD_USAGE
+                fi
+                
+                INPUT_FILE="$2"
+                if ! [ -e "$INPUT_FILE" ]; then
+                  echo "Le fichier d'entrée n'existe pas." 1>&2
+                  exit $INVALID_INPUT_FILE
+                fi
+                
+                shift ; shift
+                ;;
+            -*)
+                echo "Option inconnue: $1." 1>&2
+                exit $BAD_USAGE
+                ;;
+            *)
+                DB_PATH="$1"
+                
+                # Traitement du fichier s'il n'existe pase
+                if ! [ -e "$DB_PATH" ]; then
+                  echo "Le fichier contenant la BDD, '$DB_PATH', n'existe pas." 1>&2
+                  
+                  # On regarde s'il s'agit d'un nom de fichier simple
+                  # ou un avec un chemin
+                  if [[ "$DB_PATH" =~ ^[^/]*$ ]]; then
+                     # Fichier simple
+                     if ! ( touch "$DB_PATH" ); then
+                        echo "Échec de la création du fichier '$DB_PATH'." 1>&2
+                        exit $INVALID_DB_PATH
+                     fi
+                     
+                     echo "Le fichier de la BDD a été créé."
+                  elif [[ "$DB_PATH" =~ ^.*/$ ]]; then
+                     # Nom de dossier (terminant par "/")
+                     echo "Le chemin '$DB_PATH' fourni référence un dossier au lieu d'un fichier." 1>&2
+                     exit $INVALID_DB_PATH
+                  else # Nom avec chemin
+                     PATH_NEW_DB=${DB_PATH%/*}
+                     
+                     if ! ( mkdir -p "$PATH_NEW_DB" && touch "$DB_PATH" ); then
+                        echo "Échec de la création du fichier '$DB_PATH'." 1>&2
+                        exit $INVALID_DB_PATH
+                     fi
+                     
+                     echo "Le fichier de la BDD a été créé."
+                  fi
+                fi
+                
+                shift
+                ;;
+        esac
+    done
+}
+
+parse_args "$@"
+
+if [ -z "$INPUT_FILE" ]; then
+   ./tinydb "$DB_PATH" &
+else
+   ./tinydb "$DB_PATH" < "$INPUT_FILE" &
+fi
+
+echo "PID de l'instance : $!"
+fg > /dev/null
+

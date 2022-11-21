@@ -1,13 +1,13 @@
-CXXFLAGS+=-std=c++17 -fsanitize=undefined,leak,address -g -Wall -Wextra -Wpedantic -D_GNU_SOURCE -Werror=all
+CXXFLAGS+=-std=c++17 -fsanitize=leak,address -g -Wall -Wextra -Wpedantic -D_GNU_SOURCE -Werror=all
 #CXX=g++
-LDLIBS+=-lpthread
+LDLIBS+=-lpthread -lasan
 SOURCES = $(wildcard *.cpp */*.cpp)
 HEADERS = $(wildcard *.hpp */*.hpp)
 
 OBJ=db.o student.o
 
 .PHONY: main
-main: smalldb check run
+main: smalldb
 
 smalldb: smalldb.cpp ${OBJ}
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
@@ -18,3 +18,4 @@ smalldb: smalldb.cpp ${OBJ}
 .PHONY: clean
 clean:
 	-rm *.o
+	-rm *.hpp.gch
