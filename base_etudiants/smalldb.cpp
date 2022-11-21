@@ -1,4 +1,5 @@
-#include "db.hpp"
+#include "common.h"
+//#include "db.hpp"
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <cstdio>
@@ -19,41 +20,56 @@
 // faire avant de terminer le programme)
 #include <signal.h>
 
-#include "common.h"
 
 int main(int argc, char const *argv[])
 {
 
-  database_t *db = new database_t;
-  db->path = argv[1];
-  db_load(db, db->path);
+  // database_t *db = new database_t;
+  // db->path = argv[1];
+  // db_load(db, db->path);
+  //  Permet que write() retourne 0 en cas de réception
+  //  du signal SIGPIPE.
   signal(SIGPIPE, SIG_IGN);
 
-  int server_fd = checked(socket(AF_INET, SOCK_STREAM, 0));
+  int sock = checked(socket(AF_INET, SOCK_STREAM, 0));
 
-  int opt = 1;
-  setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
+  struct sockaddr_in serv_addr;
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_port = htons(8080);
 
-  struct sockaddr_in address;
-  address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(8080);
+  // Conversion de string vers IPv4 ou IPv6 en binaire
+  inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
 
-  checked(bind(server_fd, (struct sockaddr *)&address, sizeof(address)));
-  checked(listen(server_fd, 3));
-
-  size_t addrlen = sizeof(address);
-  int new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
+  checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
 
   char buffer[1024];
-  int lu;
+  int longueur, i, ret;
 
-  while ((lu = read(new_socket, buffer, 1024)) > 0)
+  while (fgets(buffer, 1024, stdin) != NULL)
   {
-    checked_wr(write(new_socket, buffer, lu));
+    longueur = strlen(buffer) + 1;
+    printf("Envoi...\n");
+    checked_wr(write(sock, buffer, strlen(buffer) + 1));
+
+    i = 0;
+    while (i < longueur)
+    {
+      ret = read(sock, buffer, longueur - i);
+      if (ret <= 0)
+      {
+        if (ret < 0)
+          perror("read");
+        else
+          printf("Déconnexion du serveur.\n");
+        return 1;
+      }
+
+      i += ret;
+    }
+
+    printf("Recu : %s\n", buffer);
   }
 
-  close(server_fd);
-  close(new_socket);
+  close(sock);
   return 0;
 }

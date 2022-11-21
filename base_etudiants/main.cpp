@@ -1,3 +1,4 @@
+#include "common.h"
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <cstdio>
@@ -19,7 +20,7 @@
 // faire avant de terminer le programme)
 #include <signal.h>
 
-#include "common.h"
+
 
 int main()
 {
