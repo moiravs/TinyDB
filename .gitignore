@@ -8,6 +8,7 @@ base_etudiants/utils.o
 base_etudiants/SmallDB.exe
 base_etudiants/SmallDB.o
 base_etudiants/smalldb.exe
+base_etudiants/smalldb
 base_etudiants/client.exe
 base_etudiants/server.exe
 base_etudiants/monirun
