@@ -21,14 +21,16 @@
 // du signal (utile si vous avez des opérations de nettoyage à
 // faire avant de terminer le programme)
 #include <signal.h>
+int new_socket;
 
-void *work(void * new_socket){
+void *work(void *){
+    std::cout << "thread created";
     char buffer[1024];
     int lu;
-    
-    while ((lu = read((int)new_socket, buffer, 1024)) > 0)
+
+    while ((lu = read(new_socket, buffer, 1024)) > 0)
     {
-        checked_wr(write((int)new_socket, buffer, lu));
+        checked_wr(write(new_socket, buffer, lu));
         std::cout << buffer;
     }
 }
@@ -56,8 +58,9 @@ int main(int argc, char const *argv[])
     checked(listen(server_fd, 3));
 
     size_t addrlen = sizeof(address);
-    int new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
-    pthread_create(&cThread, NULL, work, (void*)new_socket);
+    new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
+    pthread_create(&cThread, NULL, work, NULL);
+    pthread_join(cThread, NULL);
     close(server_fd);
     close(new_socket);
     return 0;
