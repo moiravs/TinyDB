@@ -7,6 +7,14 @@ base_etudiants/main.o
 base_etudiants/utils.o
 base_etudiants/SmallDB.exe
 base_etudiants/SmallDB.o
+base_etudiants/smalldb
+base_etudiants/client
+base_etudiants/server
+base_etudiants/monirun
+base_etudiants/monishutdown
+base_etudiants/monistatus
+base_etudiants/monisync
+base_etudiants/monitoring
 base_etudiants/students.bin
 mes-notes-perso.txt
 base_etudiants/tests/test_delete_multiple.output
