@@ -1,149 +1,114 @@
-/*
-Projet 2 du cours *systèmes d'exploitation*, INFO-F201
-Auteurs : Moïra Vanderslagmolen, Andrius Ežerskis, Milan
-Description du projet *SmallDB* :
-  Base de données formée à partir d'un fichier .bin et reprenant l'identité des étudiants, ainsi que leur cursus
-*/
-
-#include <time.h>
-#include <unistd.h>
-#include <iostream>
-#include <sys/mman.h>
-#include <cstring>
-#include <fcntl.h>
-
 #include "db.hpp"
-#include "student.hpp"
 
-student_t *local_data_map = 0;
+#include <err.h>       // err
+#include <fcntl.h>     // open
+#include <sys/stat.h>  // stat
+#include <unistd.h>    // read
 
-void database_t::setPath(const char *path){
-    this->path = path;
-}
+#include <algorithm>  // std::min
+#include <cassert>    // assert
+#include <climits>    // SSIZE_MAX
+#include <cstdio>     // printf
+#include <utility>    // std::move
 
-    size_t database_t::get_lsize()
-{
-    return this->lsize;
-}
-student_t *database_t::get_record(int i)
-{
-    this->db_map_memory();
-    return &this->data[i];
-}
+#include "errorcodes.hpp"
 
-void database_t::db_init()
-{
-    this->lsize = 0;
-    this->psize = 2 * sizeof(student_t);
+void db_load(database_t *db, const char *path) {
+  db->path = path;
 
-    int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
-    ftruncate(smfd, this->psize);
-    this->data = (student_t *)mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
-                                   MAP_SHARED, smfd, 0);
+  // Ouvrir le fichier et déterminer sa taille
+  struct stat info;
+  int         fd_db = open(path, O_RDONLY);
 
-    if (this->data == MAP_FAILED)
-    {
-        std::cout << "Mapped failed\n";
-        exit(-1);
+  if (fd_db < 0) {
+    warn("Unable to open %s (loading DB)", path);
+    warnx("Starting with an empty DB.");
+    db->data.reserve(100);
+    return;
+  }
+  if (fstat(fd_db, &info) != 0) {
+    err(FILE_ERROR, "Unable to stat %s (loading DB)", path);
+  }
+  if (info.st_size < 0) {
+    err(FILE_ERROR, "Unable to stat %s (loading DB): get a negative size", path);
+  }
+  size_t size = static_cast<size_t>(info.st_size) / sizeof(student_t);
+  if (info.st_size != static_cast<ssize_t>(sizeof(student_t) * size)) {
+    err(FILE_ERROR, "Corrupted DB file");
+  }
+
+  // Initialiser la BDD (en RAM)
+  assert(db->data.empty());
+  db->data.reserve(size + size/2);
+
+  // Charger la BDD (en RAM)
+  for (size_t i = 0; i < size; ++i) {
+    student_t s;
+    ssize_t   r = read(fd_db, &s, sizeof(s));
+    if (r < 0) {
+      err(FILE_ERROR, "Unable to read the DB file");
     }
-}
-bool database_t::db_add(student_t student)
-{
-    this->db_map_memory(); // map the memory between processes
-
-    signed int position = this->lsize - 1;
-    while ((position >= 0) && (student.id < this->data[position].id))
-        position--;
-    if ((position >= 0) && (student.id == this->data[position].id))
-    {
-        std::cout << "ID already in the database." << std::endl;
-        return false;
+    if (static_cast<unsigned>(r) < sizeof(s)) {
+      err(FILE_ERROR, "Corrupted DB file");
     }
-    this->lsize++;
-    this->db_upsize();
+    db->data.push_back(std::move(s));
+  }
 
-    if ((this->lsize - position - 2) > 0) // move all the students after the new student we inserted
-        memmove(&this->data[position + 2], &this->data[position + 1], (this->lsize - position - 2) * sizeof(student_t));
-    memcpy(&this->data[position + 1], &student, 256); // insert at end of db if there is no student after new student inserted
-    return true;
+  // Fermer le fichier
+  if (close(fd_db) < 0) {
+    err(FILE_ERROR, "Error while closing %s (after DB load)", path);
+  }
+
+  printf("%lu students found in the db.\n", size);
+
+  // Le code ci-dessus n'est pas performant
+  // à cause du trop grand nombre d'appel à read
+  // et de la copie de chaque étudiant dans data.
+  // L'utilisation de fopen, fread, etc. aurait
+  // réglé le problème de lecture (ces fonctions
+  // utilisent un buffer pour limiter le nombre d'appels
+  // systèmes (read, write)), mais nous voulons illuster
+  // ici le fonctionnement de ces appels systèmes.
+  // (Dans un vrai code il faudrait utiliser fopen, fread...)
+  //
+  // Vous pouvez utiliser cette fonction dans votre projet.
+  // Le défaut mentionner ne sera pas considéré.
 }
-void database_t::db_upsize()
-{
 
-    if (this->lsize > (this->psize / sizeof(student_t))) // if we reached the end of the allocated size for this
-    {
-        size_t old_psize = this->psize;
-        this->psize *= 2;
-        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);                                           // open the file
-        ftruncate(smfd, this->psize);                                                                     // extend the file size
-        student_t *new_student = (student_t *)mremap(this->data, old_psize, this->psize, MREMAP_MAYMOVE); // remap the file descriptor
+void db_add(database_t *db, student_t s) { db->data.push_back(s); }
 
-        if (new_student == MAP_FAILED)
-        {
-            std::cout << "Mapped failed when upsize\n";
-            exit(-1);
-        }
-        this->data = new_student;
-        msync(this, sizeof(this), MS_SYNC);
+size_t db_delete(database_t *db, student_t *s) {
+  size_t deleted = 0;
+  for (std::vector<student_t>::iterator it = db->data.begin();
+       it != db->data.end();) {
+    if (student_equals(&*it, s)) {
+      it = db->data.erase(it);
+      ++deleted;
+    } else {
+      ++it;
     }
+  }
+  return deleted;
 }
 
-void database_t::db_map_memory()
-{
-    if (this->data != local_data_map)
-    {
-        int smfd = shm_open("/dbtest", O_RDWR | O_CREAT, 0600);
-        if (mmap(NULL, this->psize, PROT_READ | PROT_WRITE,
-                 MAP_SHARED, smfd, 0) == MAP_FAILED)
-        {
-            std::cout << "Re Mapped failed\n";
-            exit(-1);
-        }
-        local_data_map = this->data;
+void db_save(database_t *db) {
+  int fd_db = open(db->path, O_WRONLY | O_CREAT | O_TRUNC, 0640);
+  if (fd_db < 0) {
+    err(FILE_ERROR, "Unable to open %s (saving DB)", db->path);
+  }
+  const char  *raw_data    = reinterpret_cast<char *>(db->data.data());
+  const size_t total_bytes = db->data.size() * sizeof(student_t);
+  size_t       left_bytes  = total_bytes;
+  while (left_bytes > 0) {
+    // write() can not write more than SSIZE_MAX bytes
+    size_t  to_write_bytes = std::min(static_cast<size_t>(SSIZE_MAX), left_bytes);
+    ssize_t written =
+        write(fd_db, &raw_data[total_bytes - left_bytes], to_write_bytes);
+    if (written < 0) {
+      warn("Unable to write DB to %s", db->path);
+      warn("And %s was already cleared for writing!", db->path);
+      return;
     }
+    left_bytes -= static_cast<size_t>(written);
+  }
 }
-
-void database_t::db_load()
-{
-
-    std::cout << "Loading your tiny tiny database..." << std::endl;
-    FILE *file = fopen(path, "rb");
-    if (!file)
-    {
-        perror("Could not open the DB file");
-        exit(1);
-    }
-    student_t student;
-    while (fread(&student, sizeof(student_t), 1, file))
-        this->db_add(student);
-    fclose(file);
-    std::cout << "Done !" << std::endl;
-}
-
-void database_t::db_save()
-{
-    this->db_map_memory();
-
-    FILE *f = fopen(path, "wb");
-    if (!f)
-    {
-        perror("Could not open the DB file");
-        exit(1);
-    }
-    if (fwrite(this->data, sizeof(student_t), this->lsize, f) < 0)
-    {
-        perror("Could not write in the DB file");
-        exit(1);
-    }
-    fclose(f);
-}
-
-void database_t::db_delete(size_t indice)
-{
-    this->db_map_memory();
-    if (indice >= this->lsize)
-        perror("db_delete()");
-    this->lsize--;
-    memmove(&this->data[indice], &this->data[indice + 1], (sizeof(student_t) * (this->lsize - indice))); // overriding a student by moving what's after it to the deleted student's location in memory
-}
-

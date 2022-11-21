@@ -1,39 +1,20 @@
+CXXFLAGS+=-std=c++17 -fsanitize=undefined,leak,address -g -Wall -Wextra -Wpedantic -D_GNU_SOURCE -Werror=all
+#CXX=g++
+LDLIBS+=-lpthread
+SOURCES = $(wildcard *.cpp */*.cpp)
+HEADERS = $(wildcard *.hpp */*.hpp)
 
-FLAGS=-std=c++17 -Wall -Wpedantic -D_GNU_SOURCE -Werror
-COMPILER=g++
+OBJ=db.o student.o
 
-main: process.o main.cpp student.o parsing.o db.o query.o utils.o 
-	${COMPILER} -o SmallDB process.o main.cpp parsing.o student.o db.o query.o utils.o  ${FLAGS}
+.PHONY: main
+main: smalldb check run
 
-run:
-	make main && ./SmallDB
+smalldb: smalldb.cpp ${OBJ}
+	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
 
-monitoring:
-	chmod u+x monitoring.sh
-	bash monitoring.sh
+%.o: %.cpp %.hpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $^
 
-process.o:process.cpp process.hpp
-	${COMPILER} -c process.cpp ${FLAGS}
-
-utils.o: utils.cpp utils.hpp
-	${COMPILER} -c utils.cpp ${FLAGS}
-
-parsing.o: parsing.cpp parsing.hpp student.o
-	${COMPILER} -c parsing.cpp ${FLAGS}
-
-student.o: student.cpp student.hpp
-	${COMPILER} -c student.cpp ${FLAGS}
-
-query.o: query.cpp query.hpp
-	${COMPILER} -c query.cpp ${FLAGS}
-
-db.o: db.cpp db.hpp
-	${COMPILER} -c db.cpp ${FLAGS}
-
-tests: tests/run_tests.py
-	./tests/run_tests.py
-
+.PHONY: clean
 clean:
-	rm -f *.o
-	rm -f SmallDB
-	rm -f logs/*
+	-rm *.o
