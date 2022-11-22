@@ -129,17 +129,27 @@ void parse_and_execute(FILE* fout, database_t* db, const char* const query) {
 // query_fail_* ///////////////////////////////////////////////////////////////
 
 void query_fail_bad_query_type(FILE* const fout) {
+  fprintf(fout, "Bad query\n");
+  fclose(fout);
 }
 
 void query_fail_bad_format(FILE* const fout, const char * const query_type) {
+  fprintf(fout, "Bad format\n");
+  fclose(fout);
 }
 
 void query_fail_too_long(FILE* const fout, const char * const query_type) {
+  fprintf(fout, "too long\n");
+  fclose(fout);
 }
 
 void query_fail_bad_filter(FILE* const fout, const char* const field, const char* const filter) {
+  fprintf(fout, "Bad filter\n");
+  fclose(fout);
 }
 
 void query_fail_bad_update(FILE* const fout, const char* const field, const char* const filter) {
+  fprintf(fout, "Bad update\n");
+  fclose(fout);
 }
 

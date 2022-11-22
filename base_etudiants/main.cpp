@@ -34,7 +34,7 @@ void *work(void *){
     {
         checked_wr(write(new_socket, buffer, lu));
         std::cout << buffer;
-        FILE *ush = fopen("test.txt", "rw");
+        FILE *ush = fopen("tmp/test.txt", "w+");
         parse_and_execute(ush, db, buffer);
 
     }
