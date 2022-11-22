@@ -10,8 +10,6 @@ if ! [ -e ../src/sdbsh ] ; then
     echo "Pas d'exécutable sdbsh"
     exit 2
 fi
-/home/emily/Documents/Projet-OS-BA2/base_etudiants/src/smalldb
-/home/emily/Documents/Projet-OS-BA2/base_etudiants/tests/queries/run_tests.sh
 
 for f in queries/*.txt ; do
     echo -e "\n>>> copie la BDD"
