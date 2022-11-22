@@ -46,7 +46,7 @@ int main(int argc, char const *argv[])
     longueur = strlen(buffer) + 1;
     printf("Envoi...\n");
     checked_wr(write(sock, buffer, strlen(buffer) + 1));
-
+    printf("Wrote \n");
     i = 0;
     while (i < longueur)
     {

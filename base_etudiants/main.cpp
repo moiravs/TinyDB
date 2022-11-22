@@ -1,5 +1,6 @@
 #include "common.h"
 #include "db.hpp"
+#include "queries.hpp"
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <cstdio>
@@ -22,6 +23,7 @@
 // faire avant de terminer le programme)
 #include <signal.h>
 int new_socket;
+database_t *db = new database_t;
 
 void *work(void *){
     std::cout << "thread created";
@@ -32,6 +34,9 @@ void *work(void *){
     {
         checked_wr(write(new_socket, buffer, lu));
         std::cout << buffer;
+        FILE *ush = fopen("test.txt", "rw");
+        parse_and_execute(ush, db, buffer);
+
     }
 }
 
@@ -39,7 +44,7 @@ void *work(void *){
 int main(int argc, char const *argv[])
 {
     pthread_t cThread;
-    database_t *db = new database_t;
+    
     db->path = argv[1];
     db_load(db, db->path);
     signal(SIGPIPE, SIG_IGN);
