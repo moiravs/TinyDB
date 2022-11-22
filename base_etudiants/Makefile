@@ -17,8 +17,8 @@ clean:
 	-rm *.o
 	-rm *.hpp.gch
 
-sdbsh: smalldb.cpp common.h ${OBJ}
+smalldb: smalldb.cpp common.h ${OBJ}
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
 
-smalldb: main.cpp common.h ${OBJ}
+sdbsh: main.cpp common.h ${OBJ}
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
