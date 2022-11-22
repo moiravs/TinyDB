@@ -15,6 +15,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <algorithm>
 #include <iostream>
 
 // Permet de définir un gestionnaire de signaux pour SIGPIPE,
@@ -25,26 +26,30 @@
 int new_socket;
 database_t *db = new database_t;
 
-void *work(void *){
+void *work(void *)
+{
     std::cout << "thread created";
-    char buffer[1024];
+    char *buffer = new char[1024]();
     int lu;
 
     while ((lu = read(new_socket, buffer, 1024)) > 0)
     {
         checked_wr(write(new_socket, buffer, lu));
         std::cout << buffer;
-        FILE *ush = fopen("tmp/test.txt", "w+");
+        FILE *ush = fopen("tmp/test.txt", "w");
+        if (ush == NULL)
+        {
+            puts("errorfile");
+        }
+        fflush(ush);
         parse_and_execute(ush, db, buffer);
-
     }
 }
-
 
 int main(int argc, char const *argv[])
 {
     pthread_t cThread;
-    
+
     db->path = argv[1];
     db_load(db, db->path);
     signal(SIGPIPE, SIG_IGN);

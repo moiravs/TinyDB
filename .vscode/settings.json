@@ -46,7 +46,8 @@
         "compare": "cpp",
         "concepts": "cpp",
         "numbers": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "csignal": "cpp"
     },
     "python.testing.pytestArgs": [
         "base_etudiants"

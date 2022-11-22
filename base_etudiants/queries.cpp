@@ -1,4 +1,6 @@
 #include "queries.hpp"
+#include <string>
+#include <iostream>
 
 
 // execute_* ///////////////////////////////////////////////////////////////////
@@ -10,10 +12,22 @@ void execute_select(FILE* fout, database_t* const db, const char* const field,
     query_fail_bad_filter(fout, field, value);
     return;
   }
+  char *student = new char[256];
+  int numberstudent = 0;
   for (const student_t& s : db->data) {
     if (predicate(s)) {
+      numberstudent++;
+      student_to_str(student, &s, 256);
+      fputs(student,fout);
+      fputs("\n", fout);
+      
     }
   }
+  
+  fprintf(fout, "%d",numberstudent);
+  fprintf(fout, "%s", " student(s) selected");
+  delete[](student);
+  fclose(fout);
 }
 
 void execute_update(FILE* fout, database_t* const db, const char* const ffield, const char* const fvalue, const char* const efield, const char* const evalue) {
@@ -27,11 +41,17 @@ void execute_update(FILE* fout, database_t* const db, const char* const ffield, 
     query_fail_bad_update(fout, efield, evalue);
     return;
   }
+  int numberstudent = 0;
   for (student_t& s : db->data) {
     if (predicate(s)) {
       updater(s);
+      numberstudent++;
+      
     }
   }
+  fprintf(fout, "%d", numberstudent);
+  fprintf(fout, "%s", " student(s) updated");
+  fclose(fout);
 }
 
 void execute_insert(FILE* fout, database_t* const db, const char* const fname,
@@ -44,6 +64,11 @@ void execute_insert(FILE* fout, database_t* const db, const char* const fname,
   snprintf(s->lname, sizeof(s->lname), "%s", lname);
   snprintf(s->section, sizeof(s->section), "%s", section);
   s->birthdate = birthdate;
+  char *student = new char[256];
+  student_to_str(student, s, 256);
+  fputs(student, fout);
+  fputs("\n", fout);
+  fclose(fout);
 }
 
 void execute_delete(FILE* fout, database_t* const db, const char* const field,
@@ -62,9 +87,11 @@ void execute_delete(FILE* fout, database_t* const db, const char* const field,
 void parse_and_execute_select(FILE* fout, database_t* db, const char* const query) {
   char ffield[32], fvalue[64];  // filter data
   int  counter;
+  std::cout << "whut" << std::endl;
   if (sscanf(query, "select %31[^=]=%63s%n", ffield, fvalue, &counter) != 2) {
     query_fail_bad_format(fout, "select");
   } else if (static_cast<unsigned>(counter) < strlen(query)) {
+    std::cout << strlen(query) << " c " << counter << std::endl;
     query_fail_too_long(fout, "select");
   } else {
     execute_select(fout, db, ffield, fvalue);
