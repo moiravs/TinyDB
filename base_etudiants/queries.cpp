@@ -45,7 +45,7 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
   reader_registration.unlock();
 
   fprintf(fout, "%d", numberstudent);
-  fprintf(fout, "%s", " student(s) selected");
+  fprintf(fout, "%s", " student(s) selected\0");
   delete[](student);
 }
 
@@ -86,6 +86,7 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
   reader_registration.unlock();
   fprintf(fout, "%d", numberstudent);
   fprintf(fout, "%s", " student(s) updated");
+  fputs("\0", fout);
 }
 
 void execute_insert(FILE *fout, database_t *const db, const char *const fname,
@@ -130,6 +131,7 @@ void execute_delete(FILE *fout, database_t *const db, const char *const field,
   int numberstudent = db->data.end() - new_end;
   fprintf(fout, "%d", numberstudent);
   fprintf(fout, "%s", " deleted student(s)");
+  fputs("\0", fout);
   db->data.erase(new_end, db->data.end());
   reader_registration.lock();
   readers_c--;
@@ -220,7 +222,6 @@ void parse_and_execute_delete(FILE *fout, database_t *db, const char *const quer
 
 void parse_and_execute(FILE *fout, database_t *db, const char *const query)
 {
-  printf("bruh jpass par là\n");
   if (strncmp("select", query, sizeof("select") - 1) == 0)
   {
     parse_and_execute_select(fout, db, query);

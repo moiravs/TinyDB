@@ -29,7 +29,7 @@ database_t *db = new database_t;
 void *work(void *)
 {
     std::cout << "thread created" << std::endl;
-    char *buffer = new char[2048]();
+    char *buffer = new char[2048];
     int lu;
     FILE *ush = fdopen(new_socket, "w");
     if (ush == NULL)
@@ -40,8 +40,8 @@ void *work(void *)
     while ((lu = read(new_socket, buffer, 2048)) > 0)
     {
         std::cout << "message received" << std::endl;
-        // checked_wr(write(new_socket, buffer, lu));
         std::cout << buffer << std::endl;
+        // checked_wr(write(new_socket, buffer, lu));
         parse_and_execute(ush, db, buffer);
         fflush(ush);
         std::cout << "flush done" << std::endl;

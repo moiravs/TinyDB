@@ -21,6 +21,8 @@
 // du signal (utile si vous avez des opérations de nettoyage à
 // faire avant de terminer le programme)
 #include <signal.h>
+#include <termios.h>
+#include <unistd.h>
 
 int main(int argc, char const *argv[])
 {
@@ -41,20 +43,24 @@ int main(int argc, char const *argv[])
 
   char buffer[2048];
   int longueur, i, ret;
-
+  int lu;
   while (fgets(buffer, 2048, stdin) != NULL)
   {
     int i = strlen(buffer) - 1;
     buffer[i] = '\0';
     longueur = strlen(buffer) + 1;
-    checked_wr(write(sock, buffer, strlen(buffer) + 1));
+    checked_wr(write(sock, buffer, 2048));
+    tcflush(sock, TCIOFLUSH);
+
     i = 0;
-    int lu;
+
     if ((lu = read(sock, buffer, 2048)) > 0)
     {
+      buffer[lu] = '\0';
       printf("%s\n", buffer);
     }
 
     close(sock);
     return 0;
-  }}
+  }
+}
