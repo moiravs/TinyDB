@@ -43,6 +43,7 @@ void *work(void *)
         }
         fflush(ush);
         parse_and_execute(ush, db, buffer);
+        fclose(ush);
     }
 }
 
