@@ -22,7 +22,6 @@
 // faire avant de terminer le programme)
 #include <signal.h>
 
-
 int main(int argc, char const *argv[])
 {
   //  Permet que write() retourne 0 en cas de réception
@@ -40,35 +39,22 @@ int main(int argc, char const *argv[])
 
   checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
 
-  char buffer[1024];
+  char buffer[2048];
   int longueur, i, ret;
 
-  while (fgets(buffer, 1024, stdin) != NULL)
+  while (fgets(buffer, 2048, stdin) != NULL)
   {
     int i = strlen(buffer) - 1;
     buffer[i] = '\0';
     longueur = strlen(buffer) + 1;
-    printf("Envoi...\n");
     checked_wr(write(sock, buffer, strlen(buffer) + 1));
     i = 0;
-    while (i < longueur)
+    int lu;
+    if ((lu = read(sock, buffer, 2048)) > 0)
     {
-      ret = read(sock, buffer, longueur - i);
-      if (ret <= 0)
-      {
-        if (ret < 0)
-          perror("read");
-        else
-          printf("Déconnexion du serveur.\n");
-        return 1;
-      }
-
-      i += ret;
+      printf("%s\n", buffer);
     }
 
-    printf("Recu : %s\n", buffer);
-  }
-
-  close(sock);
-  return 0;
-}
+    close(sock);
+    return 0;
+  }}

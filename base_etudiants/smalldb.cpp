@@ -28,23 +28,28 @@ database_t *db = new database_t;
 
 void *work(void *)
 {
-    std::cout << "thread created";
-    char *buffer = new char[1024]();
+    std::cout << "thread created" << std::endl;
+    char *buffer = new char[2048]();
     int lu;
-
-    while ((lu = read(new_socket, buffer, 1024)) > 0)
+    FILE *ush = fdopen(new_socket, "w");
+    if (ush == NULL)
     {
-        checked_wr(write(new_socket, buffer, lu));
-        std::cout << buffer;
-        FILE *ush = fopen("tmp/test.txt", "w");
-        if (ush == NULL)
-        {
-            puts("errorfile");
-        }
-        fflush(ush);
-        parse_and_execute(ush, db, buffer);
-        fclose(ush);
+        puts("errorfile");
     }
+
+    while ((lu = read(new_socket, buffer, 2048)) > 0)
+    {
+        std::cout << "message received" << std::endl;
+        // checked_wr(write(new_socket, buffer, lu));
+        std::cout << buffer << std::endl;
+        parse_and_execute(ush, db, buffer);
+        fflush(ush);
+        std::cout << "flush done" << std::endl;
+    }
+    fclose(ush);
+    std::cout << "close done" << std::endl;
+    delete[] buffer;
+    std::cout << "thread finished";
 }
 
 int main(int argc, char const *argv[])

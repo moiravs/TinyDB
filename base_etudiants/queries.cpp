@@ -129,7 +129,7 @@ void execute_delete(FILE *fout, database_t *const db, const char *const field,
   auto new_end = remove_if(db->data.begin(), db->data.end(), predicate);
   int numberstudent = db->data.end() - new_end;
   fprintf(fout, "%d", numberstudent);
-  fprintf(fout, "%s", " student(s) deleted");
+  fprintf(fout, "%s", " deleted student(s)");
   db->data.erase(new_end, db->data.end());
   reader_registration.lock();
   readers_c--;
