@@ -154,6 +154,10 @@ int main(int argc, char *argv[])
         pthread_create(&tid, NULL, &func, (void *)&args);
         poolofthread.push_back(tid);
     }
+
+    for (auto &thread: poolofthread){
+        pthread_join(thread, NULL);
+    }
     return 0;
 }
 */
