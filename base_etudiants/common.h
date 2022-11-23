@@ -5,21 +5,19 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int _checked(int ret, char *calling_function)
-{
+int _checked(int ret){
     if (ret < 0)
     {
-        perror(calling_function);
         exit(EXIT_FAILURE);
     }
     return ret;
 }
 
 // The macro allows us to retrieve the name of the calling function
-#define checked(call) _checked(call, #call)
+#define checked(call) _checked(call)
 
 // Même macro que checked mais pour write() (où 0 signifie
 // aussi une erreur).
-#define checked_wr(call) _checked(((call)-1), #call)
+#define checked_wr(call) _checked((call)-1)
 
 #endif // __COMMON_H

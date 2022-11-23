@@ -41,26 +41,23 @@ int main(int argc, char const *argv[])
 
   checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
 
-  char buffer[2048];
+  char bufferStdin[2048];
+  char bufferSocket[2048];
   int longueur, i, ret;
   int lu;
-  while (fgets(buffer, 2048, stdin) != NULL)
+
+  while (fgets(bufferStdin, 2048, stdin) != NULL)
   {
-    int i = strlen(buffer) - 1;
-    buffer[i] = '\0';
-    longueur = strlen(buffer) + 1;
-    checked_wr(write(sock, buffer, 2048));
-    tcflush(sock, TCIOFLUSH);
+    int i = strlen(bufferStdin) - 1;
+    bufferStdin[i] = '\0';
+    checked_wr(write(sock, bufferStdin, 2048));
 
-    i = 0;
-
-    if ((lu = read(sock, buffer, 2048)) > 0)
+    if ((lu = read(sock, bufferSocket, 2048)) > 0)
     {
-      buffer[lu] = '\0';
-      printf("%s\n", buffer);
+      bufferSocket[lu] = '\0';
+      printf("%s\n", bufferSocket);
     }
-
-    close(sock);
-    return 0;
   }
+  close(sock);
+  return 0;
 }

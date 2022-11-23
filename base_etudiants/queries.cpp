@@ -107,7 +107,6 @@ void execute_insert(FILE *fout, database_t *const db, const char *const fname,
   char *student = new char[256];
   student_to_str(student, s, 256);
   fputs(student, fout);
-  fputs("\n", fout);
   
 }
 
