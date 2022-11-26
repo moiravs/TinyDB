@@ -47,7 +47,10 @@
         "concepts": "cpp",
         "numbers": "cpp",
         "cstring": "cpp",
-        "csignal": "cpp"
+        "csignal": "cpp",
+        "atomic": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp"
     },
     "python.testing.pytestArgs": [
         "base_etudiants"

@@ -24,12 +24,11 @@
 // du signal (utile si vous avez des opérations de nettoyage à
 // faire avant de terminer le programme)
 #include <signal.h>
-int new_socket;
 database_t *db = new database_t;
 
-void *work(void *)
+void *work(void * socket_desc)
 {
-
+    int new_socket = *(int *)socket_desc;
     std::cout << "thread created" << std::endl;
     char *buffer = new char[2048];
     int lu;
@@ -53,6 +52,7 @@ void *work(void *)
     std::cout << "close done" << std::endl;
     delete[] buffer;
     std::cout << "thread finished";
+    return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -77,8 +77,9 @@ int main(int argc, char const *argv[])
     checked(listen(server_fd, 3));
 
     size_t addrlen = sizeof(address);
-    new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
-    pthread_create(&cThread, NULL, work, NULL);
+    int new_socket = checked(accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen));
+    
+    pthread_create(&cThread, NULL, work, (void*)&new_socket);
     pthread_join(cThread, NULL);
     close(server_fd);
     close(new_socket);
