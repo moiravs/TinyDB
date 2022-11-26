@@ -247,29 +247,28 @@ void parse_and_execute(FILE *fout, database_t *db, const char *const query)
 void query_fail_bad_query_type(FILE *const fout)
 {
   fprintf(fout, "Bad query\n");
-  fclose(fout);
 }
 
 void query_fail_bad_format(FILE *const fout, const char *const query_type)
 {
-  fprintf(fout, "Bad format\n");
-  fclose(fout);
+  std::string a = "Bad Format in " +static_cast<std::string>(query_type);
+  fprintf(fout, "%s", a.c_str());
 }
 
 void query_fail_too_long(FILE *const fout, const char *const query_type)
 {
-  fprintf(fout, "too long\n");
-  fclose(fout);
+  std::string a = "Query Too long in" + static_cast<std::string>(query_type);
+  fprintf(fout, "%s", a.c_str());
 }
 
 void query_fail_bad_filter(FILE *const fout, const char *const field, const char *const filter)
 {
-  fprintf(fout, "Bad filter\n");
-  fclose(fout);
+  std::string a = "Bad Field or Filter in " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter) ;
+  fprintf(fout, "%s", a.c_str());
 }
 
 void query_fail_bad_update(FILE *const fout, const char *const field, const char *const filter)
 {
-  fprintf(fout, "Bad update\n");
-  fclose(fout);
+  std::string a = "Bad Field of Filter in update, " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter) + " is not valid";
+  fprintf(fout, "%s", a.c_str());
 }
