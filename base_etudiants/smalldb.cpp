@@ -24,10 +24,13 @@
 // du signal (utile si vous avez des opérations de nettoyage à
 // faire avant de terminer le programme)
 #include <signal.h>
-database_t *db = new database_t;
+database_t db;
+int test = 0;
 
-void *work(void * socket_desc)
+void *work(void *socket_desc)
 {
+    test++;
+    std::cout << "test " << test << std::endl;
     int new_socket = *(int *)socket_desc;
     std::cout << "thread created" << std::endl;
     char *buffer = new char[2048];
@@ -43,7 +46,7 @@ void *work(void * socket_desc)
         std::cout << "message received" << std::endl;
         std::cout << buffer << std::endl;
         // checked_wr(write(new_socket, buffer, lu));
-        parse_and_execute(ush, db, buffer);
+        parse_and_execute(ush, &db, buffer);
         fflush(ush);
 
         std::cout << "flush done" << std::endl;
@@ -55,11 +58,10 @@ void *work(void * socket_desc)
     return 0;
 }
 
-
 int main(int argc, char const *argv[])
 {
-    db->path = argv[1];
-    db_load(db, db->path);
+    db.path = argv[1];
+    db_load(&db, db.path);
     signal(SIGPIPE, SIG_IGN);
     int serverSocket, newSocket;
     struct sockaddr_in serverAddr;
@@ -113,4 +115,3 @@ int main(int argc, char const *argv[])
     }
     return 0;
 }
-
