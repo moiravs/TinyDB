@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
 
   struct sockaddr_in serv_addr;
   serv_addr.sin_family = AF_INET;
-  serv_addr.sin_port = htons(8080);
+  serv_addr.sin_port = htons(28772);
 
   // Conversion de string vers IPv4 ou IPv6 en binaire
   inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);

@@ -145,7 +145,6 @@ void parse_and_execute_select(FILE *fout, database_t *db, const char *const quer
 {
   char ffield[32], fvalue[64]; // filter data
   int counter;
-  std::cout << "whut" << std::endl;
   if (sscanf(query, "select %31[^=]=%63s%n", ffield, fvalue, &counter) != 2)
   {
     query_fail_bad_format(fout, "select");
