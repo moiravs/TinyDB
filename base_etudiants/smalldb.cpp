@@ -1,5 +1,6 @@
 #include "common.h"
 #include "db.hpp"
+#include "signalshandler.hpp"
 #include "queries.hpp"
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -56,6 +57,7 @@ int main(int argc, char const *argv[])
     db.path = argv[1];
     db_load(&db, db.path);
     signal(SIGPIPE, SIG_IGN);
+    setup_principal_interrupt_handler();
     int serverSocket, newSocket;
     struct sockaddr_in serverAddr;
     struct sockaddr_storage serverStorage;

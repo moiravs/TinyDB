@@ -1,4 +1,5 @@
 #include "common.h"
+#include "signalshandler.hpp"
 //#include "db.hpp"
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -28,7 +29,10 @@ int main(int argc, char const *argv[])
 {
   //  Permet que write() retourne 0 en cas de réception
   //  du signal SIGPIPE.
+  
   signal(SIGPIPE, SIG_IGN);
+  setup_principal_interrupt_handler();
+  
 
   int sock = checked(socket(AF_INET, SOCK_STREAM, 0));
 

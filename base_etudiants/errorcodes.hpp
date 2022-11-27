@@ -1,5 +1,5 @@
-#ifndef _ERRORCODES_H
-#define _ERRORCODES_H
+#ifndef _ERRORCODES_HPP
+#define _ERRORCODES_HPP
 
 const int NO_ERROR      = 0b00000;
 const int USAGE_ERROR   = 0b00001;
