@@ -30,15 +30,28 @@
 
 \section{Introduction}
 \par
-\section{}
-— les choix d’implémentation (si nécessaire), les difficultés rencontrées et les solutions ori-
-ginales que vous avez fournies,
+\section{Choix d'implémentation et difficultés rencontrées}
+\subsection{Multi-threading}
+Nous avons limité le nombre de clients à 50.
+
+\subsection{Redirection du stdout}
+
 \section{Synchronisation}
 — une explication détaillée des mécanismes de synchronisations utilisés
 \section{Processus vs Threads}
 — une comparaison détaillée entre l’utilisation des processus et des threads (projets 1 et 2),
 avec une discussion sur les avantages et inconvénients des deux méthodes,
+Le processus est indépendant, et donc même si le processus principal se crashe, les processus enfants peuvent continuer d'exécuter des tâches.
+
+La gestion en mémoire partagée est beaucoup plus simple avec des threads.
+Les threads sont plus rapides que les processus à la création et à la destruction.
 \section{Améliorations}
 — des propositions d’améliorations relatives au fonctionnement et aux performances (non
 aux fonctionnalités)
+Pour améliorer la rapidité de notre programme, nous avons eu plusieurs idées.
+
+La création et destruction de threads est assez coûteuse, nous pourrions donc laisser un thread gérer un certains nombres de clients, par exemple 5 clients.
+Au lieu d'écrire dans la requête dans un socket et d'écrire le résultat de ce même socket, nous pourrions écrire dans un fichier, pour ne pas être limité en caractères.
+
+Tout d'abord
 \end{document}
