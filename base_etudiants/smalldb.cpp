@@ -25,7 +25,8 @@
 // du signal (utile si vous avez des opérations de nettoyage à
 // faire avant de terminer le programme)
 #include <signal.h>
-database_t db;
+extern database_t db;
+extern std::vector<int> clientSockets;
 
 void *work(void *socket_desc)
 {
@@ -54,15 +55,16 @@ void *work(void *socket_desc)
 
 int main(int argc, char const *argv[])
 {
+    signal(SIGPIPE, SIG_IGN);
+    setup_server_interrupt_handler();
     db.path = argv[1];
     db_load(&db, db.path);
-    signal(SIGPIPE, SIG_IGN);
-    setup_principal_interrupt_handler();
     int serverSocket, newSocket;
     struct sockaddr_in serverAddr;
     struct sockaddr_storage serverStorage;
     socklen_t addr_size;
-
+    
+    
     // Create the socket.
     serverSocket = socket(PF_INET, SOCK_STREAM, 0);
 
@@ -78,7 +80,7 @@ int main(int argc, char const *argv[])
 
     // Set all bits of the padding field to 0
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
-
+    
     // Bind the address struct to the socket
     checked(bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
 
@@ -92,8 +94,10 @@ int main(int argc, char const *argv[])
     while (true)
     {
         // Accept call creates a new socket for the incoming connection
+
         addr_size = sizeof serverStorage;
         newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
+        clientSockets.push_back(newSocket);
         std::cout << "Accepted connection number " << newSocket << std::endl;
         // for each client request creates a thread and assign the client request to it to process
         // so the main thread can entertain next request
@@ -108,5 +112,6 @@ int main(int argc, char const *argv[])
             i = 0;
         }
     }
+    
     return 0;
 }
