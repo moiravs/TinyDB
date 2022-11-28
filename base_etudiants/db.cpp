@@ -88,7 +88,7 @@ size_t db_delete(database_t *db, student_t *s) {
       ++it;
     }
   }
-  return deleted; peu pas encore été au cours et qu'il y a pas de faq pour le projet) il y a bien un problème dans la fonction joinFactors de factorOperations ? style la fonction nous dit que factors est une liste mais ils nous filent un dict_values à la place
+  return deleted;
 }
 
 void db_save(database_t *db) {
