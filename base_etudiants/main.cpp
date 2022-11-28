@@ -29,10 +29,9 @@ int main(int argc, char const *argv[])
 {
   //  Permet que write() retourne 0 en cas de réception
   //  du signal SIGPIPE.
-  
+
   signal(SIGPIPE, SIG_IGN);
   setup_principal_interrupt_handler();
-  
 
   int sock = checked(socket(AF_INET, SOCK_STREAM, 0));
 
@@ -50,18 +49,16 @@ int main(int argc, char const *argv[])
   int longueur, i, ret;
   int lu;
 
-  while (fgets(bufferStdin, 2048, stdin) != NULL)
+  while (fgets(bufferStdin, 2048, stdin))
   {
     int i = strlen(bufferStdin) - 1;
     bufferStdin[i] = '\0';
     checked_wr(write(sock, bufferStdin, 2048));
-
-    if ((lu = read(sock, bufferSocket, 2048)) > 0)
-    {
-      bufferSocket[lu] = '\0';
-      printf("%s\n", bufferSocket);
-    }
+    lu = read(sock, bufferSocket, 2048);
+    bufferSocket[lu] = '\0';
+    printf("%s\n", bufferSocket);
   }
   close(sock);
+  exit(0);
   return 0;
 }
