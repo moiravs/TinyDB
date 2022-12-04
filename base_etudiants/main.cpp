@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <semaphore.h>
 #include <pthread.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 // Permet de définir un gestionnaire de signaux pour SIGPIPE,
 // ce qui évite une fermeture abrupte du programme à la réception
@@ -24,6 +26,8 @@
 #include <signal.h>
 #include <termios.h>
 #include <unistd.h>
+#include <sys/poll.h>
+#include <fcntl.h>
 
 int main(int argc, char const *argv[])
 {
@@ -49,14 +53,31 @@ int main(int argc, char const *argv[])
   int longueur, i, ret;
   int lu;
 
-  while (fgets(bufferStdin, 2048, stdin))
+  int fd = fileno(stdin);
+  int flags = fcntl(fd, F_GETFL, 0);
+  flags |= O_NONBLOCK;
+  fcntl(fd, F_SETFL, flags);
+  fcntl(sock, F_SETFL, flags);
+
+  while (true)
   {
-    int i = strlen(bufferStdin) - 1;
-    bufferStdin[i] = '\0';
-    checked_wr(write(sock, bufferStdin, 2048));
+    if (fgets(bufferStdin, 2048, stdin) != NULL)
+    {
+      int i = strlen(bufferStdin) - 1;
+      bufferStdin[i] = '\0';
+      checked_wr(write(sock, bufferStdin, 2048));
+    };
     lu = read(sock, bufferSocket, 2048);
-    bufferSocket[lu] = '\0';
-    printf("%s\n", bufferSocket);
+    if (lu > 0)
+    {
+      bufferSocket[lu] = '\0';
+      if (strcmp(bufferSocket, "stop") == 0)
+      {
+        close(0);
+        break;
+      }
+      printf("%s\n", bufferSocket);
+    }
   }
   close(sock);
   exit(0);

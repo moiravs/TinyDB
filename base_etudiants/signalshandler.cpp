@@ -7,8 +7,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/socket.h>
-
-
+#include <iostream>
+#include <sys/select.h>
+#include <assert.h>
 
 static volatile sig_atomic_t should_quit = 0;
 static volatile sig_atomic_t asked_saving_db = 0;
@@ -33,7 +34,7 @@ static void server_interrupt_handler(int sig){
       printf("\nCaught CTRL+C signal, saving and exiting Tiny DB.\n");
       db_save(&db);
       for (auto &client: clientSockets){
-         shutdown(client, SHUT_RDWR);
+         write(client, "stop", 5);
       }
       exit(0);
    }
