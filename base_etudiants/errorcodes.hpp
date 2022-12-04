@@ -6,7 +6,9 @@ const int USAGE_ERROR   = 0b00001;
 const int MEMORY_ERROR  = 0b00010;
 const int FILE_ERROR    = 0b00100;
 const int NETWORK_ERROR = 0b01000;
-const int SYSTEM_ERROR  = 0b10000;
+const int SYSTEM_ERROR = 0b10000;
+const int SOCKET_ERROR = 0b110000;
+const int LISTEN_ERROR = 0b111000;
 
 const int DISCONNECTED = -1;
 const int UNEXPECTED_DISCONNECT = -2;

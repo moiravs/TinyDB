@@ -1,5 +1,6 @@
 #ifndef _SIGNALSHANDLER_HPP
 #define _SIGNALSHANDLER_HPP
+#include "db.hpp"
 
 /**
  * Met en place le gestionnaire de signaux pour
@@ -45,5 +46,7 @@ bool is_asked_saving_db(void);
  * de données dans un fichier.
  **/
 void reset_asked_saving_db(void);
+
+void sync_save_db();
 
 #endif

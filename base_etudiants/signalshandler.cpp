@@ -1,6 +1,5 @@
 
 #include "db.hpp"
-#include "ipc.hpp"
 #include "signalshandler.hpp"
 #include <cstdio>
 #include <csignal>
@@ -23,10 +22,17 @@ static void principal_interrupt_handler(int sig) {
       exit(0);
    } else if (sig == SIGUSR1) {
       asked_saving_db = 1;
+      sync_save_db();
    } else if (sig == SIGPIPE) {
       printf("\nCaught unexpected SIGPIPE signal, exiting Tiny DB.\n");
       close(STDIN_FILENO);
    }
+}
+inline void sync_save_db()
+{
+   reset_asked_saving_db();
+   printf("Caught SIGUSR1, comitting database changes to the disk...\n");
+   db_save(&db);
 }
 
 static void server_interrupt_handler(int sig){
@@ -38,11 +44,16 @@ static void server_interrupt_handler(int sig){
       }
       exit(0);
    }
-}
+   else if (sig == SIGUSR1)
+   {
+      asked_saving_db = 1;
+      sync_save_db();
+   }}
 
 void setup_server_interrupt_handler(void){
    signal(SIGINT, server_interrupt_handler); // Fermer
-   signal(SIGPIPE, server_interrupt_handler); 
+   signal(SIGPIPE, server_interrupt_handler);
+   signal(SIGUSR1, server_interrupt_handler);
 
    struct sigaction action;
 

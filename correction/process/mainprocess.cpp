@@ -138,7 +138,7 @@ static inline void sync_save_db(database_t* db, const dedicated_process_t proces
       fprintf(stderr, "Failed to synchronise the processes before saving the file. The DB might be corrupted.\n");
    }
    
-   printf("Caught SIGUSER1, comitting database changes to the disk...\n");
+   printf("Caught SIGUSR1, comitting database changes to the disk...\n");
    db_save(db, db->path);
 }
 

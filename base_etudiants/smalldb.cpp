@@ -2,8 +2,10 @@
 #include "db.hpp"
 #include "signalshandler.hpp"
 #include "queries.hpp"
+#include "errorcodes.hpp"
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <err.h> // err
 #include <cstdio>
 #include <cerrno>
 #include <csignal>
@@ -31,23 +33,21 @@ extern std::vector<int> clientSockets;
 void *work(void *socket_desc)
 {
     int new_socket = *(int *)socket_desc;
-    std::cout << "thread created" << std::endl;
+    std::cout << "Thread number " << new_socket << " created" << std::endl;
     char *buffer = new char[2048];
     int lu;
-    FILE *ush = fdopen(new_socket, "w");
-    if (ush == NULL)
+    FILE *file_new_socket = fdopen(new_socket, "w");
+    if (file_new_socket == NULL)
     {
         puts("errorfile");
     }
 
-    while ((lu = read(new_socket, buffer, 2048)) > 0)
+    while ((lu = checked(read(new_socket, buffer, 2048))) > 0)
     {
-        std::cout << "message received" << std::endl;
-        std::cout << buffer << std::endl;
-        parse_and_execute(ush, &db, buffer);
-        fflush(ush);
+        parse_and_execute(file_new_socket, &db, buffer);
+        fflush(file_new_socket);
     }
-    fclose(ush);
+    fclose(file_new_socket);
     std::cout << "Thread number " << new_socket << " closed" << std::endl;
     delete[] buffer;
     return 0;
@@ -63,10 +63,12 @@ int main(int argc, char const *argv[])
     struct sockaddr_in serverAddr;
     struct sockaddr_storage serverStorage;
     socklen_t addr_size;
-    
-    
     // Create the socket.
-    serverSocket = socket(PF_INET, SOCK_STREAM, 0);
+    if ((serverSocket = socket(PF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        err(SOCKET_ERROR, "Failed to create to socket");
+        exit(EXIT_FAILURE);
+    }
 
     // Configure settings of the server address struct
     // Address family = Internet
@@ -80,7 +82,7 @@ int main(int argc, char const *argv[])
 
     // Set all bits of the padding field to 0
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
-    
+
     // Bind the address struct to the socket
     checked(bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
 
@@ -88,7 +90,7 @@ int main(int argc, char const *argv[])
     if (listen(serverSocket, 50) == 0)
         printf("Listening\n");
     else
-        printf("Error\n");
+        err(LISTEN_ERROR, "Failed to listen");
     pthread_t tid[60];
     int i = 0;
     while (true)
@@ -96,13 +98,26 @@ int main(int argc, char const *argv[])
         // Accept call creates a new socket for the incoming connection
 
         addr_size = sizeof serverStorage;
-        newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size);
-        clientSockets.push_back(newSocket);
-        std::cout << "Accepted connection number " << newSocket << std::endl;
-        // for each client request creates a thread and assign the client request to it to process
-        // so the main thread can entertain next request
-        if (pthread_create(&tid[i++], NULL, work, &newSocket) != 0)
-            printf("Failed to create thread\n");
+        if ((newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size)) > 0)
+        {
+            clientSockets.push_back(newSocket);
+            std::cout << "Accepted connection number " << newSocket << std::endl;
+            // for each client request creates a thread and assign the client request to it to process
+            // so the main thread can entertain next request
+            // Bloque le signal (pour le thread courant)
+            sigset_t mask;
+            sigemptyset(&mask);
+            sigaddset(&mask, SIGUSR1);
+            sigprocmask(SIG_BLOCK, &mask, NULL);
+            if (pthread_create(&tid[i++], NULL, work, &newSocket) != 0)
+                printf("Failed to create thread\n");
+            // Débloque le signal (pour le thread courant)
+            sigprocmask(SIG_UNBLOCK, &mask, NULL);
+        }
+        else {
+            if (errno == EINTR)
+                continue;
+        }
 
         if (i >= 50)
         {
@@ -112,6 +127,6 @@ int main(int argc, char const *argv[])
             i = 0;
         }
     }
-    
+
     return 0;
 }
