@@ -46,7 +46,8 @@ int main(int argc, char const *argv[])
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(28772);
   // Conversion de string vers IPv4 ou IPv6 en binaire
-  if (inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)==0){
+  if (inet_pton(AF_INET, argv[1], &serv_addr.sin_addr) == 0)
+  {
     puts("IP adress doesn't exist");
     exit(1);
   }
@@ -55,7 +56,6 @@ int main(int argc, char const *argv[])
   const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80);
   if (p == NULL)
     std::cout << "IP adress is not the IP adress of the server";
-  
 
   char bufferStdin[2048];
   char bufferSocket[2048];
@@ -67,28 +67,32 @@ int main(int argc, char const *argv[])
   flags |= O_NONBLOCK;
   fcntl(fd, F_SETFL, flags);
   fcntl(sock, F_SETFL, flags);
-
-  while (true)
+  bool end = false;
+  while (!end)
   {
-    if (fgets(bufferStdin, 2048, stdin) != NULL)
+    if (fgets(bufferStdin, 2048, stdin)!= NULL)
     {
+
       int i = strlen(bufferStdin) - 1;
       bufferStdin[i] = '\0';
       checked_wr(write(sock, bufferStdin, 2048));
-    };
+    }
+    if (feof(stdin)){
+      end = true;
+    }
     lu = read(sock, bufferSocket, 2048);
+    sleep(1);
     if (lu > 0)
     {
       bufferSocket[lu] = '\0';
       if (strcmp(bufferSocket, "stop") == 0)
       {
-        close(0);
-        break;
+        end = true;
       }
       printf("%s\n", bufferSocket);
     }
   }
+  close(0);
   close(sock);
-  exit(0);
   return 0;
 }

@@ -5,11 +5,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
 
 int _checked(int ret){
     if (ret < 0)
     {
-        printf("ERROR number : %d\n", errno);
+        printf("ERROR number : %d%s\n", errno, strerror(errno));
         exit(EXIT_FAILURE);
     }
     return ret;
