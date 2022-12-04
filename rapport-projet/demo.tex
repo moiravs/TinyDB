@@ -30,31 +30,34 @@
 
 \section{Introduction}
 \par
+Après une base de données simple, avec des requêtes et du monitoring, il nous a été demandé de réaliser une mise à jour afin de permettre des connexions de multiples clients sur un serveur.\newline
+Ces clients doivent pouvoir faire les mêmes requêtes qu'initialement, avec quelques améliorations pour réduire le temps d'exécution des requêtes et pour ne pas surcharger le serveur.
+Vous trouverez, dans ce rapport, nos choix d'implémentation et les difficultés que nous avons rencontrées au fil de la réalisation de ce projet.
 \section{Choix d'implémentation et difficultés rencontrées}
 \subsection{Multi-threading}
 Nous avons limité le nombre de clients à 50.
 \subsection{Signaux}
 \par
 \indent
-Lors de l'implémentation des signaux, nous avons eu du mal à fermer les clients lorsque le serveur attrapait un signal tel que Control-C. 
-En effet, le client lit deux files descriptors différents, le stdin et le socket du serveur. Nous écrivions donc dans le socket du serveur un message ("stop")
+Lors de l'implémentation des signaux, nous avons eu du mal à fermer les clients lorsque le serveur attrapait un signal tel que Ctrl + C. 
+En effet, le client lit deux files descriptors différents, le stdin et le socket du serveur. Nous écrivions donc dans le socket du serveur un message ('stop')
 afin que le client se ferme dès qu'il le lit. Seulement, le lecture du stdin est bloquant, le client ne lisait donc dans le socket du serveur que lorsque l'utilisateur
 écrivait dans le stdin. 
 Nous avons d'abord essayé les commandes epoll, poll ou select, qui permettent de signaler lorsqu'un file descriptor est prêt, mais nous nous sommes rendus compte que
-ce n'était pas adapté à notre code, vu que nous avions que deux files descriptor, et donc nous avons réglé ce problème plus facilement en rendant les deux files descriptors non-bloquants.
+ce n'était pas adapté à notre code, vu que nous n'avions que deux files descriptors, et donc nous avons réglé ce problème plus facilement en rendant les deux files descriptors non-bloquants.
 \par
 
 \section{Synchronisation}
 — une explication détaillée des mécanismes de synchronisations utilisés
 \section{Processus vs Threads}
-— une comparaison détaillée entre l’utilisation des processus et des threads (projets 1 et 2),
+— une comparaison détaillée entre l'utilisation des processus et des threads (projets 1 et 2),
 avec une discussion sur les avantages et inconvénients des deux méthodes,
 Le processus est indépendant, et donc même si le processus principal se crashe, les processus enfants peuvent continuer d'exécuter des tâches.
 
 La gestion en mémoire partagée est beaucoup plus simple avec des threads.
 Les threads sont plus rapides que les processus à la création et à la destruction.
 \section{Améliorations}
-— des propositions d’améliorations relatives au fonctionnement et aux performances (non
+— des propositions d'améliorations relatives au fonctionnement et aux performances (non
 aux fonctionnalités)
 Pour améliorer la rapidité de notre programme, nous avons eu plusieurs idées.
 
@@ -62,4 +65,7 @@ La création et destruction de threads est assez coûteuse, nous pourrions donc 
 Au lieu d'écrire dans la requête dans un socket et d'écrire le résultat de ce même socket, nous pourrions écrire dans un fichier, pour ne pas être limité en caractères.
 
 Tout d'abord
+\section{Conclusion}
+En conclusion, malgré les problèmes survenus, nous avons réussi à implémenter une base de données serveur/clients qui s'exécute rapidement et efficacement.\newline
+Le code est maintenable et séparé en plusieurs fichiers, afin de faciliter la correction de bugs et d'erreurs éventuels, ainsi que la maintenabilité du projet dans son ensemble.
 \end{document}
