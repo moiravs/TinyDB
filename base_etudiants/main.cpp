@@ -18,6 +18,7 @@
 #include <pthread.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <iostream>
 
 // Permet de définir un gestionnaire de signaux pour SIGPIPE,
 // ce qui évite une fermeture abrupte du programme à la réception
@@ -33,20 +34,28 @@ int main(int argc, char const *argv[])
 {
   //  Permet que write() retourne 0 en cas de réception
   //  du signal SIGPIPE.
-
+  if (argc != 2)
+  {
+    puts("Parameter IP is missing");
+    exit(0);
+  }
   signal(SIGPIPE, SIG_IGN);
   setup_principal_interrupt_handler();
-
   int sock = checked(socket(AF_INET, SOCK_STREAM, 0));
-
   struct sockaddr_in serv_addr;
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(28772);
-
   // Conversion de string vers IPv4 ou IPv6 en binaire
-  inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr);
-
+  if (inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)==0){
+    puts("IP adress doesn't exist");
+    exit(1);
+  }
   checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
+  char buffer[80];
+  const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80);
+  if (p == NULL)
+    std::cout << "IP adress is not the IP adress of the server";
+  
 
   char bufferStdin[2048];
   char bufferSocket[2048];

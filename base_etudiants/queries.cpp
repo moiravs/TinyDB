@@ -246,7 +246,7 @@ void parse_and_execute(FILE *fout, database_t *db, const char *const query)
 
 void query_fail_bad_query_type(FILE *const fout)
 {
-  fprintf(fout, "Error : Bad query\n");
+  fprintf(fout, "Error : Unknown Query Type\n");
 }
 
 void query_fail_bad_format(FILE *const fout, const char *const query_type)
