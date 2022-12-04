@@ -35,7 +35,7 @@ Ces clients doivent pouvoir faire les mêmes requêtes qu'initialement, avec que
 Vous trouverez, dans ce rapport, nos choix d'implémentation et les difficultés que nous avons rencontrées au fil de la réalisation de ce projet.
 \section{Choix d'implémentation et difficultés rencontrées}
 \subsection{Multi-threading}
-Nous avons limité le nombre de clients à 50.
+Pour éviter les problèmes de surcharge de serveur, nous avons limité le nombre de clients à 50.
 \subsection{Signaux}
 \par
 \indent
@@ -48,16 +48,33 @@ ce n'était pas adapté à notre code, vu que nous n'avions que deux files descr
 \par
 
 \section{Synchronisation}
-— une explication détaillée des mécanismes de synchronisations utilisés
+\par
+\indent
+Afin de synchroniser les clients entre eux, nous avons fait l'usage de mutex(mutual exclusion) qui permettent 
+à deux threads de ne pas écrire ou lire en même temps dans la mémoire.
+En effet, si deux threads écrivent en même temps, il est possible que les écritures se chevauchent et donc que l'étudiant écrit dans la base de données soit incorrect.
+Dans le pseudo-code, nous avons 3 mutex : reader registration, writer access et new access.
+Le mutex writer access permet tout simplement de bloquer la mémoire lors des opérations d'écriture. Le reader registration permet .
+Le new access est un peu plus complexe. Il permet de faire les accès mémoire dans l'ordre dans lequel elles ont été écrites.
+En effet, si un premier thread veut effectuer une lecture et un second veut effectuer une écriture, le temps que le premier thread lock le reader registration, le second 
+thread pourrait lock le write access, et donc la lecture serait bloquée alors que c'était le premier thread.
+Le new access règle ce souci en bloquant l'accès au write access.
+\par
 \section{Processus vs Threads}
-— une comparaison détaillée entre l'utilisation des processus et des threads (projets 1 et 2),
+\par
+\indent
+— une comparaison détaillée entre l’utilisation des processus et des threads (projets 1 et 2),
 avec une discussion sur les avantages et inconvénients des deux méthodes,
+
 Le processus est indépendant, et donc même si le processus principal se crashe, les processus enfants peuvent continuer d'exécuter des tâches.
 
 La gestion en mémoire partagée est beaucoup plus simple avec des threads.
 Les threads sont plus rapides que les processus à la création et à la destruction.
+\par
 \section{Améliorations}
-— des propositions d'améliorations relatives au fonctionnement et aux performances (non
+\par
+\indent
+— des propositions d’améliorations relatives au fonctionnement et aux performances (non
 aux fonctionnalités)
 Pour améliorer la rapidité de notre programme, nous avons eu plusieurs idées.
 
