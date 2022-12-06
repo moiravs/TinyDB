@@ -92,6 +92,7 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
 void execute_insert(FILE *fout, database_t *const db, const char *const fname,
                     const char *const lname, const unsigned id, const char *const section,
                     const tm birthdate)
+                    // TODO check si id déjà dans la database
 {
   new_access.lock();
   write_access.lock();
