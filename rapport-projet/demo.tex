@@ -70,10 +70,12 @@ Le new access règle ce souci en bloquant l'accès au write access.
 \par
 \indent
 
-Le processus est indépendant, et donc même si le processus principal se crashe, les processus enfants peuvent continuer d'exécuter des tâches.
+Le processus est indépendant, et donc même si le processus principal se crashe, les processus enfants peuvent continuer d'exécuter des tâches. Ce n'est pas le cas avec les threads.
 
-La gestion en mémoire partagée est beaucoup plus simple avec des threads.
-Les threads sont plus rapides que les processus à la création et à la destruction.
+La gestion en mémoire partagée est beaucoup plus simple avec des threads. Ceux-ci partagent par défaut la mémoire virtuelle d'un même processus, cela nous évite donc de devoir implémenter la gestion de la mémoire partagée nous-mêmes.
+Les threads sont également plus rapides que les processus à la création et à la destruction, et prennent moins de temps pour le changement de contexte, car ils sont plus légers.\newline
+
+
 
 \par
 \section{Améliorations}
