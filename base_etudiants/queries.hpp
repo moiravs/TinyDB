@@ -1,3 +1,10 @@
+/*
+SmallDb : Database following the client-server model. The server processes the requests sent by the client.
+Section : BA-INFO
+Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Date : 07/12/2022
+*/
+
 #ifndef _QUERIES_HPP
 #define _QUERIES_HPP
 
@@ -5,11 +12,18 @@
 
 #include "db.hpp"
 
+/**
+ * @brief  Check if id is already in the database or not
+ * @param  db: database
+ * @param  id: id of the student
+ * @retval True if id is in the database, false otherwise
+ */
 bool is_id_existing(database_t *const db, const unsigned id);
 
-    // execute_* //////////////////////////////////////////////////////////////////
 
-    void execute_select(FILE *fout, database_t *const db, const char *const field,
+// execute_* //////////////////////////////////////////////////////////////////
+
+void execute_select(FILE *fout, database_t *const db, const char *const field,
                         const char *const value);
 
 void execute_update(FILE* fout, database_t* const db, const char* const ffield,

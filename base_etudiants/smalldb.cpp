@@ -1,3 +1,10 @@
+/*
+SmallDb : Database following the client-server model. The server processes the requests sent by the client.
+Section : BA-INFO
+Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Date : 07/12/2022
+*/
+
 #include "common.h"
 #include "db.hpp"
 #include "signalshandler.hpp"
@@ -24,7 +31,7 @@ void *work(void *socket_desc)
     while ((lu = checked(read(new_socket, buffer, 2048))) > 0)
     {
         parse_and_execute(file_new_socket, &db, buffer);
-        fflush(file_new_socket);
+        fflush(file_new_socket); //TODO : commentaire
     }
     fclose(file_new_socket);
     std::cout << "Thread number " << new_socket << " closed" << std::endl;
@@ -34,7 +41,7 @@ void *work(void *socket_desc)
 
 int main(int argc, char const *argv[])
 {
-    setup_principal_interrupt_handler(false);
+    setup_principal_interrupt_handler(false); // setup signals
     db.path = argv[1];
     db_load(&db, db.path);
     int serverSocket, newSocket;
@@ -51,12 +58,12 @@ int main(int argc, char const *argv[])
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
     checked(bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
-    if (listen(serverSocket, 50) == 0)
+    if (listen(serverSocket, 20) == 0) //accept maximum 20 connections queued, further requests will be refused
         printf("Listening\n");
     else
         err(LISTEN_ERROR, "Failed to listen");
-    pthread_t tid[60];
-    int i = 0;
+    pthread_t tid[30];
+    int i = 0; //number of threads
     while (true)
     {
         addr_size = sizeof serverStorage;
@@ -78,10 +85,10 @@ int main(int argc, char const *argv[])
             if (errno == EINTR)
                 continue;
         }
-        if (i >= 50)
+        if (i >= 20) // if more than 20 threads
         {
             i = 0;
-            while (i < 50)
+            while (i < 20) // wait for all threads to finish before accepting new ones
                 pthread_join(tid[i++], NULL);
             i = 0;
         }
