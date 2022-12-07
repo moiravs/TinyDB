@@ -9,7 +9,8 @@
 #include <string.h>
 #include <errno.h>
 
-int _checked(int ret){
+int _checked(int ret)
+{
     if (ret < 0)
     {
         printf("ERROR number : %d %s\n", errno, strerror(errno));
@@ -24,5 +25,7 @@ int _checked(int ret){
 // Même macro que checked mais pour write() (où 0 signifie
 // aussi une erreur).
 #define checked_wr(call) _checked((call)-1)
+
+#define MAX_CLIENT 2
 
 #endif // __COMMON_H

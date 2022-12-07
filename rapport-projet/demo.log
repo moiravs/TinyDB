@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.1)  7 DEC 2022 17:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.1)  7 DEC 2022 18:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -185,11 +185,20 @@ Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
 ))) (/usr/share/texlive/texmf-dist/tex/latex/preprint/fullpage.sty
 Package: fullpage 1999/02/23 1.1 (PWD)
 \FP@margin=\skip52
-) (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+) (/usr/share/texlive/texmf-dist/tex/latex/lipsum/lipsum.sty (/usr/share/texlive/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty (/usr/share/texlive/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2022-01-21 L3 programming layer (loader) 
+ (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-01-12 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count285
 \l__pdf_internal_box=\box56
-) (./demo.aux)
+))
+Package: l3keys2e 2022-01-12 LaTeX2e option processing using LaTeX3 keys
+)
+Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
+\g__lipsum_par_int=\count286
+\l__lipsum_a_int=\count287
+\l__lipsum_b_int=\count288
+ (/usr/share/texlive/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex)) (./demo.aux)
 \openout1 = `demo.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
@@ -208,16 +217,16 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
 LaTeX Font Info:    ... okay on input line 21.
  (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count286
+\scratchcounter=\count289
 \scratchdimen=\dimen167
 \scratchbox=\box57
-\nofMPsegments=\count287
-\nofMParguments=\count288
+\nofMPsegments=\count290
+\nofMParguments=\count291
 \everyMPshowfont=\toks27
-\MPscratchCnt=\count289
+\MPscratchCnt=\count292
 \MPscratchDim=\dimen168
-\MPnumerator=\count290
-\makeMPintoPDFobject=\count291
+\MPnumerator=\count293
+\makeMPintoPDFobject=\count294
 \everyMPtoPDFconversion=\toks28
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -225,7 +234,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-\c@lstlisting=\count292
+\c@lstlisting=\count295
 LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -236,29 +245,29 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1]
-Overfull \hbox (11.6345pt too wide) in paragraph at lines 117--119
-[]\OT1/cmr/m/n/10 Le mu-tex writer ac-cess per-met tout sim-ple-ment de blo-quer la m^^Semoire lors des op^^Serations d'^^Secriture. 
+Overfull \hbox (1.29312pt too wide) in paragraph at lines 123--125
+[]\OT1/cmr/m/n/12 Le mu-tex writer ac-cess per-met tout sim-ple-ment de blo-quer la m^^Semoire lors des op^^Serations
  []
 
-
-Overfull \hbox (3.48647pt too wide) in paragraph at lines 171--175
-[]\OT1/cmr/m/n/10 Il est pos-si-ble de le ren-dre en-core plus per-for-mant, no-tam-ment ^^Ra l'aide de mul-ti-ples serveurs. L'utilisation
+[2]
+Overfull \hbox (14.83603pt too wide) in paragraph at lines 189--192
+[]\OT1/cmr/m/n/12 Nous pour-rions aussi cr^^Seer un in-dex d'^^Setudiants gr^ace ^^Ra std::map, ou un tableau d'^^Setudiants,
  []
 
-[2] [3] (./demo.aux) ) 
+[3] [4] (./demo.aux) ) 
 Here is how much of TeX's memory you used:
- 5221 strings out of 480247
- 80380 string characters out of 5896151
- 368933 words of memory out of 5000000
- 23097 multiletter control sequences out of 15000+600000
+ 5666 strings out of 480247
+ 91268 string characters out of 5896151
+ 463669 words of memory out of 5000000
+ 23528 multiletter control sequences out of 15000+600000
  475115 words of font info for 50 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 58i,7n,63p,569b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 68i,7n,77p,569b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on demo.pdf (4 pages, 67648 bytes).
+Output written on demo.pdf (5 pages, 64007 bytes).
 PDF statistics:
- 37 PDF objects out of 1000 (max. 8388607)
- 22 compressed objects within 1 object stream
+ 40 PDF objects out of 1000 (max. 8388607)
+ 24 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -40,10 +40,13 @@ static void server_interrupt_handler(int sig)
    {
       printf("\nCaught CTRL+C signal, saving and exiting SmallDB.\n");
       db_save(&db);
+      
       for (auto &client : clientSockets) // write to clients to stop
       {
          write(client, "stop", 5);
+         close(client);
       }
+      
       exit(0);
    }
 }

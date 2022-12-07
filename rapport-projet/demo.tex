@@ -13,20 +13,21 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{fullpage}
+\usepackage{lipsum}
+
 \nocite{*}
-
-
 \setlength\parindent{24pt}
 
 \begin{document}
 \begin{titlepage}
-    
+
 
 \author{Andrius Ezerskis \& Moïra Vanderslagmolen \& Milan Skaleric}
-\title{Rapport d'OS}
+\title{Rapport d'OS - Projet 2}
 
 \maketitle
 \end{titlepage}
+\begin{large}
 
 \section{Introduction}
 \par
@@ -35,8 +36,10 @@
 Après une base de données simple, avec des requêtes et du monitoring, il nous a
 été demandé de réaliser une mise à jour afin de permettre des connexions de
 multiples clients sur un serveur.
+
 \par
 \par
+
 Ces clients doivent pouvoir faire les mêmes requêtes qu'initialement, avec
 quelques améliorations pour réduire le temps d'exécution des requêtes et pour ne
 pas surcharger le serveur. Vous trouverez, dans ce rapport, nos choix
@@ -44,6 +47,7 @@ d'implémentation et les difficultés que nous avons rencontrées au fil de la
 réalisation de ce projet ainsi que les mécanismes de synchronisation utilisés,
 une comparaison détaillée entre threads et processus et des propositions
 d'améliorations relatives aux performances et au fonctionnement.
+
 \par
 \section{Choix d'implémentation et difficultés rencontrées}
 \subsection{Fin d'un socket}
@@ -55,8 +59,10 @@ Lorsque nous avons commencé à lancer les tests, nous avons vu que le socket
 résultat, le résultat s'affichait et le reste de la requête aussi. Pour régler
 cela, nous avons rajouté manuellement un '\*0' à la fin du buffer lu, pour
 signaler la fin du message au read.   
+
 \par
 \subsection{Multi-threading}
+
 \par 
 \indent
 
@@ -139,9 +145,26 @@ cas avec les threads.
 La gestion en mémoire partagée est beaucoup plus simple avec des threads.
 Ceux-ci partagent par défaut la mémoire virtuelle d'un même processus, cela nous
 évite donc de devoir implémenter la gestion de la mémoire partagée nous-mêmes.
+\par
+En effet, lors du projet 1, nous avons du implémenter nous-mêmes la gestion en
+mémoire partagée, à l'aide de diverses librairies comme shmat. Shmat permet de
+partager un file descriptor entre plusieurs processus enfants ainsi que le
+processus parent. Il y a eu beaucoup de contraintes avec ce file descriptor,
+notamment le fait qu'un processus enfant ne peut pas augmenter la taille du file
+descriptor, seulement le parent est autorisé à le faire. 
+\par
+Lors du projet 2, nous
+avons simplement du faire usage de mutex, pour éviter que les threads écrivent
+et/ou lisent dans la mémoire en même temps.
+\par
 Les threads sont également plus rapides que les processus à la création et à la
 destruction, et prennent moins de temps pour le changement de contexte, car ils
-sont plus légers.\par
+sont plus légers.\par La gestion des signaux est très différente entre les
+processus et les threads. Pour les processus, il faut envoyer un signal à chaque
+processus enfant et au processus parent, tandis que pour les threads, il suffit
+d'envoyer un signal au processus principal (et donc au thread principal), et de
+l'ignorer dans les threads créés.
+
 
 
 
@@ -163,12 +186,21 @@ limité en caractères.
 Nous pourrions aussi lancer plusieurs serveurs, au lieu d'en avoir qu'un seul,
 afin de supporter plus de monde.
 
+Nous pourrions aussi créer un index d'étudiants grâce à std::map, ou un tableau
+d'étudiants, avec l'id en clé afin de vérifier si l'id est déjà dans la database
+beaucoup plus rapidement.
+
+Nous pouvons aussi prévoir beaucoup plus d'espace pour la database au démarrage.
+Si plusieurs accès en lecture se produisent, nous pouvons les "rassembler" tout
+en évitant de provoquer une famine
 \section{Conclusion}
 \par
 \indent
 En conclusion, malgré les problèmes survenus, nous avons réussi à implémenter
 une base de données serveur/clients qui s'exécute rapidement et
-efficacement.\par Il est possible de le rendre encore plus performant, notamment
+efficacement.
+\par 
+Il est possible de le rendre encore plus performant, notamment
 à l'aide de multiples serveurs. L'utilisation des processus et des threads
 dépend surtout de l'utilisation qu'on veut en faire, chacun ont leur avantages
 et leurs inconvénients. Les processus sont plus robustes, et les threads plus rapides.
@@ -177,5 +209,7 @@ Le code est maintenable et séparé en plusieurs fichiers,
 afin de faciliter la correction de bugs et d'erreurs éventuels, ainsi que la
 maintenabilité du projet dans son ensemble.
 \par
+
+\end{large}
 
 \end{document}
