@@ -27,9 +27,7 @@ void db_load(database_t *db, const char *path) {
 
   if (fd_db < 0) {
     warn("Unable to open %s (loading DB)", path);
-    warnx("Starting with an empty DB.");
-    db->data.reserve(100);
-    return;
+    exit(1);
   }
   if (fstat(fd_db, &info) != 0) {
     err(FILE_ERROR, "Unable to stat %s (loading DB)", path);

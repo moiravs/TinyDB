@@ -56,13 +56,9 @@ static void server_interrupt_handler(int sig)
 void setup_principal_interrupt_handler(bool client)
 {
    if (client)
-   {
-      signal(SIGINT, principal_interrupt_handler); // Fermer
-   }                                               // Sauvegarder la BDD
+      signal(SIGINT, principal_interrupt_handler); 
    else
-   {
-      signal(SIGINT, server_interrupt_handler); // Fermer
-   }
+      signal(SIGINT, server_interrupt_handler); 
    signal(SIGPIPE, principal_interrupt_handler);
    signal(SIGUSR1, principal_interrupt_handler);
 
@@ -70,11 +66,7 @@ void setup_principal_interrupt_handler(bool client)
    action.sa_handler = principal_interrupt_handler;
    action.sa_flags = 0;
    if (sigemptyset(&action.sa_mask) < 0)
-   {
       perror("sigemptyset()");
-   }
    else if (sigaction(SIGUSR1, &action, NULL) < 0)
-   {
       perror("sigaction()");
-   }
 }

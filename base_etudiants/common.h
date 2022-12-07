@@ -12,7 +12,7 @@
 int _checked(int ret){
     if (ret < 0)
     {
-        printf("ERROR number : %d%s\n", errno, strerror(errno));
+        printf("ERROR number : %d %s\n", errno, strerror(errno));
         exit(EXIT_FAILURE);
     }
     return ret;

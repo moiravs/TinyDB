@@ -42,6 +42,10 @@ void *work(void *socket_desc)
 int main(int argc, char const *argv[])
 {
     setup_principal_interrupt_handler(false); // setup signals
+    if (argc < 2){
+        puts("Parameter of the database path is missing, exiting SmallDB");
+        exit(1);
+    }
     db.path = argv[1];
     db_load(&db, db.path);
     int serverSocket, newSocket;

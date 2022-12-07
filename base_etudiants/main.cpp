@@ -31,9 +31,11 @@ int main(int argc, char const *argv[])
   }
   checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
   char buffer[80];
-  const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80);
-  if (p == NULL)
-    std::cout << "IP adress is not the IP adress of the server";
+  const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80); //
+  if (p == NULL){
+    std::cout << "IP adress doesn't exist";
+    exit(1);
+    }
   char bufferStdin[2048], bufferSocket[2048];
   int i, lu;
   int fd = fileno(stdin);
