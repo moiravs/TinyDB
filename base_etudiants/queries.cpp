@@ -89,11 +89,36 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
   fputs("\0", fout);
 }
 
+bool is_id_existing(database_t *const db, const unsigned id){
+  std::function<bool(const student_t &)> predicate = get_filter("id", std::to_string(id).c_str());
+  new_access.lock();
+  reader_registration.lock();
+  if (readers_c == 0)
+    write_access.lock();
+  readers_c++;
+  new_access.unlock();
+  reader_registration.unlock();
+  for (const student_t &s : db->data)
+  {
+    if (predicate(s))
+      return true;
+  }
+  reader_registration.lock();
+  readers_c--;
+  if (readers_c == 0)
+    write_access.unlock();
+  reader_registration.unlock();
+  return false;
+}
+
 void execute_insert(FILE *fout, database_t *const db, const char *const fname,
-                    const char *const lname, const unsigned id, const char *const section,
-                    const tm birthdate)
-                    // TODO check si id déjà dans la database
+                        const char *const lname, const unsigned id, const char *const section,
+                        const tm birthdate)
 {
+  if (is_id_existing(db, id)){
+    fputs("ID already in the database", fout);
+    return;
+  }
   new_access.lock();
   write_access.lock();
   new_access.unlock();
@@ -108,6 +133,7 @@ void execute_insert(FILE *fout, database_t *const db, const char *const fname,
   char *student = new char[256];
   student_to_str(student, s, 256);
   fputs(student, fout);
+  delete[](student);
   
 }
 
