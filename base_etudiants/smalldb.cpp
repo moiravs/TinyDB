@@ -81,21 +81,17 @@ int main(int argc, char const *argv[])
         {
             clientSockets.push_back(newSocket);
             std::cout << "Accepted connection number " << newSocket << std::endl;
-            // Bloque le signal (pour le thread courant)
-            sigset_t mask;
+            sigset_t mask; // Bloque le signal (pour le thread courant)
             sigemptyset(&mask);
             sigaddset(&mask, SIGUSR1);
             sigprocmask(SIG_BLOCK, &mask, NULL);
             if (pthread_create(&tid[i++], NULL, work, &newSocket) != 0)
                 printf("Failed to create thread\n");
-            // Débloque le signal (pour le thread courant)
-            sigprocmask(SIG_UNBLOCK, &mask, NULL);
+            sigprocmask(SIG_UNBLOCK, &mask, NULL); // Débloque le signal (pour le thread courant)
         }
         else
-        {
             if (errno == EINTR) //TODO:explain
                 continue;
-        }
         if (i >= 20) // if more than 20 threads
         {
             i = 0;
