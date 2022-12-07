@@ -4,7 +4,6 @@
 #include <fcntl.h>     // open
 #include <sys/stat.h>  // stat
 #include <unistd.h>    // read
-
 #include <algorithm>  // std::min
 #include <cassert>    // assert
 #include <climits>    // SSIZE_MAX
@@ -58,21 +57,7 @@ void db_load(database_t *db, const char *path) {
   if (close(fd_db) < 0) {
     err(FILE_ERROR, "Error while closing %s (after DB load)", path);
   }
-
   printf("%lu students found in the db.\n", size);
-
-  // Le code ci-dessus n'est pas performant
-  // à cause du trop grand nombre d'appel à read
-  // et de la copie de chaque étudiant dans data.
-  // L'utilisation de fopen, fread, etc. aurait
-  // réglé le problème de lecture (ces fonctions
-  // utilisent un buffer pour limiter le nombre d'appels
-  // systèmes (read, write)), mais nous voulons illuster
-  // ici le fonctionnement de ces appels systèmes.
-  // (Dans un vrai code il faudrait utiliser fopen, fread...)
-  //
-  // Vous pouvez utiliser cette fonction dans votre projet.
-  // Le défaut mentionner ne sera pas considéré.
 }
 
 void db_add(database_t *db, student_t s) { db->data.push_back(s); }

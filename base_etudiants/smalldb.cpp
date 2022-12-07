@@ -32,13 +32,9 @@ void *work(void *socket_desc)
     return 0;
 }
 
-int create_socket(){
-
-}
-
 int main(int argc, char const *argv[])
 {
-    setup_server_interrupt_handler();
+    setup_principal_interrupt_handler(false);
     db.path = argv[1];
     db_load(&db, db.path);
     int serverSocket, newSocket;

@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
     puts("Parameter IP is missing");
     exit(1);
   }
-  setup_principal_interrupt_handler();
+  setup_principal_interrupt_handler(true);
   int sock = checked(socket(AF_INET, SOCK_STREAM, 0));
   struct sockaddr_in serv_addr;
   serv_addr.sin_family = AF_INET;

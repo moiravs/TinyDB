@@ -10,104 +10,66 @@
 #include <sys/select.h>
 #include <assert.h>
 
-static volatile sig_atomic_t should_quit = 0;
-static volatile sig_atomic_t asked_saving_db = 0;
 database_t db;
 std::vector<int> clientSockets;
 
-static void principal_interrupt_handler(int sig) {
-   if (sig == SIGINT) {
-      printf("\nCaught CTRL+C signal, exiting Tiny DB.\n");
-      close(STDIN_FILENO);
-      exit(0);
-   } else if (sig == SIGUSR1) {
-      asked_saving_db = 1;
-      sync_save_db();
-   } else if (sig == SIGPIPE) {
-      printf("\nCaught unexpected SIGPIPE signal, exiting Tiny DB.\n");
-      close(STDIN_FILENO);
-   }
-}
-inline void sync_save_db()
+static void principal_interrupt_handler(int sig)
 {
-   reset_asked_saving_db();
-   printf("Caught SIGUSR1, comitting database changes to the disk...\n");
-   db_save(&db);
-}
-
-static void server_interrupt_handler(int sig){
-   if (sig == SIGINT){
-      printf("\nCaught CTRL+C signal, saving and exiting Tiny DB.\n");
-      db_save(&db);
-      for (auto &client: clientSockets){
-         write(client, "stop", 5);
-      }
+   if (sig == SIGINT)
+   {
+      printf("\nCaught CTRL+C signal, exiting SmallDB.\n");
+      close(STDIN_FILENO);
       exit(0);
    }
    else if (sig == SIGUSR1)
    {
-      asked_saving_db = 1;
-      sync_save_db();
-   }}
-
-void setup_server_interrupt_handler(void){
-   signal(SIGINT, server_interrupt_handler); // Fermer
-   signal(SIGPIPE, server_interrupt_handler);
-   signal(SIGUSR1, server_interrupt_handler);
-
-   struct sigaction action;
-
-   action.sa_handler = server_interrupt_handler;
-   action.sa_flags = 0;
-   if (sigemptyset(&action.sa_mask) < 0) {
-      perror("sigemptyset()");
-   } else if (sigaction(SIGUSR1, &action, NULL) < 0) {
-      perror("sigaction()");
+      printf("Caught SIGUSR1, comitting database changes to the disk...\n");
+      db_save(&db);
+   }
+   else if (sig == SIGPIPE)
+   {
+      printf("\nCaught unexpected SIGPIPE signal, exiting SmallDB.\n");
+      close(STDIN_FILENO);
    }
 }
 
-void setup_principal_interrupt_handler(void) {
-   signal(SIGINT, principal_interrupt_handler); // Fermer
-   signal(SIGPIPE, principal_interrupt_handler); // Fermer
-   signal(SIGUSR1, principal_interrupt_handler); // Sauvegarder la BDD
-   
-   // La fonction read() n'est pas interrompue sur tous les
-   // systèmes par défaut quand SIGUSR1 est reçu. Une solution
-   // est d'utiliser sigaction() (en cas d'erreur, on se contente
-   // du gestionnaire de signal mis en place avec signal()).
-   
+static void server_interrupt_handler(int sig)
+{
+   if (sig == SIGINT)
+   {
+      printf("\nCaught CTRL+C signal, saving and exiting SmallDB.\n");
+      db_save(&db);
+      for (auto &client : clientSockets)
+      {
+         write(client, "stop", 5);
+      }
+      exit(0);
+   }
+}
+
+void setup_principal_interrupt_handler(bool client)
+{
+   if (client)
+   {
+      signal(SIGINT, principal_interrupt_handler);  // Fermer
+   } // Sauvegarder la BDD
+   else
+   {
+      signal(SIGINT, server_interrupt_handler); // Fermer
+
+   }
+   signal(SIGPIPE, principal_interrupt_handler);
+   signal(SIGUSR1, principal_interrupt_handler);
+
    struct sigaction action;
-   
    action.sa_handler = principal_interrupt_handler;
    action.sa_flags = 0;
-   if (sigemptyset(&action.sa_mask) < 0) {
+   if (sigemptyset(&action.sa_mask) < 0)
+   {
       perror("sigemptyset()");
-   } else if (sigaction(SIGUSR1, &action, NULL) < 0) {
+   }
+   else if (sigaction(SIGUSR1, &action, NULL) < 0)
+   {
       perror("sigaction()");
    }
-}
-
-static void dedicated_interrupt_handler(int sig) {
-   if (sig == SIGPIPE) {
-      // Utilisé pour fermer proprement le processus
-      should_quit = 1;
-   }
-}
-
-void setup_dedicated_interrupt_handler(void) {
-   signal(SIGINT, SIG_IGN);
-   signal(SIGUSR1, SIG_IGN);
-   signal(SIGPIPE, dedicated_interrupt_handler);
-}
-
-bool is_quitting_asked(void) {
-   return should_quit;
-}
-
-bool is_asked_saving_db(void) {
-   return asked_saving_db;
-}
-
-void reset_asked_saving_db(void) {
-   asked_saving_db = 0;
 }
