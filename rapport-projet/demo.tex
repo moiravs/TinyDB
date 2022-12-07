@@ -55,7 +55,7 @@ ce n'était pas adapté à notre code, vu que nous n'avions que deux files descr
 \par
 \indent
 
-Afin de synchroniser les clients entre eux, nous avons fait l'usage de mutex(mutual exclusion) qui permettent 
+Afin de synchroniser les clients entre eux, nous avons fait l'usage de mutex(mutual exclusion) qui permet
 à deux threads de ne pas écrire ou lire en même temps dans la mémoire.
 En effet, si deux threads écrivent en même temps, il est possible que les écritures se chevauchent et donc que l'étudiant écrit dans la base de données soit incorrect.
 \newline
@@ -85,7 +85,9 @@ Les threads sont également plus rapides que les processus à la création et à
 Pour améliorer la rapidité de notre programme, nous avons eu plusieurs idées.
 
 La création et destruction de threads est assez coûteuse, nous pourrions donc laisser un thread gérer un certains nombres de clients, par exemple 5 clients.
-Au lieu d'écrire dans la requête dans un socket et d'écrire le résultat de ce même socket, nous pourrions écrire dans un fichier, pour ne pas être limité en caractères.
+\par
+
+Ensuite, au lieu d'écrire dans la requête dans un socket et d'écrire le résultat de ce même socket, nous pourrions écrire dans un fichier, pour ne pas être limité en caractères.
 
 Tout d'abord
 \section{Conclusion}
