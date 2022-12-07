@@ -39,19 +39,10 @@ void *work(void *socket_desc)
     return 0;
 }
 
-int main(int argc, char const *argv[])
-{
-    setup_principal_interrupt_handler(false); // setup signals
-    if (argc < 2){
-        puts("Parameter of the database path is missing, exiting SmallDB");
-        exit(1);
-    }
-    db.path = argv[1];
-    db_load(&db, db.path);
-    int serverSocket, newSocket;
+int setSocket(){
+    int serverSocket;
     struct sockaddr_in serverAddr;
-    struct sockaddr_storage serverStorage;
-    socklen_t addr_size;
+
     if ((serverSocket = socket(PF_INET, SOCK_STREAM, 0)) < 0) // Create the socket
     {
         err(SOCKET_ERROR, "Failed to create to socket");
@@ -62,11 +53,26 @@ int main(int argc, char const *argv[])
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
     checked(bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
+    return serverSocket;
+}
+
+int main(int argc, char const *argv[])
+{
+    setup_principal_interrupt_handler(false); // setup signals
+    if (argc < 2){
+        puts("Parameter of the database path is missing, exiting SmallDB");
+        exit(1);
+    }
+    db.path = argv[1];
+    db_load(&db, db.path);
+    int newSocket, serverSocket = setSocket();
     if (listen(serverSocket, 20) == 0) // accept maximum 20 connections queued, further requests will be refused
         printf("Listening\n");
     else
         err(LISTEN_ERROR, "Failed to listen");
     pthread_t tid[30];
+    struct sockaddr_storage serverStorage;
+    socklen_t addr_size;
     int i = 0; // number of threads
     while (true)
     {
@@ -87,7 +93,7 @@ int main(int argc, char const *argv[])
         }
         else
         {
-            if (errno == EINTR)
+            if (errno == EINTR) //TODO:explain
                 continue;
         }
         if (i >= 20) // if more than 20 threads

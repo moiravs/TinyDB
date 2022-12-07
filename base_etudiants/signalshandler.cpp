@@ -32,11 +32,6 @@ static void principal_interrupt_handler(int sig)
       printf("Caught SIGUSR1, comitting database changes to the disk...\n");
       db_save(&db);
    }
-   else if (sig == SIGPIPE)
-   {
-      printf("\nCaught unexpected SIGPIPE signal, exiting SmallDB.\n");
-      close(STDIN_FILENO);
-   }
 }
 
 static void server_interrupt_handler(int sig)
@@ -59,7 +54,6 @@ void setup_principal_interrupt_handler(bool client)
       signal(SIGINT, principal_interrupt_handler); 
    else
       signal(SIGINT, server_interrupt_handler); 
-   signal(SIGPIPE, principal_interrupt_handler);
    signal(SIGUSR1, principal_interrupt_handler);
 
    struct sigaction action;

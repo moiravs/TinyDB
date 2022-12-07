@@ -1,4 +1,5 @@
-CXXFLAGS+=-std=c++17 -fsanitize=leak,address -g -Wall -Wextra -Wpedantic -D_GNU_SOURCE 
+CXXFLAGS+= -std=c++17 -Wall -Wextra -Wpedantic -D_GNU_SOURCE -Werror=all -lpthread
+
 #CXX=g++
 LDLIBS+=-lpthread -lasan
 SOURCES = $(wildcard *.cpp */*.cpp)
