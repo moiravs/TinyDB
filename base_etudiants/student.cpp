@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <cctype>
 #include <cstdio>
-#include <cstring>
 #include <ctime>
 
 // private functions //////////////////////////////////////////////////////////

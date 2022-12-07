@@ -43,7 +43,6 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
   if (readers_c == 0)
     write_access.unlock();
   reader_registration.unlock();
-
   fprintf(fout, "%d", numberstudent);
   fprintf(fout, "%s", " student(s) selected\n");
   delete[](student);
@@ -174,18 +173,14 @@ void parse_and_execute_select(FILE *fout, database_t *db, const char *const quer
   char ffield[32], fvalue[64]; // filter data
   int counter;
   if (sscanf(query, "select %31[^=]=%63s%n", ffield, fvalue, &counter) != 2)
-  {
     query_fail_bad_format(fout, "select");
-  }
   else if (static_cast<unsigned>(counter) < strlen(query))
   {
     std::cout << strlen(query) << " c " << counter << std::endl;
     query_fail_too_long(fout, "select");
   }
   else
-  {
     execute_select(fout, db, ffield, fvalue);
-  }
 }
 
 void parse_and_execute_update(FILE *fout, database_t *db, const char *const query)
@@ -195,17 +190,11 @@ void parse_and_execute_update(FILE *fout, database_t *db, const char *const quer
   int counter;
   if (sscanf(query, "update %31[^=]=%63s set %31[^=]=%63s%n", ffield, fvalue, efield, evalue,
              &counter) != 4)
-  {
     query_fail_bad_format(fout, "update");
-  }
   else if (static_cast<unsigned>(counter) < strlen(query))
-  {
     query_fail_too_long(fout, "update");
-  }
   else
-  {
     execute_update(fout, db, ffield, fvalue, efield, evalue);
-  }
 }
 
 void parse_and_execute_insert(FILE *fout, database_t *db, const char *const query)
@@ -215,17 +204,11 @@ void parse_and_execute_insert(FILE *fout, database_t *db, const char *const quer
   tm birthdate;
   int counter;
   if (sscanf(query, "insert %63s %63s %u %63s %10s%n", fname, lname, &id, section, date, &counter) != 5 || strptime(date, "%d/%m/%Y", &birthdate) == NULL)
-  {
     query_fail_bad_format(fout, "insert");
-  }
   else if (static_cast<unsigned>(counter) < strlen(query))
-  {
     query_fail_too_long(fout, "insert");
-  }
   else
-  {
     execute_insert(fout, db, fname, lname, id, section, birthdate);
-  }
 }
 
 void parse_and_execute_delete(FILE *fout, database_t *db, const char *const query)
@@ -233,41 +216,25 @@ void parse_and_execute_delete(FILE *fout, database_t *db, const char *const quer
   char ffield[32], fvalue[64]; // filter data
   int counter;
   if (sscanf(query, "delete %31[^=]=%63s%n", ffield, fvalue, &counter) != 2)
-  {
     query_fail_bad_format(fout, "delete");
-  }
   else if (static_cast<unsigned>(counter) < strlen(query))
-  {
     query_fail_too_long(fout, "delete");
-  }
   else
-  {
     execute_delete(fout, db, ffield, fvalue);
-  }
 }
 
 void parse_and_execute(FILE *fout, database_t *db, const char *const query)
 {
   if (strncmp("select", query, sizeof("select") - 1) == 0)
-  {
     parse_and_execute_select(fout, db, query);
-  }
   else if (strncmp("update", query, sizeof("update") - 1) == 0)
-  {
     parse_and_execute_update(fout, db, query);
-  }
   else if (strncmp("insert", query, sizeof("insert") - 1) == 0)
-  {
     parse_and_execute_insert(fout, db, query);
-  }
   else if (strncmp("delete", query, sizeof("delete") - 1) == 0)
-  {
     parse_and_execute_delete(fout, db, query);
-  }
   else
-  {
     query_fail_bad_query_type(fout);
-  }
 }
 
 // query_fail_* ///////////////////////////////////////////////////////////////
