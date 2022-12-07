@@ -45,7 +45,7 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
   reader_registration.unlock();
 
   fprintf(fout, "%d", numberstudent);
-  fprintf(fout, "%s", " student(s) selected\0");
+  fprintf(fout, "%s", " student(s) selected\n");
   delete[](student);
 }
 
@@ -85,7 +85,7 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
     write_access.unlock();
   reader_registration.unlock();
   fprintf(fout, "%d", numberstudent);
-  fprintf(fout, "%s", " student(s) updated");
+  fprintf(fout, "%s", " student(s) updated\n");
   fputs("\0", fout);
 }
 
@@ -116,7 +116,7 @@ void execute_insert(FILE *fout, database_t *const db, const char *const fname,
                         const tm birthdate)
 {
   if (is_id_existing(db, id)){
-    fputs("ID already in the database", fout);
+    fputs("ID already in the database\n", fout);
     return;
   }
   new_access.lock();
@@ -133,6 +133,7 @@ void execute_insert(FILE *fout, database_t *const db, const char *const fname,
   char *student = new char[256];
   student_to_str(student, s, 256);
   fputs(student, fout);
+  fputs("\n", fout);
   delete[](student);
   
 }

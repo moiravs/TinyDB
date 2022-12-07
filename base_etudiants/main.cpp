@@ -89,7 +89,7 @@ int main(int argc, char const *argv[])
       {
         end = true;
       }
-      printf("%s\n", bufferSocket);
+      printf("%s", bufferSocket);
     }
   }
   close(0);
