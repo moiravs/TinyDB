@@ -5,10 +5,12 @@
 
 #include "db.hpp"
 
-// execute_* //////////////////////////////////////////////////////////////////
+bool is_id_existing(database_t *const db, const unsigned id);
 
-void execute_select(FILE* fout, database_t* const db, const char* const field,
-                    const char* const value);
+    // execute_* //////////////////////////////////////////////////////////////////
+
+    void execute_select(FILE *fout, database_t *const db, const char *const field,
+                        const char *const value);
 
 void execute_update(FILE* fout, database_t* const db, const char* const ffield,
                     const char* const fvalue, const char* const efield, const char* const evalue);
