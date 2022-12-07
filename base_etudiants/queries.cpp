@@ -1,7 +1,7 @@
 /*
 SmallDb : Database following the client-server model. The server processes the requests sent by the client.
 Section : BA-INFO
-Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Authors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
 Date : 07/12/2022
 */
 
@@ -52,7 +52,7 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
   reader_registration.unlock();
   fprintf(fout, "%d", numberstudent);
   fprintf(fout, "%s", " student(s) selected\n");
-  delete[](student);
+  delete[] (student);
 }
 
 void execute_update(FILE *fout, database_t *const db, const char *const ffield, const char *const fvalue, const char *const efield, const char *const evalue)
@@ -95,7 +95,8 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
   fputs("\0", fout);
 }
 
-bool is_id_existing(database_t *const db, const unsigned id){
+bool is_id_existing(database_t *const db, const unsigned id)
+{
   std::function<bool(const student_t &)> predicate = get_filter("id", std::to_string(id).c_str());
   new_access.lock();
   reader_registration.lock();
@@ -118,10 +119,11 @@ bool is_id_existing(database_t *const db, const unsigned id){
 }
 
 void execute_insert(FILE *fout, database_t *const db, const char *const fname,
-                        const char *const lname, const unsigned id, const char *const section,
-                        const tm birthdate)
+                    const char *const lname, const unsigned id, const char *const section,
+                    const tm birthdate)
 {
-  if (is_id_existing(db, id)){
+  if (is_id_existing(db, id))
+  {
     fputs("ID already in the database\n", fout);
     return;
   }
@@ -140,8 +142,7 @@ void execute_insert(FILE *fout, database_t *const db, const char *const fname,
   student_to_str(student, s, 256);
   fputs(student, fout);
   fputs("\n", fout);
-  delete[](student);
-  
+  delete[] (student);
 }
 
 void execute_delete(FILE *fout, database_t *const db, const char *const field,
@@ -253,7 +254,7 @@ void query_fail_bad_query_type(FILE *const fout)
 
 void query_fail_bad_format(FILE *const fout, const char *const query_type)
 {
-  std::string a = "Error : Bad Format in " +static_cast<std::string>(query_type);
+  std::string a = "Error : Bad Format in " + static_cast<std::string>(query_type);
   fprintf(fout, "%s", a.c_str());
 }
 
@@ -265,7 +266,7 @@ void query_fail_too_long(FILE *const fout, const char *const query_type)
 
 void query_fail_bad_filter(FILE *const fout, const char *const field, const char *const filter)
 {
-  std::string a = "Error : Bad Field or Filter in " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter) ;
+  std::string a = "Error : Bad Field or Filter in " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter);
   fprintf(fout, "%s", a.c_str());
 }
 

@@ -1,7 +1,7 @@
 /*
 SmallDb : Database following the client-server model. The server processes the requests sent by the client.
 Section : BA-INFO
-Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Authors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
 Date : 07/12/2022
 */
 
@@ -12,13 +12,13 @@ Date : 07/12/2022
 
 #include "student.hpp"
 
-
 /**
  * Database structure.
  **/
-struct database_t {
+struct database_t
+{
   std::vector<student_t> data; /** Students */
-  const char*            path; /** DB path */
+  const char *path;            /** DB path */
 };
 
 // Nous utilisons un std::vector ici pour ne pas avoir à gérer le code
@@ -47,4 +47,4 @@ size_t db_delete(database_t *db, student_t *s);
  **/
 void db_save(database_t *db);
 
-#endif  // _DB_HPP
+#endif // _DB_HPP

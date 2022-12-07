@@ -1,7 +1,7 @@
 /*
 SmallDb : Database following the client-server model. The server processes the requests sent by the client.
 Section : BA-INFO
-Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Authors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
 Date : 07/12/2022
 */
 
@@ -24,7 +24,5 @@ void server_interrupt_handler(void);
  * @brief  Setup the SIGINT for the client, the SIGPIPE and the SIGURS1 for client and server
  */
 void principal_interrupt_handler();
-
-
 
 #endif

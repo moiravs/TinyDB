@@ -1,7 +1,7 @@
 /*
 SmallDb : Database following the client-server model. The server processes the requests sent by the client.
 Section : BA-INFO
-Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Authors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
 Date : 07/12/2022
 */
 
@@ -45,7 +45,7 @@ static void server_interrupt_handler(int sig)
    {
       printf("\nCaught CTRL+C signal, saving and exiting SmallDB.\n");
       db_save(&db);
-      for (auto &client : clientSockets) //write to clients to stop
+      for (auto &client : clientSockets) // write to clients to stop
       {
          write(client, "stop", 5);
       }
@@ -57,12 +57,11 @@ void setup_principal_interrupt_handler(bool client)
 {
    if (client)
    {
-      signal(SIGINT, principal_interrupt_handler);  // Fermer
-   } // Sauvegarder la BDD
+      signal(SIGINT, principal_interrupt_handler); // Fermer
+   }                                               // Sauvegarder la BDD
    else
    {
       signal(SIGINT, server_interrupt_handler); // Fermer
-
    }
    signal(SIGPIPE, principal_interrupt_handler);
    signal(SIGUSR1, principal_interrupt_handler);

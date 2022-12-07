@@ -1,7 +1,7 @@
 /*
 SmallDb : Database following the client-server model. The server processes the requests sent by the client.
 Section : BA-INFO
-Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Authors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
 Date : 07/12/2022
 */
 
@@ -31,7 +31,7 @@ void *work(void *socket_desc)
     while ((lu = checked(read(new_socket, buffer, 2048))) > 0)
     {
         parse_and_execute(file_new_socket, &db, buffer);
-        fflush(file_new_socket); //TODO : commentaire
+        fflush(file_new_socket); // TODO : commentaire
     }
     fclose(file_new_socket);
     std::cout << "Thread number " << new_socket << " closed" << std::endl;
@@ -58,12 +58,12 @@ int main(int argc, char const *argv[])
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
     checked(bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
-    if (listen(serverSocket, 20) == 0) //accept maximum 20 connections queued, further requests will be refused
+    if (listen(serverSocket, 20) == 0) // accept maximum 20 connections queued, further requests will be refused
         printf("Listening\n");
     else
         err(LISTEN_ERROR, "Failed to listen");
     pthread_t tid[30];
-    int i = 0; //number of threads
+    int i = 0; // number of threads
     while (true)
     {
         addr_size = sizeof serverStorage;
@@ -81,7 +81,8 @@ int main(int argc, char const *argv[])
             // Débloque le signal (pour le thread courant)
             sigprocmask(SIG_UNBLOCK, &mask, NULL);
         }
-        else {
+        else
+        {
             if (errno == EINTR)
                 continue;
         }

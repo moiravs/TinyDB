@@ -1,7 +1,7 @@
 /*
 SmallDb : Database following the client-server model. The server processes the requests sent by the client.
 Section : BA-INFO
-Autors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
+Authors : Milan SKALERIC, Moïra VANDERSLAGMOLEN, Andrius EZERSKIS
 Date : 07/12/2022
 */
 
@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
     puts("Parameter IP is missing");
     exit(1);
   }
-  setup_principal_interrupt_handler(true); //setup signals
+  setup_principal_interrupt_handler(true); // setup signals
   int sock = checked(socket(AF_INET, SOCK_STREAM, 0));
   struct sockaddr_in serv_addr;
   serv_addr.sin_family = AF_INET;
@@ -31,7 +31,7 @@ int main(int argc, char const *argv[])
   }
   checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
   char buffer[80];
-  const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80); 
+  const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80);
   if (p == NULL)
     std::cout << "IP adress is not the IP adress of the server";
   char bufferStdin[2048], bufferSocket[2048];
@@ -39,23 +39,23 @@ int main(int argc, char const *argv[])
   int fd = fileno(stdin);
   int flags = fcntl(fd, F_GETFL, 0);
   flags |= O_NONBLOCK;
-  fcntl(fd, F_SETFL, flags); // put non-blocking stdin
+  fcntl(fd, F_SETFL, flags);   // put non-blocking stdin
   fcntl(sock, F_SETFL, flags); // put non-blocking socket
   bool end = false;
   while (!end)
   {
-    if (fgets(bufferStdin, 2048, stdin)!= NULL)
+    if (fgets(bufferStdin, 2048, stdin) != NULL)
     {
       int i = strlen(bufferStdin) - 1;
-      bufferStdin[i] = '\0'; //put ending character
+      bufferStdin[i] = '\0'; // put ending character
       checked_wr(write(sock, bufferStdin, 2048));
     }
-    if (feof(stdin)) 
+    if (feof(stdin))
       end = true;
     lu = read(sock, bufferSocket, 2048);
     if (lu > 0)
     {
-      bufferSocket[lu] = '\0'; 
+      bufferSocket[lu] = '\0';
       if (strcmp(bufferSocket, "stop") == 0)
         end = true;
       printf("%s", bufferSocket);
