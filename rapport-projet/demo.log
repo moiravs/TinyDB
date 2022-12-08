@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.1)  8 DEC 2022 10:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.1)  8 DEC 2022 10:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -244,27 +244,27 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1]
-Overfull \hbox (26.7859pt too wide) in paragraph at lines 152--158
-[]\OT1/cmr/m/n/12 Sans le new-access, les requ^etes suiv-antes : read-write-read se seraient ex^^Secut^^Sees diff^^Seremment.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] [2] [3]
+Overfull \hbox (14.83603pt too wide) in paragraph at lines 217--220
+[]\OT1/cmr/m/n/12 Nous pour-rions aussi cr^^Seer un in-dex d'^^Setudiants gr^ace ^^Ra std::map, ou un tableau d'^^Setudiants,
  []
 
-[2] [3]
-Overfull \hbox (14.83603pt too wide) in paragraph at lines 222--225
-[]\OT1/cmr/m/n/12 Nous pour-rions aussi cr^^Seer un in-dex d'^^Setudiants gr^ace ^^Ra std::map, ou un tableau d'^^Setudiants,
+
+Overfull \hbox (5.82779pt too wide) in paragraph at lines 221--224
+[]\OT1/cmr/m/n/12 Nous pou-vons aussi pr^^Sevoir beau-coup plus d'espace pour la base de donn^^Sees au d^^Semarrage.
  []
 
 [4] (./demo.aux) ) 
 Here is how much of TeX's memory you used:
- 5667 strings out of 480247
- 91286 string characters out of 5896151
+ 5668 strings out of 480247
+ 91294 string characters out of 5896151
  464669 words of memory out of 5000000
- 23529 multiletter control sequences out of 15000+600000
+ 23530 multiletter control sequences out of 15000+600000
  475115 words of font info for 50 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  68i,7n,77p,569b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on demo.pdf (5 pages, 65679 bytes).
+Output written on demo.pdf (5 pages, 65559 bytes).
 PDF statistics:
  40 PDF objects out of 1000 (max. 8388607)
  24 compressed objects within 1 object stream
