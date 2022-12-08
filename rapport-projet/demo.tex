@@ -50,6 +50,11 @@ d'améliorations relatives aux performances et au fonctionnement.
 
 \par
 \section{Choix d'implémentation et difficultés rencontrées}
+\indent{Implémentation}
+Nous avons implémenté une database avec relation client-serveur en
+multithreading. Pour cela, le serveur lance un thread à chaque nouveau client.
+Le client envoie sa requête au serveur, et le thread du serveur écrit dans un file lié au
+socket de son client.   
 \subsection{Fin d'un socket}
 \par
 \indent
@@ -189,6 +194,9 @@ processus et les threads. Pour les processus, il faut envoyer un signal à chaqu
 processus enfant et au processus parent, tandis que pour les threads, il suffit
 d'envoyer un signal au processus principal (et donc au thread principal), et de
 l'ignorer dans les threads créés.
+\par
+Les threads prennent aussi moins de place que les processus, car ils partagent
+la même mémoire, contrairement aux processus.
 
 
 
