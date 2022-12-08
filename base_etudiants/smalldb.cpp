@@ -17,13 +17,13 @@ Date : 07/12/2022
 #include <iostream>
 
 extern database_t db;
-extern std::vector<int> clientSockets;
-int numberClients = 0;
+extern std::vector<int> client_sockets;
+int number_clients = 0;
 
 void *work(void *socket_desc)
 {
     int new_socket = *(int *)socket_desc;
-    clientSockets.push_back(new_socket);
+    client_sockets.push_back(new_socket);
     std::cout << "Thread number " << new_socket << " created" << std::endl;
     char *buffer = new char[2048];
     int lu;
@@ -39,18 +39,18 @@ void *work(void *socket_desc)
     }
     fclose(file_new_socket);
     std::cout << "Thread number " << new_socket << " closed" << std::endl;
-    numberClients--;
+    number_clients--;
     delete[] buffer;
-    remove(clientSockets.begin(), clientSockets.end(), new_socket);
+    remove(client_sockets.begin(), client_sockets.end(), new_socket);
     return 0;
 }
 
-int setSocket()
+int set_socket()
 {
-    int serverSocket;
+    int server_socket;
     struct sockaddr_in serverAddr;
 
-    if ((serverSocket = socket(PF_INET, SOCK_STREAM, 0)) < 0) // Create the socket
+    if ((server_socket = socket(PF_INET, SOCK_STREAM, 0)) < 0) // Create the socket
     {
         err(SOCKET_ERROR, "Failed to create to socket");
         exit(EXIT_FAILURE);
@@ -59,8 +59,8 @@ int setSocket()
     serverAddr.sin_port = htons(28772);
     serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
-    checked(bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
-    return serverSocket;
+    checked(bind(server_socket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)));
+    return server_socket;
 }
 
 int main(int argc, char const *argv[])
@@ -76,42 +76,42 @@ int main(int argc, char const *argv[])
     db.path = argv[1];
     db_load(&db, db.path);
     printf("DB loaded\n");
-    int newSocket;
-    int serverSocket = setSocket();
-    if (listen(serverSocket, 20) == 0) // accept maximum 20 connections queued, further requests will be refused
+    int new_socket;
+    int server_socket = set_socket();
+    if (listen(server_socket, 20) == 0) // accept maximum 20 connections queued, further requests will be refused
         printf("Listening\n");
     else
         err(LISTEN_ERROR, "Failed to listen");
     pthread_t tid;
-    struct sockaddr_storage serverStorage;
+    struct sockaddr_storage server_storage;
     socklen_t addr_size;
     while (true)
     {
-        addr_size = sizeof serverStorage;
-        if ((newSocket = accept(serverSocket, (struct sockaddr *)&serverStorage, &addr_size)) > 0)
+        addr_size = sizeof server_storage;
+        if ((new_socket = accept(server_socket, (struct sockaddr *)&server_storage, &addr_size)) > 0)
         {
-            if (numberClients >= MAX_CLIENT)
+            if (number_clients >= MAX_CLIENT)
             {
                 std::cout << "Refused connection: too many clients" << std::endl;
-                FILE *file_new_socket = fdopen(newSocket, "w");
+                FILE *file_new_socket = fdopen(new_socket, "w");
                 if (file_new_socket == NULL)
                     puts("errorfile");
 
                 fputs("Too many clients please retry later\n", file_new_socket);
                 fflush(file_new_socket);
-                write(newSocket, "stop", 5);
-                close(newSocket);
+                write(new_socket, "stop", 5);
+                close(new_socket);
             }
             else
             {
-                numberClients++;
-                std::cout << "Accepted connection number " << newSocket << std::endl;
+                number_clients++;
+                std::cout << "Accepted connection number " << new_socket << std::endl;
                 sigset_t mask; // Bloque le signal (pour le thread courant)
                 sigemptyset(&mask);
                 sigaddset(&mask, SIGUSR1 | SIGINT);
                 sigprocmask(SIG_BLOCK, &mask, NULL);
 
-                if (pthread_create(&tid, NULL, work, &newSocket) != 0)
+                if (pthread_create(&tid, NULL, work, &new_socket) != 0)
                     printf("Failed to create thread\n");
                 sigprocmask(SIG_UNBLOCK, &mask, NULL); // Débloque le signal (pour le thread courant)
             }

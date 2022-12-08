@@ -25,7 +25,7 @@ int setup_socket(int argc, char const *argv[]){
   serv_addr.sin_port = htons(28772);
   if (inet_pton(AF_INET, argv[1], &serv_addr.sin_addr) == 0)
   {
-    puts("IP adress doesn't exist");
+    puts("IP address doesn't exist");
     exit(1);
   }
   checked(connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)));
@@ -43,7 +43,7 @@ int main(int argc, char const *argv[])
 {
 
   int sock = setup_socket(argc, argv);
-  char bufferStdin[2048], bufferSocket[2048];
+  char buffer_stdin[2048], buffer_socket[2048];
   int i, lu;
   int fd = fileno(stdin);
   int flags = fcntl(fd, F_GETFL, 0);
@@ -53,21 +53,21 @@ int main(int argc, char const *argv[])
   bool end = false;
   while (!end)
   {
-    if (fgets(bufferStdin, 2048, stdin) != NULL)
+    if (fgets(buffer_stdin, 2048, stdin) != NULL)
     {
-      int i = strlen(bufferStdin) - 1;
-      bufferStdin[i] = '\0'; // put ending character
-      checked_wr(write(sock, bufferStdin, 2048));
+      int i = strlen(buffer_stdin) - 1;
+      buffer_stdin[i] = '\0'; // put ending character
+      checked_wr(write(sock, buffer_stdin, 2048));
     }
     if (feof(stdin))
       end = true;
-    lu = read(sock, bufferSocket, 2048);
+    lu = read(sock, buffer_socket, 2048);
     if (lu > 0)
     {
-      bufferSocket[lu] = '\0';
-      if (strcmp(bufferSocket, "stop") == 0)
+      buffer_socket[lu] = '\0';
+      if (strcmp(buffer_socket, "stop") == 0)
         end = true;
-      printf("%s", bufferSocket);
+      printf("%s", buffer_socket);
     }
     sleep(0.1); // optimizes code
   }

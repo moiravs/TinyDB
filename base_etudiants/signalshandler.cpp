@@ -17,7 +17,7 @@ Date : 07/12/2022
 #include <assert.h>
 
 database_t db;
-std::vector<int> clientSockets;
+std::vector<int> client_sockets;
 
 static void principal_interrupt_handler(int sig)
 {
@@ -40,13 +40,13 @@ static void server_interrupt_handler(int sig)
    {
       printf("\nCaught CTRL+C signal, saving and exiting SmallDB.\n");
       db_save(&db);
-      
-      for (auto &client : clientSockets) // write to clients to stop
+
+      for (auto &client : client_sockets) // write to clients to stop
       {
          write(client, "stop", 5);
          close(client);
       }
-      
+
       exit(0);
    }
 }
@@ -54,9 +54,9 @@ static void server_interrupt_handler(int sig)
 void setup_principal_interrupt_handler(bool client)
 {
    if (client)
-      signal(SIGINT, principal_interrupt_handler); 
+      signal(SIGINT, principal_interrupt_handler);
    else
-      signal(SIGINT, server_interrupt_handler); 
+      signal(SIGINT, server_interrupt_handler);
    signal(SIGUSR1, principal_interrupt_handler);
 
    struct sigaction action;

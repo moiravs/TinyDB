@@ -120,19 +120,44 @@ l'écriture, ce qui résulte en une lecture faussée.
 Dans le pseudo-code, nous avons 3 mutex : reader registration, writer access et
 new access. 
 \par
-Le mutex writer access permet tout simplement de bloquer la mémoire
-lors des opérations d'écriture. 
+
+Lors de l'écriture, le thread bloque la mémoire, écrit dedans et puis la débloque.
+
 \par
-Pour le deuxième mutex, il bloque l'accès à la mémoire seulement lorsque
-personne n'est en train de lire ?? + de blabla
+Les mutex gérant la lecture permet à plusieurs lecteurs de lire en même temps la
+mémoire. Effectivement, ils ne modifient pas la mémoire, ils peuvent donc être à
+plusieurs. Lorsque le premier thread lit, il bloque la mémoire au niveau de la
+database, pour éviter que un autre thread écrive en même temps. D'autres threads
+qui lisent en même temps ne devront pas bloquer la mémoire, car le nombre de
+readers\_c est supérieur à 0. Si le nombre de lecteurs n'est pas égal à 0,
+la mémoire ne sera pas débloquée.
 \par
-Le new access
-est un peu plus complexe. Il permet de faire les accès mémoire dans l'ordre dans
-lequel elles ont été écrites. En effet, si un premier thread veut effectuer une
-lecture et un second veut effectuer une écriture, le temps que le premier thread
-lock le reader registration, le second thread pourrait bloquer le write access, et
-donc la lecture serait bloquée alors que c'était le premier thread. Le new
-access règle ce souci en bloquant l'accès au write access.
+Le new access est un peu plus complexe. Il permet de faire les accès mémoire
+dans l'ordre dans lequel les requêtes ont été écrites et ainsi éviter les problèmes de
+famine. En effet, avec le mutex new-access, les requêtes suivantes :
+read-write-read, s'exécuteront selon le mode suivant : La lecture commence par
+bloquer le new access, bloque donc la mémoire, débloque le new access et
+commence ses opérations de lecture. Le thread commencant l'écriture est bloqué le
+new\_access, et attend que la mémoire se débloque. En attendant, le dernier
+thread voulant effectuer la lecture est bloqué au new\_access. Lorsque le
+premier lecteur a terminé, il débloque la mémoire, et donc l'écriture peut
+commencer. Le troisième lecteur est alors bloqué au write\_access. Ensuite
+l'écriture termine, et le lecteur peut donc bloquer la mémoire et lire dedans.
+\par
+Sans le new-access, les requêtes suivantes : read-write-read se seraient
+exécutées différemment. Le lecteur aurait tout d'abord bloqué le write\_access.
+Le thread effectuant l'écriture se bloque au niveau du bloquage de
+write\_access, tandis que le troisième thread (le lecteur) commence à lire en
+mémoire, car il n'est pas le seul lecteur (et ne doit donc pas bloquer le
+write\_access).
+\par
+Enlever le write\_access peut causer deux majeurs problèmes. Premièrement, cela
+peut causer des problèmes de famine. En effet, si une requête en lecture se
+produit, puis une requête en écriture, puis des dizaines de requêtes en lecture,
+la requête en écriture ne pourra jamais se produire. Deuxièment, dans une base
+de données, il est important que les requêtes se fassent dans l'ordre dans
+laquelle elles ont été écrites. Sans le new\_access, notre programme ne peut pas
+assurer l'ordre.
 \par
 \section{Processus vs Threads}
 \par
