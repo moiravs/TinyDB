@@ -164,7 +164,7 @@ void execute_delete(FILE *fout, database_t *const db, const char *const field,
   auto new_end = remove_if(db->data.begin(), db->data.end(), predicate);
   int numberstudent = db->data.end() - new_end;
   fprintf(fout, "%d", numberstudent);
-  fprintf(fout, "%s", " deleted student(s)");
+  fprintf(fout, "%s", " deleted student(s)\n");
   fputs("\0", fout);
   db->data.erase(new_end, db->data.end());
   reader_registration.lock();
@@ -254,24 +254,24 @@ void query_fail_bad_query_type(FILE *const fout)
 
 void query_fail_bad_format(FILE *const fout, const char *const query_type)
 {
-  std::string a = "Error : Bad Format in " + static_cast<std::string>(query_type);
+  std::string a = "Error : Bad Format in " + static_cast<std::string>(query_type) + "\n";
   fprintf(fout, "%s", a.c_str());
 }
 
 void query_fail_too_long(FILE *const fout, const char *const query_type)
 {
-  std::string a = "Error : Query Too long in" + static_cast<std::string>(query_type);
+  std::string a = "Error : Query Too long in" + static_cast<std::string>(query_type) + "\n";
   fprintf(fout, "%s", a.c_str());
 }
 
 void query_fail_bad_filter(FILE *const fout, const char *const field, const char *const filter)
 {
-  std::string a = "Error : Bad Field or Filter in " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter);
+  std::string a = "Error : Bad Field or Filter in " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter) + "\n";
   fprintf(fout, "%s", a.c_str());
 }
 
 void query_fail_bad_update(FILE *const fout, const char *const field, const char *const filter)
 {
-  std::string a = "Error : Bad Field of Filter in update, " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter) + " is not valid";
+  std::string a = "Error : Bad Field of Filter in update, " + static_cast<std::string>(field) + "=" + static_cast<std::string>(filter) + " is not valid\n";
   fprintf(fout, "%s", a.c_str());
 }
