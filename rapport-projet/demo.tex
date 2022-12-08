@@ -23,7 +23,7 @@
 
 
 \author{Andrius Ezerskis \& Moïra Vanderslagmolen \& Milan Skaleric}
-\title{Rapport d'OS - Projet 2}
+\title{Rapport d'OS Projet 2}
 
 \maketitle
 \end{titlepage}
@@ -50,13 +50,15 @@ d'améliorations relatives aux performances et au fonctionnement.
 
 \par
 \section{Choix d'implémentation et difficultés rencontrées}
+
 \subsection{Implémentation}
 \par
 \indent
+
 Nous avons implémenté une database avec relation client-serveur en
 multithreading. Pour cela, le serveur lance un thread à chaque nouveau client.
-Le client envoie sa requête au serveur à l'aide de stdin, et le thread du
-serveur écrit le résultat de la requête dans un file lié au socket de son
+Le client envoie sa requête au serveur à l'aide du socket, le thread traite sa
+requête et il écrit le résultat de la requête dans un file lié au socket de son
 client. Le client lit le résultat de son socket et l'affiche.
 \par
 \subsection{Fin d'un socket}
@@ -64,7 +66,7 @@ client. Le client lit le résultat de son socket et l'affiche.
 \indent
 
 Lorsque nous avons commencé à lancer les tests, nous avons vu que le socket
-'gardait' l'ancienne commande. En effet, si la requête était plus longue que le
+`gardait' l'ancienne commande. En effet, si la requête était plus longue que le
 résultat, le résultat s'affichait et le reste de la requête aussi. Pour régler
 cela, nous avons rajouté manuellement un '\*0' à la fin du buffer lu, pour
 signaler la fin du message au read.   
@@ -76,8 +78,9 @@ signaler la fin du message au read.
 \indent
 
 Pour éviter les problèmes de surcharge de serveur, nous avons limité le nombre
-de thread tournant en même temps à 20.
-Lorsqu'un client essaye de se connecter alors que le 
+de thread tournant en même temps à 20. Lorsqu'un client essaye de se connecter
+alors que le nombre de client est à 20, le serveur lui envoie un message
+d'erreur à l'aide de son socket, et ferme le client ainsi que le socket.
 
 \par
 \subsection{Signaux}
@@ -85,10 +88,14 @@ Lorsqu'un client essaye de se connecter alors que le
 \indent
 
 Lors de l'implémentation des signaux, nous avons eu du mal à fermer les clients
-lorsque le serveur attrapait un signal tel que Ctrl + C. En effet, le client lit
-deux files descriptors différents, le stdin et le socket du serveur. Nous
-écrivions donc dans le socket du serveur un message ('stop') afin que le client
-se ferme dès qu'il le lit. Seulement, le lecture du stdin est bloquant, le
+lorsque le serveur attrapait un signal tel que Ctrl + C. Nous avons implémenté
+un vecteur de int, qui garde le socket de chaque thread en cours. Lorsque nous
+voulons éteindre le serveur, nous écrivons un message ('stop') et le client
+réagit en arrêtant sa boucle principale et ferme le client.
+
+Le problème est que le client lit dans deux files descriptors différents, le stdin et le socket du serveur. 
+Nous écrivions donc dans le socket du serveur le message ('stop') afin que le client
+se ferme dès qu'il le lit. Sauf que le lecture du stdin est bloquant, le
 client ne lisait donc dans le socket du serveur que lorsque l'utilisateur
 écrivait dans le stdin. 
 \par
@@ -104,7 +111,7 @@ deux files descriptors non-bloquants.
 \indent
 
 Avant d'avoir ajouté le flag non-bloquant au socket et au stdin, nous avions
-limité la pipe à 2048 caractères, ce qui nous posait problème lors du 'select',
+limité la pipe à 2048 caractères, ce qui nous posait problème lors du `select',
 car il fallait afficher tous les étudiants retournés par le serveur. Lorsqu'on a
 ajouté le flag bloquant, ce problème s'est réglé, car le serveur écrit dans le
 file descriptor lié au socket, et le client ne s'arrête pas sur le fgets juste
@@ -119,7 +126,7 @@ rajouté un sleep d'un dixième de seconde, afin d'optimiser le programme.
 \indent
 
 Afin de synchroniser les clients entre eux, nous avons fait l'usage de
-mutex(mutual exclusion). Les mutex permettent à deux ou plusieurs threads de ne
+mutex (mutual exclusion). Les mutex permettent à deux ou plusieurs threads de ne
 pas écrire ou lire en même temps dans la mémoire. En effet, si deux threads
 écrivent en même temps, il est possible que les écritures se chevauchent et donc
 que l'étudiant écrit dans la base de données soit incorrect. Lors d'une lecture
@@ -133,7 +140,7 @@ new access.
 Lors de l'écriture, le thread bloque la mémoire, écrit dedans et puis la débloque.
 
 \par
-Les mutex gérant la lecture permettent à plusieurs lecteurs de lire en même temps la
+Les mutex gérant la lecture (reader\_registration et writer\_access) permettent à plusieurs lecteurs de lire en même temps la
 mémoire. En effet, ils ne modifient pas la mémoire, ils peuvent donc être à
 plusieurs. Lorsque le premier thread lit, il bloque la mémoire au niveau de la
 database, pour éviter que un autre thread écrive en même temps. D'autres threads
@@ -141,9 +148,9 @@ qui lisent en même temps ne devront pas bloquer la mémoire, car le nombre de
 readers\_c est supérieur à 0. Si le nombre de lecteurs n'est pas égal à 0,
 la mémoire ne sera pas débloquée.
 \par
-Le new access est un peu plus complexe. Il permet de faire les accès mémoire
+Le mutex new\_access est un peu plus complexe. Il permet de faire les accès mémoire
 dans l'ordre dans lequel les requêtes ont été écrites et ainsi éviter les problèmes de
-famine. En effet, avec le mutex new-access, les requêtes read-write-read s'exécuteront selon le mode suivant : la lecture commence par
+famine. En effet, avec le mutex new-access, les requêtes read-write-read s'exécuteront selon le mode suivant: la lecture commence par
 bloquer le new\_access, bloque donc la mémoire, débloque le new\_access et
 commence ses opérations de lecture. Le thread commençant l'écriture est bloqué par le
 new\_access, et attend que la mémoire se débloque. En attendant, le dernier
@@ -180,7 +187,7 @@ Ceux-ci partagent par défaut la mémoire virtuelle d'un même processus, cela n
 évite donc de devoir implémenter la gestion de la mémoire partagée nous-mêmes.
 \par
 En effet, lors du projet 1, nous avons du implémenter nous-mêmes la gestion en
-mémoire partagée, à l'aide de diverses librairies comme shmat. shmat permet de
+mémoire partagée, à l'aide de diverses librairies comme shmat. Shmat permet de
 partager un file descriptor entre plusieurs processus enfants ainsi que le
 processus parent. Il y a eu beaucoup de contraintes avec ce file descriptor,
 notamment le fait qu'un processus enfant ne peut pas augmenter la taille du file
@@ -192,7 +199,8 @@ et/ou lisent dans la mémoire en même temps.
 \par
 Les threads sont également plus rapides que les processus à la création et à la
 destruction, et prennent moins de temps pour le changement de contexte, car ils
-sont plus légers.\par La gestion des signaux est très différente entre les
+sont plus légers.
+\par La gestion des signaux est très différente entre les
 processus et les threads. Pour les processus, il faut envoyer un signal à chaque
 processus enfant et au processus parent, tandis que pour les threads, il suffit
 d'envoyer un signal au processus principal (et donc au thread principal), et de
@@ -200,6 +208,15 @@ l'ignorer dans les threads créés.
 \par
 Les threads prennent aussi moins de place que les processus, car ils partagent
 la même mémoire, contrairement aux processus.
+\par
+Les thread utilisent le multi-core, tandis que pour les process, c'est le
+système d'exploitation qui décide quand quel process va pouvoir avoir accès au
+CPU.
+\par
+Les threads peuvent aussi continuer à s'exécuter même si un autre thread est
+bloqué. En effet, lors du projet 1, si le processus select se crashait, il n'y
+avait plus moyen de faire un select. Lors du projet 2, même si un thread crashe,
+seulement un client est impacté, et les autres clients ne seront pas impactés.
 
 
 
@@ -210,21 +227,33 @@ la même mémoire, contrairement aux processus.
 \indent
 
 Pour améliorer la rapidité de notre programme, nous avons eu plusieurs idées.
-
-Tout d'abord, la création et destruction de threads est assez coûteuse, nous pourrions donc
-laisser un thread gérer un certains nombres de clients, par exemple 5 clients.
+Tout d'abord, la création et destruction de threads est assez coûteuse, nous
+pourrions donc laisser un thread gérer un certains nombres de clients, par
+exemple 5 clients.
 \par
-
+\par
+\indent
 Nous pourrions aussi lancer plusieurs serveurs, au lieu d'en avoir qu'un seul,
-afin de supporter plus de monde.
+afin de supporter plus de monde. Nous pourrions mettre les 100000 premiers
+étudiants dans un serveur, et les 100000 prochain dans un autre, et ainsi de
+suite
+
+Par exemple, lors du select, nous pourrions afficher au client les étudiants
+séléctionnés que si il le demande, ce qui permettrait de gagner un temps
+considérable.
 
 Nous pourrions aussi créer un index d'étudiants grâce à std::map, ou un tableau
 d'étudiants, avec l'id en clé afin de vérifier si l'id est déjà dans la database
 beaucoup plus rapidement.
 
 Nous pouvons aussi prévoir beaucoup plus d'espace pour la base de données au démarrage.
-Si plusieurs accès en lecture se produisent, nous pouvons les 'rassembler' tout
-en évitant de provoquer une famine.
+Si plusieurs accès en lecture se produisent, nous pouvons les `rassembler' tout
+en évitant de provoquer une famine
+
+On pourrait optimiser les requêtes, par exemple si une requête est effectuée au moins 5 fois, garder le résultat dans la mémoire cache.
+
+Si le client ne répond pas après un certain temps, on peut le fermer
+\par
 \section{Conclusion}
 \par
 \indent
