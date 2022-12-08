@@ -50,12 +50,15 @@ d'améliorations relatives aux performances et au fonctionnement.
 
 \par
 \section{Choix d'implémentation et difficultés rencontrées}
-\indent{Implémentation}
+\subsection{Implémentation}
+\par
+\indent
 Nous avons implémenté une database avec relation client-serveur en
 multithreading. Pour cela, le serveur lance un thread à chaque nouveau client.
 Le client envoie sa requête au serveur à l'aide de stdin, et le thread du
 serveur écrit le résultat de la requête dans un file lié au socket de son
 client. Le client lit le résultat de son socket et l'affiche.
+\par
 \subsection{Fin d'un socket}
 \par
 \indent
@@ -74,8 +77,8 @@ signaler la fin du message au read.
 
 Pour éviter les problèmes de surcharge de serveur, nous avons limité le nombre
 de thread tournant en même temps à 20.
-À chaque fois que le nombre de thread atteint 20, on attend que tous les threads se terminent 
-et puis on peut de nouveau lancer des threads.
+Lorsqu'un client essaye de se connecter alors que le 
+
 \par
 \subsection{Signaux}
 \par

@@ -26,6 +26,6 @@ int _checked(int ret)
 // aussi une erreur).
 #define checked_wr(call) _checked((call)-1)
 
-#define MAX_CLIENT 2
+#define MAX_CLIENT 20
 
 #endif // __COMMON_H
