@@ -53,8 +53,9 @@ d'améliorations relatives aux performances et au fonctionnement.
 \indent{Implémentation}
 Nous avons implémenté une database avec relation client-serveur en
 multithreading. Pour cela, le serveur lance un thread à chaque nouveau client.
-Le client envoie sa requête au serveur, et le thread du serveur écrit dans un file lié au
-socket de son client.   
+Le client envoie sa requête au serveur à l'aide de stdin, et le thread du
+serveur écrit le résultat de la requête dans un file lié au socket de son
+client. Le client lit le résultat de son socket et l'affiche.
 \subsection{Fin d'un socket}
 \par
 \indent
