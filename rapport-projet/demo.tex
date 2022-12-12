@@ -58,7 +58,7 @@ d'améliorations relatives aux performances et au fonctionnement.
 Nous avons implémenté une database avec relation client-serveur en
 multithreading. Pour cela, le serveur lance un thread à chaque nouveau client.
 Le client envoie sa requête au serveur à l'aide du socket, le thread traite sa
-requête et il écrit le résultat de la requête dans un file lié au socket de son
+requête et écrit le résultat de la requête dans un file lié au socket de son
 client. Le client lit le résultat de son socket et l'affiche.
 \par
 \subsection{Fin d'un socket}
@@ -88,16 +88,15 @@ d'erreur à l'aide de son socket, et ferme le client ainsi que le socket.
 \indent
 
 Lors de l'implémentation des signaux, nous avons eu du mal à fermer les clients
-lorsque le serveur attrapait un signal tel que Ctrl + C. Nous avons implémenté
-un vecteur de int, qui garde le socket de chaque thread en cours. Lorsque nous
+lorsque le serveur reçoit un signal tel que Ctrl + C. Nous avons implémenté
+un vecteur d'entiers, qui garde le socket de chaque thread en cours. Lorsque nous
 voulons éteindre le serveur, nous écrivons un message ('stop') et le client
 réagit en arrêtant sa boucle principale et ferme le client.
 
-Le problème est que le client lit dans deux files descriptors différents, le stdin et le socket du serveur. 
-Nous écrivions donc dans le socket du serveur le message ('stop') afin que le client
-se ferme dès qu'il le lit. Sauf que le lecture du stdin est bloquant, le
-client ne lisait donc dans le socket du serveur que lorsque l'utilisateur
-écrivait dans le stdin. 
+Seulement, le client lit dans deux files descriptors différents, le
+stdin et le socket du serveur. Cela nous a posé problème car la
+lecture de l'entrée standard est bloquante, le client ne lisait donc dans le socket du
+serveur que lorsque l'utilisateur écrivait dans l'entrée standard. 
 \par
 \par
 Nous avons d'abord essayé les commandes epoll, poll ou select, qui permettent de
@@ -112,13 +111,13 @@ deux files descriptors non-bloquants.
 
 Avant d'avoir ajouté le flag non-bloquant au socket et au stdin, nous avions
 limité la pipe à 2048 caractères, ce qui nous posait problème lors du `select',
-car il fallait afficher tous les étudiants retournés par le serveur. Lorsqu'on a
+car il faut afficher tous les étudiants retournés par le serveur. Lorsque nous avons
 ajouté le flag bloquant, ce problème s'est réglé, car le serveur écrit dans le
-file descriptor lié au socket, et le client ne s'arrête pas sur le fgets juste
-après le read, et continue à lire.
+file descriptor lié au socket, et le client ne s'arrête pas sur la lecture de
+l'entrée standard juste après le read, et continue à lire.
 \par
 Rendre le pipe non-bloquant nous a aidé sur deux problèmes, mais nous avons
-rajouté un sleep d'un dixième de seconde, afin d'optimiser le programme.
+faisons attendre le programme d'un dixième de seconde, afin de l'optimiser.
 \par
 
 \section{Synchronisation}
@@ -137,27 +136,29 @@ Dans le pseudo-code, nous avons 3 mutex: reader registration, writer access et
 new access. 
 \par
 
-Lors de l'écriture, le thread bloque la mémoire, écrit dedans et puis la débloque.
+Lors de l'écriture, le thread bloque le writer\_access, écrit dans la mémoire et puis le débloque.
 
 \par
-Les mutex gérant la lecture (reader\_registration et writer\_access) permettent à plusieurs lecteurs de lire en même temps la
-mémoire. En effet, ils ne modifient pas la mémoire, ils peuvent donc être à
-plusieurs. Lorsque le premier thread lit, il bloque la mémoire au niveau de la
-database, pour éviter que un autre thread écrive en même temps. D'autres threads
-qui lisent en même temps ne devront pas bloquer la mémoire, car le nombre de
-readers\_c est supérieur à 0. Si le nombre de lecteurs n'est pas égal à 0,
-la mémoire ne sera pas débloquée.
+Les mutex gérant la lecture (reader\_registration et writer\_access) permettent
+à plusieurs lecteurs de lire en même temps la mémoire. En effet, ils ne
+modifient pas la mémoire, ils peuvent donc être à plusieurs. Lorsque le premier
+thread lit, il bloque la mémoire au niveau de la database, pour éviter que un
+autre thread écrive en même temps. D'autres threads qui lisent en même temps ne
+devront pas bloquer la mémoire, car le nombre de readers\_c est supérieur à 0.
+Si le nombre de lecteurs n'est pas égal à 0, la mémoire ne sera pas débloquée.
 \par
-Le mutex new\_access est un peu plus complexe. Il permet de faire les accès mémoire
-dans l'ordre dans lequel les requêtes ont été écrites et ainsi éviter les problèmes de
-famine. En effet, avec le mutex new-access, les requêtes read-write-read s'exécuteront selon le mode suivant: la lecture commence par
+Le mutex new\_access est un peu plus complexe. Il permet de faire les accès
+mémoire dans l'ordre dans lequel les requêtes ont été écrites et ainsi éviter
+les problèmes de famine. En effet, avec le mutex new-access, les requêtes
+read-write-read s'exécuteront selon le mode suivant: la lecture commence par
 bloquer le new\_access, bloque donc la mémoire, débloque le new\_access et
-commence ses opérations de lecture. Le thread commençant l'écriture est bloqué par le
-new\_access, et attend que la mémoire se débloque. En attendant, le dernier
-thread voulant effectuer la lecture est bloqué au new\_access. Lorsque le
-premier lecteur a terminé, il débloque la mémoire, et donc l'écriture peut
+commence ses opérations de lecture. Le thread commençant l'écriture est bloqué
+par le new\_access, et attend que la mémoire se débloque. En attendant, le
+dernier thread voulant effectuer la lecture est bloqué au new\_access. Lorsque
+le premier lecteur a terminé, il débloque la mémoire, et donc l'écriture peut
 commencer. Le troisième lecteur est alors bloqué au write\_access. Ensuite,
-l'écriture se termine, et le lecteur peut donc bloquer la mémoire et lire dedans.
+l'écriture se termine, et le lecteur peut donc bloquer la mémoire et lire
+dedans.
 \par
 Sans le new\_access, les requêtes read-write-read se seraient
 exécutées différemment. Le lecteur aurait tout d'abord bloqué le write\_access.
@@ -166,10 +167,10 @@ write\_access, tandis que le troisième thread (le lecteur) commence à lire en
 mémoire, car il n'est pas le seul lecteur (et ne doit donc pas bloquer le
 write\_access).
 \par
-Enlever le write\_access peut causer deux problèmes majeurs. Premièrement, cela
+Enlever le new\_access peut causer deux problèmes majeurs. Premièrement, cela
 peut causer des problèmes de famine. En effet, si une requête en lecture se
 produit, puis une requête en écriture, puis des dizaines de requêtes en lecture,
-la requête en écriture ne pourra jamais se produire. Deuxièment, dans une base
+la requête en écriture ne pourra jamais se produire. Deuxièmement, dans une base
 de données, il est important que les requêtes se fassent dans l'ordre dans
 laquelle elles ont été écrites. Sans le new\_access, notre programme ne peut pas
 assurer l'ordre.
@@ -178,9 +179,10 @@ assurer l'ordre.
 \par
 \indent
 
-Le processus est indépendant, et donc même si le processus principal se crashe,
-les processus enfants peuvent continuer d'exécuter des tâches. Ce n'est pas le
-cas avec les threads.
+Le processus est indépendant, et donc même si le processus principal rencontre
+un problème le forçant à interrompre son exécution prématurément, les processus
+enfants peuvent continuer d'exécuter des tâches. Ce n'est pas le cas avec les
+threads.
 
 La gestion en mémoire partagée est beaucoup plus simple avec des threads.
 Ceux-ci partagent par défaut la mémoire virtuelle d'un même processus, cela nous
@@ -194,7 +196,7 @@ notamment le fait qu'un processus enfant ne peut pas augmenter la taille du file
 descriptor, seulement le parent est autorisé à le faire. 
 \par
 Lors du projet 2, nous
-avons simplement dû faire usage de mutex, pour éviter que les threads écrivent
+avons simplement dû faire usage de mutex, pour éviter que plusieurs threads écrivent
 et/ou lisent dans la mémoire en même temps.
 \par
 Les threads sont également plus rapides que les processus à la création et à la
@@ -209,15 +211,14 @@ l'ignorer dans les threads créés.
 Les threads prennent aussi moins de place que les processus, car ils partagent
 la même mémoire, contrairement aux processus.
 \par
-Les thread utilisent le multi-core, tandis que pour les process, c'est le
-système d'exploitation qui décide quand quel process va pouvoir avoir accès au
-CPU.
-\par
 Les threads peuvent aussi continuer à s'exécuter même si un autre thread est
 bloqué. En effet, lors du projet 1, si le processus select se crashait, il n'y
-avait plus moyen de faire un select. Lors du projet 2, même si un thread crashe,
+avait plus moyen de faire un select. Lors du projet 2, même si un thread se bloque,
 seulement un client est impacté, et les autres clients ne seront pas impactés.
-
+\par 
+Les processus ont aussi l'avantage que nous pouvons mettre des priorités à
+chaque processus. Si nous voulons que la requête select s'effectue avant la
+requête delete, il suffit de mettre la priorité au processus select. 
 
 
 
@@ -231,28 +232,36 @@ Tout d'abord, la création et destruction de threads est assez coûteuse, nous
 pourrions donc laisser un thread gérer un certains nombres de clients, par
 exemple 5 clients.
 \par
+
 \par
 \indent
-Nous pourrions aussi lancer plusieurs serveurs, au lieu d'en avoir qu'un seul,
-afin de supporter plus de monde. Nous pourrions mettre les 100000 premiers
-étudiants dans un serveur, et les 100000 prochain dans un autre, et ainsi de
-suite
 
-Par exemple, lors du select, nous pourrions afficher au client les étudiants
-séléctionnés que si il le demande, ce qui permettrait de gagner un temps
+Ensuite, Nous pourrions aussi lancer plusieurs serveurs, au lieu d'en avoir qu'un seul,
+afin de supporter plus de monde. Nous pourrions mettre les 100000 premiers
+étudiants dans un serveur, et les 100000 prochain dans un autre, etc.
+
+Par après, lors du select, nous pourrions afficher au client les étudiants
+séléctionnés que si le client le demande, ce qui permettrait de gagner un temps
 considérable.
 
-Nous pourrions aussi créer un index d'étudiants grâce à std::map, ou un tableau
-d'étudiants, avec l'id en clé afin de vérifier si l'id est déjà dans la database
-beaucoup plus rapidement.
+Nous pourrions aussi créer un index d'étudiants par colonne grâce à std::map, ou
+un tableau d'étudiants, avec par exemple l'id en clé et l'étudiant en valeur
+afin de vérifier si l'id est déjà dans la database beaucoup plus rapidement et
+de trouver l'id d'un étudiant plus rapidement.
 
-Nous pouvons aussi prévoir beaucoup plus d'espace pour la base de données au démarrage.
-Si plusieurs accès en lecture se produisent, nous pouvons les `rassembler' tout
-en évitant de provoquer une famine
+Une autre amélioration possible serait de prévoir beaucoup plus d'espace pour la
+base de données au démarrage.
 
-On pourrait optimiser les requêtes, par exemple si une requête est effectuée au moins 5 fois, garder le résultat dans la mémoire cache.
+Nous pourrions optimiser les requêtes, par exemple si une requête est effectuée au
+moins 5 fois, garder le résultat dans la mémoire cache. Si plusieurs accès en
+lecture se produisent, nous pouvons les `rassembler'.
 
-Si le client ne répond pas après un certain temps, on peut le fermer
+Si nous avons une plus grosse base de données à gérer, nous pouvons charger en
+mémoire seulement certaines parties de la base de données et non pas l'entièreté.
+
+Enfin, si un client n'effectue pas de requêtes pendant un certain temps bien
+défini, nous pouvons le fermer. Si la requête prend trop de temps, nous
+pourrions aussi l'arrêter afin d'éviter de monopoliser la mémoire
 \par
 \section{Conclusion}
 \par
@@ -261,10 +270,10 @@ En conclusion, malgré les problèmes survenus, nous avons réussi à implément
 une base de données serveur/clients qui s'exécute rapidement et
 efficacement.
 \par 
-Il est possible de le rendre encore plus performant, notamment
-à l'aide de multiples serveurs. L'utilisation des processus et des threads
-dépend surtout de l'utilisation qu'on veut en faire, chacun ont leur avantages
-et leurs inconvénients. Les processus sont plus robustes, et les threads plus rapides.
+Il est possible de le rendre encore plus performant, notamment à l'aide de
+multiples serveurs. L'utilisation des processus et des threads dépend surtout de
+l'utilisation que nous voulons en faire, chacun ont leur avantages et leurs
+inconvénients. Les processus sont plus robustes, et les threads plus rapides.
 
 Le code est maintenable et séparé en plusieurs fichiers,
 afin de faciliter la correction de bugs et d'erreurs éventuels, ainsi que la

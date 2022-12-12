@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.1)  8 DEC 2022 15:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.11.1)  9 DEC 2022 13:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -244,35 +244,20 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] [2] [3]
-Overfull \hbox (13.43466pt too wide) in paragraph at lines 212--215
-[]\OT1/cmr/m/n/12 Les thread utilisent le multi-core, tan-dis que pour les pro-cess, c'est le syst^^Reme d'exploitation
- []
-
-
-Overfull \hbox (14.83603pt too wide) in paragraph at lines 245--248
-[]\OT1/cmr/m/n/12 Nous pour-rions aussi cr^^Seer un in-dex d'^^Setudiants gr^ace ^^Ra std::map, ou un tableau d'^^Setudiants,
- []
-
-
-Overfull \hbox (5.82779pt too wide) in paragraph at lines 249--252
-[]\OT1/cmr/m/n/12 Nous pou-vons aussi pr^^Sevoir beau-coup plus d'espace pour la base de donn^^Sees au d^^Semarrage.
- []
-
-[4] (./demo.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] [2] [3] [4] [5] (./demo.aux) ) 
 Here is how much of TeX's memory you used:
  5667 strings out of 480247
  91286 string characters out of 5896151
- 465669 words of memory out of 5000000
+ 464669 words of memory out of 5000000
  23529 multiletter control sequences out of 15000+600000
  475115 words of font info for 50 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  68i,7n,77p,569b,261s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on demo.pdf (5 pages, 67096 bytes).
+Output written on demo.pdf (6 pages, 68203 bytes).
 PDF statistics:
- 40 PDF objects out of 1000 (max. 8388607)
- 24 compressed objects within 1 object stream
+ 43 PDF objects out of 1000 (max. 8388607)
+ 26 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
