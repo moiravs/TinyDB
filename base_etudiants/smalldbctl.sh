@@ -36,7 +36,7 @@ sync(){
 #This function sends a SIGUSR1 signal to the smalldb program
 i=0;
     proc="smalldb"
-    pids=$(pgrep "$proc")
+    pids=$(pgrep -x "$proc")
     echo "$pids";
     for pid in $pids
         do
@@ -50,7 +50,8 @@ i=0;
 }
 stop(){
 #this function sends a SIGINT signal to the smalldb program
-pid=`pgrep smalldb`
+pid=`pgrep -x smalldb`
+echo "$pid"
 kill -SIGINT "$pid"
 
 }
