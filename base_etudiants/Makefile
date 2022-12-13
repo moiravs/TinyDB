@@ -1,7 +1,7 @@
 CXXFLAGS+= -std=c++17 -Wall -Wextra -Wpedantic -D_GNU_SOURCE -Werror=all -lpthread
 
 #CXX=g++
-LDLIBS+=-lpthread -lasan
+LDLIBS+=-lpthread
 SOURCES = $(wildcard *.cpp */*.cpp)
 HEADERS = $(wildcard *.hpp */*.hpp)
 
@@ -21,5 +21,5 @@ clean:
 smalldb: smalldb.cpp common.h ${OBJ}
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)
 
-sdbsh: main.cpp common.h ${OBJ}
+sdbsh: sdbsh.cpp common.h ${OBJ}
 	$(CXX) $(LDFLAGS) $^ -o $@ $(LOADLIBES) $(LDLIBS)

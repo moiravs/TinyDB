@@ -30,12 +30,11 @@ void *work(void *socket_desc)
     FILE *file_new_socket = fdopen(new_socket, "w");
     if (file_new_socket == NULL)
         puts("errorfile");
-    fputs("Connected\n", file_new_socket);
-    fflush(file_new_socket);
     while ((lu = checked(read(new_socket, buffer, 2048))) > 0)
     {
         parse_and_execute(file_new_socket, &db, buffer);
-        fflush(file_new_socket); // client receive the complete response and doesnt need to wait the next query
+        fflush(file_new_socket); // client receive the complete response and doesn't need to wait the next query
+        sleep(0.1);
     }
     fclose(file_new_socket);
     std::cout << "Thread number " << new_socket << " closed" << std::endl;
@@ -116,21 +115,6 @@ int main(int argc, char const *argv[])
                 sigprocmask(SIG_UNBLOCK, &mask, NULL); // Débloque le signal (pour le thread courant)
             }
         }
-        /*
-        else
-            if (errno == EINTR) // if client disconnect abruptly from server
-                continue;
-        */
-        /*
-         if (i >= 20) // if more than 20 threads
-         {
-             i = 0;
-             puts("Too many clients. Waiting for clients to terminate");
-             while (i < 20) // wait for all threads to finish before accepting new ones
-                 pthread_join(tid[i++], NULL);
-             i = 0;
-         }
-         */
     }
     return 0;
 }

@@ -27,7 +27,7 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
     return;
   }
   char *student = new char[256];
-  int numberstudent = 0;
+  int number_student = 0;
   new_access.lock();
   reader_registration.lock();
   if (readers_c == 0)
@@ -39,7 +39,7 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
   {
     if (predicate(s))
     {
-      numberstudent++;
+      number_student++;
       student_to_str(student, &s, 256);
       fputs(student, fout);
       fputs("\n", fout);
@@ -50,7 +50,7 @@ void execute_select(FILE *fout, database_t *const db, const char *const field,
   if (readers_c == 0)
     write_access.unlock();
   reader_registration.unlock();
-  fprintf(fout, "%d", numberstudent);
+  fprintf(fout, "%d", number_student);
   fprintf(fout, "%s", " student(s) selected\n");
   delete[] (student);
 }
@@ -69,7 +69,7 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
     query_fail_bad_update(fout, efield, evalue);
     return;
   }
-  int numberstudent = 0;
+  int number_student = 0;
   new_access.lock();
   reader_registration.lock();
   if (readers_c == 0)
@@ -82,7 +82,7 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
     if (predicate(s))
     {
       updater(s);
-      numberstudent++;
+      number_student++;
     }
   }
   reader_registration.lock();
@@ -90,7 +90,7 @@ void execute_update(FILE *fout, database_t *const db, const char *const ffield, 
   if (readers_c == 0)
     write_access.unlock();
   reader_registration.unlock();
-  fprintf(fout, "%d", numberstudent);
+  fprintf(fout, "%d", number_student);
   fprintf(fout, "%s", " student(s) updated\n");
   fputs("\0", fout);
 }
@@ -162,9 +162,9 @@ void execute_delete(FILE *fout, database_t *const db, const char *const field,
   new_access.unlock();
   reader_registration.unlock();
   auto new_end = remove_if(db->data.begin(), db->data.end(), predicate);
-  int numberstudent = db->data.end() - new_end;
-  fprintf(fout, "%d", numberstudent);
-  fprintf(fout, "%s", " deleted student(s)\n");
+  int number_student = db->data.end() - new_end;
+  fprintf(fout, "%d", number_student);
+  fprintf(fout, "%s", " student(s) deleted\n");
   fputs("\0", fout);
   db->data.erase(new_end, db->data.end());
   reader_registration.lock();

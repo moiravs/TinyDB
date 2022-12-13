@@ -12,7 +12,8 @@ Date : 07/12/2022
 #include <iostream>
 #include <fcntl.h>
 
-int setup_socket(int argc, char const *argv[]){
+int setup_socket(int argc, char const *argv[])
+{
   if (argc != 2)
   {
     puts("Parameter IP is missing");
@@ -33,7 +34,7 @@ int setup_socket(int argc, char const *argv[]){
   const char *p = inet_ntop(AF_INET, &serv_addr.sin_addr, buffer, 80); //
   if (p == NULL)
   {
-    std::cout << "IP adress doesn't exist";
+    std::cout << "IP address doesn't exist";
     exit(1);
   }
   return sock;
@@ -48,28 +49,33 @@ int main(int argc, char const *argv[])
   int fd = fileno(stdin);
   int flags = fcntl(fd, F_GETFL, 0);
   flags |= O_NONBLOCK;
-  fcntl(fd, F_SETFL, flags);   // put non-blocking stdin
-  fcntl(sock, F_SETFL, flags); // put non-blocking socket
+  fcntl(fd, F_SETFL, flags); // put non-blocking stdin
+  fcntl(sock, F_SETFL, flags); // put non-blocking sock
   bool end = false;
-  while (!end)
+  bool waiting_for_response = false;
+  while ((!end) || (waiting_for_response))
   {
     if (fgets(buffer_stdin, 2048, stdin) != NULL)
     {
       int i = strlen(buffer_stdin) - 1;
       buffer_stdin[i] = '\0'; // put ending character
       checked_wr(write(sock, buffer_stdin, 2048));
+      waiting_for_response = true;
     }
-    if (feof(stdin))
+    else if (feof(stdin))
+    {
+      sleep(1); //to get last responses of the server
       end = true;
-    lu = read(sock, buffer_socket, 2048);
-    if (lu > 0)
+    }
+    while ((lu = read(sock, buffer_socket, 2048)) > 0)
     {
       buffer_socket[lu] = '\0';
       if (strcmp(buffer_socket, "stop") == 0)
         end = true;
       printf("%s", buffer_socket);
+      waiting_for_response = false;
     }
-    sleep(0.1); // optimizes code
+    sleep(0.2); // optimizes code
   }
   close(0);
   close(sock);
